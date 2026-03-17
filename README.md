@@ -24,7 +24,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 | **Prompts** | Multiple iterations | Multiple iterations | 1 prompt, 4 build fixes, 2 deploy fixes | 1 prompt | 5 prompts |
 | **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~18 minutes | ~20 minutes | < 15 minutes |
 | **Status** | <span style="color:#22c55e">Working</span> | <span style="color:#ef4444">Incomplete</span> | <span style="color:#f59e0b">Partial</span> (backend only) | <span style="color:#22c55e">Working</span> | <span style="color:#22c55e">Working</span> |
-| **Assets** | [approach-1-sdk-custom-ui/](approach-1-sdk-custom-ui/) | [approach-2-sdk-workspace/](approach-2-sdk-workspace/) | [approach-3-sdk/](approach-3-sdk/) | [approach-3-buildagent-custom-ui.md](approach-3-buildagent-custom-ui.md) | [approach-4-buildagent-workspace.md](approach-4-buildagent-workspace.md) |
+| **Assets** | [approach-1-sdk-custom-ui/](approach-1-sdk-custom-ui/) | [approach-2-sdk-workspace/](approach-2-sdk-workspace/) | [approach-3-sdk/](approach-3-sdk/) | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
 
 ---
 
@@ -147,5 +147,5 @@ The AI models are equally capable. The variable is what each agent can reach fro
 | **1 -- REST Custom UI** | [approach-1-sdk-custom-ui/README.md](approach-1-sdk-custom-ui/README.md) |
 | **2 -- REST Workspace** | [approach-2-sdk-workspace/README.md](approach-2-sdk-workspace/README.md) |
 | **3 -- SDK Custom UI** | [approach-3-sdk/README.md](approach-3-sdk/README.md) |
-| **4 -- Build Agent Custom UI** | [approach-3-buildagent-custom-ui.md](approach-3-buildagent-custom-ui.md) |
-| **5 -- Build Agent Workspace** | [approach-4-buildagent-workspace.md](approach-4-buildagent-workspace.md) |
+| **4 -- Build Agent Custom UI** | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) |
+| **5 -- Build Agent Workspace** | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
