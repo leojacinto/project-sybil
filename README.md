@@ -24,7 +24,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 | **Prompts** | Multiple iterations | Multiple iterations | 1 prompt, 4 build fixes, 2 deploy fixes | 1 prompt | 5 prompts |
 | **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~18 minutes | ~20 minutes | < 15 minutes |
 | **Status** | <span style="color:#22c55e">Working</span> | <span style="color:#ef4444">Incomplete</span> | <span style="color:#f59e0b">Partial</span> (backend only) | <span style="color:#22c55e">Working</span> | <span style="color:#22c55e">Working</span> |
-| **Assets** | [approach-1-sdk-custom-ui/](approach-1-sdk-custom-ui/) | [approach-2-sdk-workspace/](approach-2-sdk-workspace/) | [approach-1-sdk/](approach-1-sdk/) | [approach-3-buildagent-custom-ui.md](approach-3-buildagent-custom-ui.md) | [approach-4-buildagent-workspace.md](approach-4-buildagent-workspace.md) |
+| **Assets** | [approach-1-sdk-custom-ui/](approach-1-sdk-custom-ui/) | [approach-2-sdk-workspace/](approach-2-sdk-workspace/) | [approach-3-sdk/](approach-3-sdk/) | [approach-3-buildagent-custom-ui.md](approach-3-buildagent-custom-ui.md) | [approach-4-buildagent-workspace.md](approach-4-buildagent-workspace.md) |
 
 ---
 
@@ -44,7 +44,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 - **Approach 1 (REST Custom UI):** 4 failed iterations over ~2 hours. UI Pages require Jelly XML with server-side `<g:evaluate>` blocks, CSRF tokens, and form POST writes -- patterns that are not obvious from the REST API surface.
 - **Approach 2 (REST Workspace):** Could not finish. The workspace framework involves ~20 interdependent records across 10+ tables with tightly coupled JSON configs. This sits below the REST API layer.
-- **Approach 3 (SDK Custom UI):** The SDK deployed the entire data foundation from a single prompt in ~18 minutes (table, 4 business rules, 4 ACLs, app menu, 5 sample records). But the SDK-bundled UI page could not load records at runtime -- the client-side REST calls failed due to cross-scope access restrictions that the SDK does not configure automatically.
+- **Approach 3 (SDK Custom UI):** The SDK deployed the entire data foundation from a single prompt in ~18 minutes (table, 4 business rules, 4 ACLs, app menu, 5 sample records). But the SDK-bundled UI page could not load records at runtime -- the client-side REST calls required additional cross-scope configuration beyond the SDK's default scaffold.
 - **Approaches 4-5 (Build Agent):** Working apps in under 20 minutes each. No iterations. No auth issues. No CSRF debugging. No SDK type mismatches. Build Agent operates inside ServiceNow where UI rendering, workspace assembly, and business rule wiring are native operations.
 
 ---
@@ -82,11 +82,11 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 ### Approach 2 -- REST API Workspace (~3 hours, incomplete)
 
-Cascade produced functional React components (forms, tables, state machine, validation). But the workspace framework requires ~20 interdependent records across 10+ tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). These tightly coupled configurations sit below the REST API surface. See [approach-2-sdk-workspace/](approach-2-sdk-workspace/).
+Cascade produced functional React components (forms, tables, state machine, validation). But the workspace framework requires ~20 interdependent records across 10+ tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). These tightly coupled configurations sit below the REST API layer. See [approach-2-sdk-workspace/](approach-2-sdk-workspace/).
 
 ### Approach 3 -- SDK Custom UI (~18 minutes, partial)
 
-Claude Opus scaffolded the full app from a single prompt using the ServiceNow SDK. The data foundation deployed successfully. The UI rendered but could not load data. See [approach-1-sdk/](approach-1-sdk/).
+Claude Opus scaffolded the full app from a single prompt using the ServiceNow SDK. The data foundation deployed successfully. The UI rendered but could not load data. See [approach-3-sdk/](approach-3-sdk/).
 
 1. **Initial scaffold** -- build failed (SDK bundler expected `<script src="./app.ts">` entry point)
 2. **Restructured to client app** -- build failed (15 type errors: `PriceColumn` missing, `ChoiceColumn` format wrong, `ReferenceColumn` uses `referenceTable`, `BusinessRule` uses `action` array, `Module` missing)
@@ -98,7 +98,7 @@ Claude Opus scaffolded the full app from a single prompt using the ServiceNow SD
 
 **Deployed artifacts:** table (extends task), 8 fields, 4 business rules, 4 ACLs, application menu, 5 sample records, bundled UI page.
 
-**Limitation:** The SDK does not automatically configure the cross-scope REST API access needed for client-side data fetching. The data foundation works; the UI delivery from outside the platform remains the bottleneck.
+**Limitation:** Cross-scope REST API access requires additional configuration beyond the SDK's default scaffold. The data foundation works; the UI delivery from outside the platform requires further platform setup.
 
 ---
 
@@ -111,10 +111,10 @@ Claude Opus scaffolded the full app from a single prompt using the ServiceNow SD
 | 3 | `client_script` field not Jelly-processed | 1 | Yes (discoverable) |
 | 4 | Workspace requires ~20 interdependent `sys_ux_*` records | 2 | No (platform internals) |
 | 5 | `sys_ux_screen` linkage to OOB macroponents required | 2 | No (platform internals) |
-| 6 | SDK Fluent API docs did not match v4.4.0 types | 3 | Yes (SDK documentation gap) |
+| 6 | SDK Fluent API types required adjustments for v4.4.0 compatibility | 3 | Yes (discoverable) |
 | 7 | SDK bundler requires `<script src>` entry point | 3 | Yes (discoverable) |
 | 8 | `now-sdk install` requires `sys_app`, not `sys_scope` | 3 | Yes (discoverable) |
-| 9 | SDK-bundled UI cannot access table data via REST at runtime | 3 | Yes (cross-scope access gap) |
+| 9 | SDK-bundled UI requires additional cross-scope configuration for runtime REST data access | 3 | Yes (additional configuration step) |
 
 Items #1-3 and #6-9 are external agent limitations -- friction that Build Agent never encounters because it operates natively. Items #4-5 are platform internals that Build Agent abstracts away.
 
@@ -130,7 +130,7 @@ Every approach -- REST, SDK, or Build Agent -- created the data model (table, fi
 |---|---|---|
 | **Approach 1** (REST Custom UI) | Minutes | ~2 hours (4 iterations) |
 | **Approach 2** (REST Workspace) | Minutes | Could not finish |
-| **Approach 3** (SDK Custom UI) | ~18 minutes (1 prompt) | Could not finish (runtime data access) |
+| **Approach 3** (SDK Custom UI) | ~18 minutes (1 prompt) | Backend complete, UI requires additional scope configuration |
 | **Approach 4** (Build Agent Custom UI) | Minutes | ~20 minutes (1 prompt, zero fixes) |
 | **Approach 5** (Build Agent Workspace) | Minutes | < 15 minutes (5 prompts, zero fixes) |
 
@@ -146,6 +146,6 @@ The AI models are equally capable. The variable is what each agent can reach fro
 |---|---|
 | **1 -- REST Custom UI** | [approach-1-sdk-custom-ui/README.md](approach-1-sdk-custom-ui/README.md) |
 | **2 -- REST Workspace** | [approach-2-sdk-workspace/README.md](approach-2-sdk-workspace/README.md) |
-| **3 -- SDK Custom UI** | [approach-1-sdk/README.md](approach-1-sdk/README.md) |
+| **3 -- SDK Custom UI** | [approach-3-sdk/README.md](approach-3-sdk/README.md) |
 | **4 -- Build Agent Custom UI** | [approach-3-buildagent-custom-ui.md](approach-3-buildagent-custom-ui.md) |
 | **5 -- Build Agent Workspace** | [approach-4-buildagent-workspace.md](approach-4-buildagent-workspace.md) |
