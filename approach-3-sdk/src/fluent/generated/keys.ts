@@ -41,9 +41,69 @@ declare global {
                         table: 'x_snc_travel_request'
                         id: '6bfd6cdd3929488ea35fb71ab564e51b'
                     }
+                    travel_api_create: {
+                        table: 'sys_ws_operation'
+                        id: 'a31f4025e41542c9860a1c3d28b6fb34'
+                    }
+                    travel_api_delete: {
+                        table: 'sys_ws_operation'
+                        id: '418d683af65c4b52aa946eb81e9b52ac'
+                    }
+                    travel_api_delete_param: {
+                        table: 'sys_ws_query_parameter'
+                        id: 'bada55fcfbb24db9ad955736252d8e8f'
+                    }
+                    travel_api_list: {
+                        table: 'sys_ws_operation'
+                        id: '7115b5c8d0434ea585b154200a55538f'
+                    }
+                    travel_api_update: {
+                        table: 'sys_ws_operation'
+                        id: '201175cb787b41968762979ed06ced4f'
+                    }
+                    travel_api_update_param: {
+                        table: 'sys_ws_query_parameter'
+                        id: 'd9fbc7bf16c2457f85da59ab2f8b790d'
+                    }
                     travel_app_menu: {
                         table: 'sys_app_application'
                         id: 'cc2bc9d711fc4157a25eea15c4f6bf92'
+                    }
+                    travel_dashboard: {
+                        table: 'par_dashboard'
+                        id: '27e819c82e864ca58a9ba291b8468f95'
+                    }
+                    travel_dashboard_tab_overview: {
+                        table: 'par_dashboard_tab'
+                        id: '1889ad91797445398d89f1a5d863a09a'
+                    }
+                    travel_list_all: {
+                        table: 'sys_ux_list'
+                        id: '80bd0bd8ddd0430c81400329d9a00e96'
+                    }
+                    travel_list_approved: {
+                        table: 'sys_ux_list'
+                        id: '4c9e93dd7faf4681bd5490cbb93edbb4'
+                    }
+                    travel_list_category: {
+                        table: 'sys_ux_list_category'
+                        id: 'd9fe40a4dca24ba382000bbf64a2f880'
+                    }
+                    travel_list_draft: {
+                        table: 'sys_ux_list'
+                        id: '987d1da3563b4861bccd2d4117f6d7e5'
+                    }
+                    travel_list_menu_config: {
+                        table: 'sys_ux_list_menu_config'
+                        id: '55dfa53d839a4be895cb9cda144eecf7'
+                    }
+                    travel_list_submitted: {
+                        table: 'sys_ux_list'
+                        id: '5fa6ebe8191f478a89c241b10a25dd4a'
+                    }
+                    travel_request_api: {
+                        table: 'sys_ws_definition'
+                        id: '021d480359834b16835412ed68870b56'
                     }
                     travel_request_create_acl: {
                         table: 'sys_security_acl'
@@ -61,6 +121,98 @@ declare global {
                         table: 'sys_security_acl'
                         id: '398710bcf06c43169df231cf2b4f7981'
                     }
+                    travel_workspace: {
+                        table: 'sys_ux_page_registry'
+                        id: '65de8b58caec4093abb56d3e59c7c0cb'
+                    }
+                    travel_workspace_sys_ux_app_config_workspace: {
+                        table: 'sys_ux_app_config'
+                        id: 'd6761854c5564189be0d552800223383'
+                    }
+                    travel_workspace_sys_ux_app_route_home: {
+                        table: 'sys_ux_app_route'
+                        id: 'ee5ffd78a5a840248bc438a757851c30'
+                    }
+                    travel_workspace_sys_ux_app_route_list: {
+                        table: 'sys_ux_app_route'
+                        id: 'c00c55e582744c5aa496ad54c1674f5b'
+                    }
+                    travel_workspace_sys_ux_app_route_record: {
+                        table: 'sys_ux_app_route'
+                        id: '2fd0502476dc456aa3d08f783ecffc1e'
+                    }
+                    'travel_workspace_sys_ux_app_route_simple-list': {
+                        table: 'sys_ux_app_route'
+                        id: 'f1f1ca956c5b45d2a7de85ccb7dbfc8d'
+                    }
+                    travel_workspace_sys_ux_macroponent_record: {
+                        table: 'sys_ux_macroponent'
+                        id: '02f91de11baf4f9b945b52742ab47275'
+                    }
+                    travel_workspace_sys_ux_page_property_chrome_footer: {
+                        table: 'sys_ux_page_property'
+                        id: 'f68ede7c5cd949cdb52da6fc8d929d48'
+                    }
+                    travel_workspace_sys_ux_page_property_chrome_header: {
+                        table: 'sys_ux_page_property'
+                        id: '39fc58699b93467bafe200526bb608f0'
+                    }
+                    travel_workspace_sys_ux_page_property_chrome_tab: {
+                        table: 'sys_ux_page_property'
+                        id: '8453d6f322dc4832a82ef07793bb7543'
+                    }
+                    travel_workspace_sys_ux_page_property_chrome_toolbar: {
+                        table: 'sys_ux_page_property'
+                        id: '4257373b105047678639656f5f29b050'
+                    }
+                    travel_workspace_sys_ux_page_property_listConfigId: {
+                        table: 'sys_ux_page_property'
+                        id: 'b36f915645604b22be8c72dcba1c7c20'
+                    }
+                    travel_workspace_sys_ux_page_property_view: {
+                        table: 'sys_ux_page_property'
+                        id: '1b86de2594b9422aa465cdb2040efc9b'
+                    }
+                    travel_workspace_sys_ux_page_property_wbApplicabilityConfigId: {
+                        table: 'sys_ux_page_property'
+                        id: '1c588474b0454d548594e87ace62c949'
+                    }
+                    travel_workspace_sys_ux_registry_m2m_category_unifiedNav: {
+                        table: 'sys_ux_registry_m2m_category'
+                        id: 'ce1818341bcf4e3dbb73da3271b3269e'
+                    }
+                    travel_workspace_sys_ux_screen_home: {
+                        table: 'sys_ux_screen'
+                        id: '654c266369e4421dabdc40eb0ddfb2d4'
+                    }
+                    travel_workspace_sys_ux_screen_list: {
+                        table: 'sys_ux_screen'
+                        id: '4954eace0eba42e5aed49d347486b39d'
+                    }
+                    travel_workspace_sys_ux_screen_record: {
+                        table: 'sys_ux_screen'
+                        id: 'd2359faa66d843fd9dd90dd9823c5e24'
+                    }
+                    'travel_workspace_sys_ux_screen_simple-list': {
+                        table: 'sys_ux_screen'
+                        id: '125ef2bb9d664059b6bcab3e0a453a1f'
+                    }
+                    travel_workspace_sys_ux_screen_type_home: {
+                        table: 'sys_ux_screen_type'
+                        id: '5fcb77c6fa024ba0b6ce51c3d7e8d6c1'
+                    }
+                    travel_workspace_sys_ux_screen_type_list: {
+                        table: 'sys_ux_screen_type'
+                        id: 'fbd0645d791b417a979cb290d28d4842'
+                    }
+                    travel_workspace_sys_ux_screen_type_record: {
+                        table: 'sys_ux_screen_type'
+                        id: 'b055ed582a194a6ba3c33ffa90635699'
+                    }
+                    'travel_workspace_sys_ux_screen_type_simple-list': {
+                        table: 'sys_ux_screen_type'
+                        id: 'ef2475f5b4bb4aab8079b1e28c25e4ca'
+                    }
                     validate_estimated_cost: {
                         table: 'sys_script'
                         id: '28e21c91a1614eb8a909e024074d5397'
@@ -68,6 +220,38 @@ declare global {
                     validate_return_date: {
                         table: 'sys_script'
                         id: 'ef78c0df30e54b97ad7cee27de378d44'
+                    }
+                    widget_approved: {
+                        table: 'par_dashboard_widget'
+                        id: 'ce2034338fd94071be5f1b2a63d8adb6'
+                    }
+                    widget_by_state: {
+                        table: 'par_dashboard_widget'
+                        id: '967efb82edb84849b464382faf3166ed'
+                    }
+                    widget_by_type: {
+                        table: 'par_dashboard_widget'
+                        id: 'd05d40c3dd554c1cb9f11960a2e6641d'
+                    }
+                    widget_completed: {
+                        table: 'par_dashboard_widget'
+                        id: 'a186073fc4104eea8f171feac267aa76'
+                    }
+                    widget_draft: {
+                        table: 'par_dashboard_widget'
+                        id: 'a075eb6a577a43339a1799e8e45f3cef'
+                    }
+                    widget_rejected: {
+                        table: 'par_dashboard_widget'
+                        id: '8797a8aace74471f817a2a0be4591502'
+                    }
+                    widget_submitted: {
+                        table: 'par_dashboard_widget'
+                        id: '5c2cbf964a9d48b4a7386e5b72ff7ea6'
+                    }
+                    widget_total: {
+                        table: 'par_dashboard_widget'
+                        id: 'c1c3a5c3345b4f09a416d21706333fff'
                     }
                 }
                 composite: [
@@ -319,6 +503,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ws_query_parameter_map'
+                        id: '9270dbca98df454bb7b807748ce7f5fa'
+                        key: {
+                            web_service_operation: '201175cb787b41968762979ed06ced4f'
+                            web_service_query_parameter: 'd9fbc7bf16c2457f85da59ab2f8b790d'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '96ccb1fa85824873b6a01271eaf7b73b'
                         key: {
@@ -364,12 +556,28 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_ws_query_parameter_map'
+                        id: 'b3b93b039f634ad2b8741c82564932db'
+                        key: {
+                            web_service_operation: '418d683af65c4b52aa946eb81e9b52ac'
+                            web_service_query_parameter: 'bada55fcfbb24db9ad955736252d8e8f'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: 'b5dc7affa1ac48fc88cc98464f5b75e1'
                         key: {
                             name: 'x_snc_travel_request'
                             element: 'x_snc_travel_departure_date'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'par_dashboard_visibility'
+                        id: 'ba14b10eda044032b2121c6b4435e864'
+                        key: {
+                            dashboard: '27e819c82e864ca58a9ba291b8468f95'
+                            experience: '65de8b58caec4093abb56d3e59c7c0cb'
                         }
                     },
                     {
@@ -424,6 +632,14 @@ declare global {
                         id: 'ec38e003e9fb46dea630f0eef344ac56'
                         key: {
                             name: 'x_snc_travel_request_ui.do - BYOUI Files'
+                        }
+                    },
+                    {
+                        table: 'par_dashboard_canvas'
+                        id: 'f64cf945267245cb86df1199f94d9da3'
+                        key: {
+                            dashboard: '27e819c82e864ca58a9ba291b8468f95'
+                            dashboard_tab: '1889ad91797445398d89f1a5d863a09a'
                         }
                     },
                     {

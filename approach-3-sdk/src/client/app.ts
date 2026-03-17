@@ -1,5 +1,4 @@
-const TABLE = 'x_snc_travel_request';
-const FIELDS = 'sys_id,number,x_snc_travel_destination,x_snc_travel_departure_date,x_snc_travel_return_date,x_snc_travel_purpose,x_snc_travel_estimated_cost,x_snc_travel_travel_type,x_snc_travel_state';
+const API_BASE = '/api/x_snc_travel/x_snc_travel_api/requests';
 const STATES: Record<string, { label: string; cls: string }> = {
   draft: { label: 'Draft', cls: 'badge-draft' },
   submitted: { label: 'Submitted', cls: 'badge-submitted' },
@@ -28,7 +27,6 @@ async function api(method: string, path: string, body?: object): Promise<any> {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'X-UserToken': (window as any).g_ck || '',
     },
   };
   if (body) opts.body = JSON.stringify(body);
@@ -37,7 +35,7 @@ async function api(method: string, path: string, body?: object): Promise<any> {
 }
 
 async function loadRecords(): Promise<TravelRequest[]> {
-  const data = await api('GET', `/api/now/table/${TABLE}?sysparm_fields=${FIELDS}&sysparm_limit=100&sysparm_order_by=-sys_created_on`);
+  const data = await api('GET', API_BASE);
   return (data.result || []).map((r: any) => ({
     sys_id: r.sys_id,
     number: r.number || '',
@@ -52,15 +50,15 @@ async function loadRecords(): Promise<TravelRequest[]> {
 }
 
 async function createRecord(data: object): Promise<void> {
-  await api('POST', `/api/now/table/${TABLE}`, data);
+  await api('POST', API_BASE, data);
 }
 
 async function updateState(sysId: string, state: string): Promise<void> {
-  await api('PATCH', `/api/now/table/${TABLE}/${sysId}`, { x_snc_travel_state: state });
+  await api('PATCH', `${API_BASE}/${sysId}`, { x_snc_travel_state: state });
 }
 
 async function deleteRecord(sysId: string): Promise<void> {
-  await api('DELETE', `/api/now/table/${TABLE}/${sysId}`);
+  await api('DELETE', `${API_BASE}/${sysId}`);
 }
 
 function val(r: TravelRequest, field: string): string {
