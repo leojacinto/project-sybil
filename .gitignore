@@ -6,3 +6,6 @@ build/
 .DS_Store
 _archived-jarvis/
 Market_research_app/
+socials/*.gif
+sdk-v4.3.0/
+sdk-v4.3.0.tar.gz
