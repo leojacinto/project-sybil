@@ -42,7 +42,7 @@ approach-3-sdk/
 Uses `UiPage` Fluent API to deploy a bundled HTML/JS page at `x_snc_travel_request_ui.do`. The client app uses the Table API (`/api/now/table/`) with `window.g_ck` for CSRF — the same pattern as ServiceNow's official SDK React example.
 
 ### Native Workspace (`src/fluent/workspace/`)
-Uses `Workspace` + `UxListMenuConfig` Fluent APIs to deploy a full workspace at `/now/travel-requests/home`. The SDK generates all ~20 `sys_ux_*` records (app config, page registry, screen types, routes, screens) that the REST API approach (Approach 2) could not assemble manually.
+Uses `Workspace` + `UxListMenuConfig` Fluent APIs to deploy a full workspace at `/now/travel-requests/home`. The SDK orchestrates all ~20 `sys_ux_*` records (app config, page registry, screen types, routes, screens) — workspace assembly is purpose-built for platform-native tooling like the SDK and Build Agent.
 
 Workspace includes 4 pre-configured list views:
 - **All Travel Requests** — full table view

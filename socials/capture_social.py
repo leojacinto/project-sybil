@@ -8,7 +8,7 @@ import subprocess, os, sys, shutil
 WIDTH = 1080
 HEIGHT = 1080
 FPS = 50              # max reliable GIF rate (20ms/frame = exact centisecond)
-LOOP_DUR = 10.0       # 10s = full CYCLE_MS (clean loop)
+LOOP_DUR = 8.0        # 8s = full CYCLE_MS (clean loop)
 TOTAL_FRAMES = int(FPS * LOOP_DUR)
 FRAME_INTERVAL_MS = int(1000 / FPS)
 WARMUP_MS = 3000

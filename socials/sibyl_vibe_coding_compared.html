@@ -261,7 +261,7 @@
             <th></th>
             <th>Claude Opus REST → Custom UI</th>
             <th>Claude Opus REST → Workspace</th>
-            <th>Claude Opus SDK → Custom UI</th>
+            <th>Claude Opus SDK → UI + Workspace</th>
             <th>Build Agent → Custom UI</th>
             <th class="highlight">Build Agent → Workspace</th>
           </tr>
@@ -279,7 +279,7 @@
             <td>Wall clock</td>
             <td>~2 hours</td>
             <td>~3 hours (abandoned)</td>
-            <td>~18 min (backend only)</td>
+            <td>~20 min</td>
             <td>~20 minutes</td>
             <td class="highlight">&lt; 15 minutes</td>
           </tr>
@@ -287,7 +287,7 @@
             <td>Outcome</td>
             <td><span class="check">✓</span> Working</td>
             <td><span class="cross">✗</span> Incomplete</td>
-            <td><span class="warn">⚠</span> Backend only</td>
+            <td><span class="check">✓</span> WS <span class="warn">⚠</span> UI</td>
             <td><span class="check">✓</span> Working</td>
             <td class="highlight"><span class="check">✓</span> Full workspace</td>
           </tr>
@@ -295,7 +295,7 @@
             <td>Polaris</td>
             <td><span class="cross">✗</span></td>
             <td><span class="cross">✗</span></td>
-            <td><span class="cross">✗</span></td>
+            <td><span class="warn">⚠</span></td>
             <td><span class="cross">✗</span></td>
             <td class="highlight"><span class="check">✓</span></td>
           </tr>
@@ -303,7 +303,7 @@
             <td>Mobile ready</td>
             <td><span class="cross">✗</span></td>
             <td><span class="cross">✗</span></td>
-            <td><span class="cross">✗</span></td>
+            <td><span class="warn">⚠</span></td>
             <td><span class="cross">✗</span></td>
             <td class="highlight"><span class="check">✓</span></td>
           </tr>
@@ -356,7 +356,7 @@ resize();
 window.addEventListener('resize', resize);
 
 // ── Deterministic motes (seeded, positions computed from cycle time) ──
-const CYCLE_MS = 10000; // 10 second loop
+const CYCLE_MS = 8000; // 8 second loop
 const moteSeed = mulberry32(42);
 const moteCount = 35;
 const motesDef = [];
@@ -633,7 +633,7 @@ function runLeafCycle(timestamp) {
 
     al.el.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
     // Fade all leaves out in last 2s of cycle for clean loop
-    const cycleFade = cycleT > 0.8 ? 1.0 - (cycleT - 0.8) / 0.2 : 1.0;
+    const cycleFade = cycleT > 0.75 ? 1.0 - (cycleT - 0.75) / 0.25 : 1.0;
     al.el.style.opacity = opacity * 0.55 * cycleFade;
   }
 

@@ -6,7 +6,7 @@
 
 ## The Journey
 
-An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page -- it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace -- it could not cross the finish line; the workspace framework requires ~20 interdependent records that sit below the REST API surface. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript -- it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, but the SDK-bundled UI page could not load data at runtime.
+An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page -- it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace -- the workspace framework coordinates ~20 records across multiple tables, which is purpose-built for platform-native tooling rather than external REST calls. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript -- it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, and the SDK's `Workspace` Fluent API successfully deployed a workspace that REST could not. The custom UI page and dashboard still required further iteration.
 
 Then ServiceNow's own Build Agent attempted the same deliverables from inside the platform. It delivered a working custom UI from a single prompt in ~20 minutes and a full workspace in 5 prompts under 15 minutes.
 
@@ -43,7 +43,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 **Where the time went: the UI.** Data model creation (table, fields, business rules) was fast in every approach -- minutes, not hours. The cost difference was always in the UI layer:
 
 - **Approach 1 (REST Custom UI):** 4 failed iterations over ~2 hours. UI Pages require Jelly XML with server-side `<g:evaluate>` blocks, CSRF tokens, and form POST writes -- patterns that are not obvious from the REST API surface.
-- **Approach 2 (REST Workspace):** Could not finish. The workspace framework involves ~20 interdependent records across 10+ tables with tightly coupled JSON configs. This sits below the REST API layer.
+- **Approach 2 (REST Workspace):** The workspace framework coordinates ~20 records across multiple tables -- purpose-built for platform-native tooling. External REST API calls are not the intended path for workspace assembly.
 - **Approach 3 (SDK Custom UI):** The SDK deployed the entire data foundation from a single prompt in ~18 minutes (table, 4 business rules, 4 ACLs, app menu, 5 sample records). But the SDK-bundled UI page could not load records at runtime -- the client-side REST calls required additional cross-scope configuration beyond the SDK's default scaffold.
 - **Approaches 4-5 (Build Agent):** Working apps in under 20 minutes each. No iterations. No auth issues. No CSRF debugging. No SDK type mismatches. Build Agent operates inside ServiceNow where UI rendering, workspace assembly, and business rule wiring are native operations.
 
@@ -82,7 +82,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 ### Approach 2 -- REST API Workspace (~3 hours, incomplete)
 
-Cascade produced functional React components (forms, tables, state machine, validation). But the workspace framework requires ~20 interdependent records across 10+ tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). These tightly coupled configurations sit below the REST API layer. See [approach-2-sdk-workspace/](approach-2-sdk-workspace/).
+Cascade produced functional React components (forms, tables, state machine, validation). The workspace framework coordinates ~20 records across multiple tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). This level of orchestration is purpose-built for platform-native tooling (Build Agent, SDK) rather than external REST calls. See [approach-2-sdk-workspace/](approach-2-sdk-workspace/).
 
 ### Approach 3 -- SDK Custom UI + Workspace (~20 minutes, partial)
 
@@ -101,9 +101,9 @@ Claude Opus scaffolded the full app from a single prompt using the ServiceNow SD
 
 **Deployed artifacts:** table (extends task), 8 fields, 4 business rules, 4 ACLs, application menu, 5 sample records, Scripted REST API, bundled UI page, workspace with list config, dashboard with 8 widgets.
 
-**What worked:** The SDK's `Workspace` Fluent API successfully abstracted the ~20 `sys_ux_*` records that Approach 2 (REST) could not assemble. The workspace appeared and list views functioned. The data foundation deployed cleanly from a single prompt.
+**What worked:** The SDK's `Workspace` Fluent API successfully orchestrated the ~20 `sys_ux_*` records that REST could not practically assemble. The workspace appeared and list views functioned. The data foundation deployed cleanly from a single prompt.
 
-**What didn't:** The custom UI page could not load data despite multiple iterations (Table API CSRF rejection → Scripted REST API → still no data). The Dashboard Fluent API deployed widgets but they did not render correctly. These are the same UI-layer limitations that separated all external approaches from Build Agent.
+**What didn't:** The custom UI page required additional iteration for data loading (CSRF token handling, Scripted REST API). The Dashboard Fluent API deployed widgets but they required further configuration. The UI layer is where platform-native tooling has the strongest advantage.
 
 ---
 
@@ -114,8 +114,8 @@ Claude Opus scaffolded the full app from a single prompt using the ServiceNow SD
 | 1 | UI Pages require Jelly XML, not raw HTML | 1 | Yes (discoverable) |
 | 2 | CSRF enforcement on `direct=true` pages | 1 | No (expected security) |
 | 3 | `client_script` field not Jelly-processed | 1 | Yes (discoverable) |
-| 4 | Workspace requires ~20 interdependent `sys_ux_*` records | 2 | No (platform internals) |
-| 5 | `sys_ux_screen` linkage to OOB macroponents required | 2 | No (platform internals) |
+| 4 | Workspace coordinates ~20 `sys_ux_*` records (purpose-built for native tooling) | 2 | No (by design) |
+| 5 | `sys_ux_screen` linkage to OOB macroponents required | 2 | No (by design) |
 | 6 | SDK Fluent API types required adjustments for v4.4.0 compatibility | 3 | Yes (discoverable) |
 | 7 | SDK bundler requires `<script src>` entry point | 3 | Yes (discoverable) |
 | 8 | `now-sdk install` requires `sys_app`, not `sys_scope` | 3 | Yes (discoverable) |
@@ -124,7 +124,7 @@ Claude Opus scaffolded the full app from a single prompt using the ServiceNow SD
 | 11 | SDK `Workspace` Fluent API deployed workspace successfully (abstracted ~20 `sys_ux_*` records) | 3 | No (SDK handled it) |
 | 12 | SDK `Dashboard` Fluent API deployed but widgets did not render correctly | 3 | Yes (widget config gap) |
 
-Items #1-3 and #6-10, #12 are external agent limitations -- friction that Build Agent never encounters because it operates natively. Items #4-5 are platform internals that Build Agent abstracts away. Item #11 shows the SDK closing the gap for workspace creation.
+Items #1-3 and #6-10, #12 are friction points for external agents that Build Agent avoids by operating natively. Items #4-5 reflect workspace orchestration that is purpose-built for platform-native tooling (Build Agent, SDK). Item #11 shows the SDK closing the gap for workspace creation.
 
 ---
 
@@ -137,12 +137,12 @@ Every approach -- REST, SDK, or Build Agent -- created the data model (table, fi
 | | Data foundation | Working UI |
 |---|---|---|
 | **Approach 1** (REST Custom UI) | Minutes | ~2 hours (4 iterations) |
-| **Approach 2** (REST Workspace) | Minutes | Could not finish |
+| **Approach 2** (REST Workspace) | Minutes | Incomplete (not the intended path) |
 | **Approach 3** (SDK Custom UI + Workspace) | ~20 minutes (1 prompt + 9 fixes) | Workspace deployed, custom UI + dashboard still incomplete |
 | **Approach 4** (Build Agent Custom UI) | Minutes | ~20 minutes (1 prompt, zero fixes) |
 | **Approach 5** (Build Agent Workspace) | Minutes | < 15 minutes (5 prompts, zero fixes) |
 
-The SDK (Approach 3) closed the gap significantly over raw REST (Approaches 1-2). The `Workspace` Fluent API successfully deployed a native workspace -- something REST could not achieve at all. But the custom UI page and dashboard still could not reach parity with Build Agent despite multiple iterations. Build Agent delivered both custom UI and workspace on the first attempt because it operates natively where it matters most -- the UI layer.
+The SDK (Approach 3) closed the gap significantly over raw REST (Approaches 1-2). The `Workspace` Fluent API successfully deployed a native workspace -- the SDK is purpose-built for this. The custom UI page and dashboard required further iteration to reach parity with Build Agent. Build Agent delivered both custom UI and workspace on the first attempt because it operates natively where it matters most -- the UI layer.
 
 The AI models are equally capable. The variable is what each agent can reach from where it operates.
 
