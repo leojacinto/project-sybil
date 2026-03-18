@@ -1,4 +1,4 @@
-# Approach 1 — SDK Custom UI
+# Approach 1 — REST Custom UI
 
 **Framework:** `@servicenow/sdk` v4.4.0 (Now Experience Framework)
 **Pattern:** Hand-coded Now Experience custom component
