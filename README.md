@@ -16,7 +16,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 ## Approaches
 
-| | **1: REST Custom UI** | **2: REST Workspace** | **3: SDK Custom UI** | **4: Build Agent Custom UI** | **5: Build Agent Workspace** |
+| | **Approach 1: REST Custom UI** | **Approach 2: REST Workspace** | **Approach 3: SDK Custom UI** | **Approach 4: Build Agent Custom UI** | **Approach 5: Build Agent Workspace** |
 |---|---|---|---|---|---|
 | **AI model** | Claude Opus | Claude Opus | Claude Opus | Build Agent (GPT Large) | Build Agent (GPT Large) |
 | **Method** | REST API (via Cascade) | REST API (via Cascade) | ServiceNow SDK (`now-sdk`) | Platform-native | Platform-native |
@@ -51,7 +51,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 ## 2. Feature Matrix
 
-| Feature | **1: REST UI** | **2: REST WS** | **3: SDK UI** | **4: BA UI** | **5: BA WS** |
+| Feature | **Approach 1: REST UI** | **Approach 2: REST WS** | **Approach 3: SDK UI** | **Approach 4: BA UI** | **Approach 5: BA WS** |
 |---|---|---|---|---|---|
 | Custom table + fields | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
 | Business Rules | <span style="color:#22c55e">Yes</span> | <span style="color:#ef4444">No</span> | <span style="color:#22c55e">Yes</span> (4 BRs) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
