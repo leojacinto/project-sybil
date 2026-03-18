@@ -1,30 +1,22 @@
 # Approach 2 — REST Workspace
 
-**Framework:** React + Vite (proxied to ServiceNow via `@servicenow/sdk` pattern)
-**Pattern:** Build Agent generates UI from JSON schema — zero hand-coded component logic
+**Method:** REST API (via Cascade / Claude Opus)
+**Delivery:** React components + workspace assembly attempt (incomplete)
 
 ## What This Is
 
-The **Build Agent** pattern. Instead of hand-coding every form field, table column, and action button, you define the entire app in `build-agent/schema.json`. The React components read the schema and auto-generate:
+An external AI agent (Claude Opus via Cascade) attempted to build a native ServiceNow workspace using REST API calls. Cascade produced functional **React components** (forms, tables, state machine, validation) but the workspace framework itself could not be assembled via REST.
 
-- **SchemaForm** — renders form fields from `fields[]`
-- **SchemaTable** — renders columns from `listConfig.columns`
-- **ActionButtons** — renders per-row actions from `actions[]` + `states.transitions`
-- **StateBadge** — styled from `states.values[].color`
-- **Validation** — enforced from `validation[]` rules
+The workspace framework coordinates ~20 records across multiple tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). This level of orchestration is purpose-built for platform-native tooling (Build Agent, SDK) rather than external REST calls.
 
-## The Key Difference
+## What's Included
 
-| SDK Pure (Approach 1) | Build Agent (Approach 2) |
-|---|---|
-| Hand-code every field | Define in schema.json |
-| Edit JSX to add a column | Add entry to `listConfig.columns` |
-| Write validation logic | Add rule to `validation[]` |
-| Code state transitions | Update `states.transitions` |
+- **React UI components** — schema-driven form, table, action buttons, state machine, validation
+- **Vite dev server** — local preview with ServiceNow API proxy
+- **Schema config** — `build-agent/schema.json` defines fields, columns, states, and validation rules
+- **UI Page** — `ui-page.html` contains the rendered output
 
-**To add a new field**: Add one object to `schema.json → fields[]`. Done. The form, table, and validation auto-update.
-
-## Run
+## Run (local preview)
 
 ```bash
 npm install
@@ -32,24 +24,22 @@ npm run dev
 # Opens at http://localhost:3002
 ```
 
-## Schema Analysis
-
-```bash
-npm run generate
-```
-
-## Features
+## Features (React components only)
 
 - ✅ Schema-driven form generation
 - ✅ Schema-driven table/list rendering
 - ✅ Schema-driven state machine + action buttons
 - ✅ Schema-driven validation rules
-- ✅ Search & filter (configured via schema)
-- ✅ Stats dashboard (auto-computed from states)
+- ✅ Search & filter
+- ✅ Stats dashboard
 - ✅ Full CRUD against ServiceNow Table API
+
+## Outcome
+
+The React components work locally but the workspace could not be deployed to ServiceNow. REST API calls cannot practically orchestrate the ~20 interdependent `sys_ux_*` records required for a native workspace. This was later achieved in Approach 3 using the SDK's `Workspace` Fluent API.
 
 ## Limitations
 
-- Requires Vite proxy for CORS (or deploy behind instance)
-- Schema changes require page reload (no hot schema swap yet)
-- Complex field types (reference lookups) need custom renderers
+- Workspace assembly via REST was incomplete after ~3 hours
+- Requires Vite proxy for CORS (local preview only)
+- Not Polaris, not mobile-ready, not upgrade-safe
