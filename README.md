@@ -1,12 +1,12 @@
 # Travel Request App - Approach Comparison
 
-> **Pilot / Demo only.** This repo compares how AI-assisted approaches perform when building on ServiceNow, and what platform-native tooling unlocks. The Travel Request app is intentionally simple -- it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
+> **Pilot / Demo only.** This repo compares how AI-assisted approaches perform when building on ServiceNow, and what platform-native tooling unlocks. The Travel Request app is intentionally simple, it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
 
 ---
 
 ## The Journey
 
-An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page -- it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace -- the workspace framework coordinates ~20 records across multiple tables, which is purpose-built for platform-native tooling rather than external REST calls. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript -- it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, and the SDK's `Workspace` Fluent API successfully deployed a workspace that REST could not. The custom UI page and dashboard still required further iteration.
+An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page -- it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace -- the workspace framework coordinates ~20 records across multiple tables, which is purpose-built for platform-native tooling rather than external REST calls. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript, it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, and the SDK's `Workspace` Fluent API successfully deployed a workspace that REST could not. The custom UI page and dashboard still required further iteration.
 
 Then ServiceNow's own Build Agent attempted the same deliverables from inside the platform. It delivered a working custom UI from a single prompt in ~20 minutes and a full workspace in 5 prompts under 15 minutes.
 
