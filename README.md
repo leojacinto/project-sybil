@@ -40,11 +40,11 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 > **Note on units.** Cascade (Approaches 1-3) is measured in tokens or prompt/fix cycles because it operates through an LLM coding assistant. Build Agent (Approaches 4-5) is measured in prompts and tool calls because it operates through a conversational UI inside ServiceNow. These are not directly comparable, but both reflect total effort to reach a working app.
 
-**Where the time went: the UI.** Data model creation (table, fields, business rules) was fast in every approach -- minutes, not hours. The cost difference was always in the UI layer:
+**Where the time went: the UI.** Data model creation (table, fields, business rules) was fast in every approach; minutes, not hours. The cost difference was always in the UI layer:
 
-- **Approach 1 (REST Custom UI):** 4 failed iterations over ~2 hours. UI Pages require Jelly XML with server-side `<g:evaluate>` blocks, CSRF tokens, and form POST writes -- patterns that are not obvious from the REST API surface.
-- **Approach 2 (REST Workspace):** The workspace framework coordinates ~20 records across multiple tables -- purpose-built for platform-native tooling. External REST API calls are not the intended path for workspace assembly.
-- **Approach 3 (SDK Custom UI):** The SDK deployed the entire data foundation from a single prompt in ~18 minutes (table, 4 business rules, 4 ACLs, app menu, 5 sample records). But the SDK-bundled UI page could not load records at runtime -- the client-side REST calls required additional cross-scope configuration beyond the SDK's default scaffold.
+- **Approach 1 (REST Custom UI):** 4 failed iterations over ~2 hours. UI Pages require Jelly XML with server-side `<g:evaluate>` blocks, CSRF tokens, and form POST writes, patterns that are not obvious from the REST API surface.
+- **Approach 2 (REST Workspace):** The workspace framework coordinates ~20 records across multiple tables, purpose-built for platform-native tooling. External REST API calls are not the intended path for workspace assembly.
+- **Approach 3 (SDK Custom UI):** The SDK deployed the entire data foundation from a single prompt in ~18 minutes (table, 4 business rules, 4 ACLs, app menu, 5 sample records). But the SDK-bundled UI page could not load records at runtime, the client-side REST calls required additional cross-scope configuration beyond the SDK's default scaffold.
 - **Approaches 4-5 (Build Agent):** Working apps in under 20 minutes each. No iterations. No auth issues. No CSRF debugging. No SDK type mismatches. Build Agent operates inside ServiceNow where UI rendering, workspace assembly, and business rule wiring are native operations.
 
 ---
@@ -142,7 +142,7 @@ Every approach, REST, SDK, or Build Agent, created the data model (table, fields
 | **Approach 4** (Build Agent Custom UI) | Minutes | ~20 minutes (1 prompt, zero fixes) |
 | **Approach 5** (Build Agent Workspace) | Minutes | < 15 minutes (5 prompts, zero fixes) |
 
-The SDK (Approach 3) closed the gap significantly over raw REST (Approaches 1-2). The `Workspace` Fluent API successfully deployed a native workspace -- the SDK is purpose-built for this. The custom UI page and dashboard required further iteration to reach parity with Build Agent. Build Agent delivered both custom UI and workspace on the first attempt because it operates natively where it matters most -- the UI layer.
+The SDK (Approach 3) closed the gap significantly over raw REST (Approaches 1-2). The `Workspace` Fluent API successfully deployed a native workspace, the SDK is purpose-built for this. The custom UI page and dashboard required further iteration to reach parity with Build Agent. Build Agent delivered both custom UI and workspace on the first attempt because it operates natively where it matters most, the UI layer.
 
 The AI models are equally capable. The variable is what each agent can reach from where it operates.
 
