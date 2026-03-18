@@ -8,19 +8,18 @@ Everything built inside App Engine Studio using **one Build Agent prompt**. No R
 
 - Instance: (use .env)
 - Login as **admin**
-- App Engine Studio must be activated (plugin: `com.snc.app-engine-studio`)
+- Now Assist for Creator must be installed and activated (App id: `sn_now_creator`)
 
 ---
 
 ## Step 1: Create the App
 
-1. Go to **App Engine Studio** → `/now/app-engine-studio`
-2. Click **Create app**
+1. Go to **ServiceNow IDE** → `/sn_glider_app/ide.do`
+2. Click **Create Workspace**
 3. Fill in:
    - **Name:** `Travel Request Approach 3`
    - **Description:** `Single-prompt Build Agent — custom UI Page from one prompt`
-   - **Scope:** let it auto-generate
-4. Click **Continue** → **Go to app**
+4. Click **Continue** → **Go to Build Agent Prompt**
 
 ---
 
