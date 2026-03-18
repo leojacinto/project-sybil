@@ -152,8 +152,8 @@ The AI models are equally capable. The variable is what each agent can reach fro
 
 | Approach | Instructions |
 |---|---|
-| **1 -- REST Custom UI** | [approach-1-sdk-custom-ui/README.md](approach-1-sdk-custom-ui/README.md) |
-| **2 -- REST Workspace** | [approach-2-sdk-workspace/README.md](approach-2-sdk-workspace/README.md) |
+| **1 -- REST Custom UI** | [approach-1-rest-custom-ui/README.md](approach-1-rest-custom-ui/README.md) |
+| **2 -- REST Workspace** | [approach-2-rest-workspace/README.md](approach-2-rest-workspace/README.md) |
 | **3 -- SDK Custom UI + Workspace** | [approach-3-sdk/README.md](approach-3-sdk/README.md) |
 | **4 -- Build Agent Custom UI** | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) |
 | **5 -- Build Agent Workspace** | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
