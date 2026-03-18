@@ -6,11 +6,11 @@
 
 ## The Journey
 
-An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page -- it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace -- the workspace framework coordinates ~20 records across multiple tables, which is purpose-built for platform-native tooling rather than external REST calls. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript, it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, and the SDK's `Workspace` Fluent API successfully deployed a workspace that REST could not. The custom UI page and dashboard still required further iteration.
+An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page; it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace; the workspace framework coordinates ~20 records across multiple tables, which is purpose-built for platform-native tooling rather than external REST calls. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript, it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, and the SDK's `Workspace` Fluent API successfully deployed a workspace that REST could not. The custom UI page and dashboard still required further iteration.
 
 Then ServiceNow's own Build Agent attempted the same deliverables from inside the platform. It delivered a working custom UI from a single prompt in ~20 minutes and a full workspace in 5 prompts under 15 minutes.
 
-**The pattern is clear: the data foundation is easy for any AI agent. The UI is the hard part.** Even with the right external tooling, delivering a cohesive working UI from outside ServiceNow requires significant iteration or hits a wall entirely. Build Agent operates natively where it matters most.
+**Building the data foundation is easy for any AI agent. The UI is the hard part.** Even with the right external tooling, delivering a cohesive working UI from outside ServiceNow requires significant iteration or hits a wall entirely. Build Agent operates natively where it matters most.
 
 ---
 
@@ -132,7 +132,7 @@ Items #1-3 and #6-10, #12 are friction points for external agents that Build Age
 
 **The data foundation is easy. The UI is the hard part.**
 
-Every approach -- REST, SDK, or Build Agent -- created the data model (table, fields, business rules) quickly. The differentiator is delivering a **cohesive, working UI** that users actually interact with.
+Every approach, REST, SDK, or Build Agent, created the data model (table, fields, business rules) quickly. The differentiator is delivering a **cohesive, working UI** that users actually interact with.
 
 | | Data foundation | Working UI |
 |---|---|---|
