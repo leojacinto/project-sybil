@@ -1,4 +1,4 @@
-# Approach 2 — SDK Workspace
+# Approach 2 — REST Workspace
 
 **Framework:** React + Vite (proxied to ServiceNow via `@servicenow/sdk` pattern)
 **Pattern:** Build Agent generates UI from JSON schema — zero hand-coded component logic
