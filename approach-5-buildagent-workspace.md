@@ -8,18 +8,17 @@ Everything built inside App Engine Studio using Build Agent prompts. No REST API
 
 - Instance: (use .env)
 - Login as **admin**
-- App Engine Studio must be activated (plugin: `com.snc.app-engine-studio`)
+- Now Assist for Creator must be installed and activated (App id: `sn_now_creator`)
 
 ---
 
 ## Step 1: Create the App
 
-1. Go to **App Engine Studio** → `/now/app-engine-studio`
-2. Click **Create app**
+1. Go to **ServiceNow IDE** → `/sn_glider_app/ide.do`
+2. Click **Create Workspace**
 3. Fill in:
    - **Name:** `Travel Request Approach 4`
    - **Description:** `Build Agent workspace — entire app created via 5 AI prompts`
-   - **Scope:** let it auto-generate (will be something like `x_snc_travel_re_0`)
 4. Click **Continue** → **Go to app**
 
 ---
