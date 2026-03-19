@@ -1,4 +1,4 @@
-# Approach 3: Build Agent Custom UI — Single Prompt
+# Approach 4: Build Agent Custom UI — Single Prompt
 
 Everything built inside ServiceNow IDE using **one Build Agent prompt**. No REST API, no SDK, no external code. Tests whether Build Agent can deliver a custom UI Page (not Workspace) comparable to Approach 1 from a single natural-language description.
 
@@ -17,7 +17,7 @@ Everything built inside ServiceNow IDE using **one Build Agent prompt**. No REST
 1. Go to **ServiceNow IDE** → `/sn_glider_app/ide.do`
 2. Click **Create Workspace**
 3. Fill in:
-   - **Name:** `Travel Request Approach 3`
+   - **Name:** `Travel Request Approach 4`
    - **Description:** `Single-prompt Build Agent — custom UI Page from one prompt`
 4. Click **Continue** → **Go to Build Agent Prompt**
 
@@ -97,12 +97,12 @@ After Build Agent finishes:
 
 ## What This Tests
 
-Approach 4 used 5 prompts and delivered a Workspace. Approach 3 uses 1 prompt and targets a custom UI Page — the same delivery method as Approach 1 (SDK), but built entirely by Build Agent.
+Approach 5 used 5 prompts and delivered a Workspace. Approach 4 uses 1 prompt and targets a custom UI Page — the same delivery method as Approach 1 (REST), but built entirely by Build Agent.
 
-| | **Approach 1 (SDK)** | **Approach 3 (Build Agent × 1)** | **Approach 4 (Build Agent × 5)** |
+| | **Approach 1 (REST)** | **Approach 4 (Build Agent × 1)** | **Approach 5 (Build Agent × 5)** |
 |---|---|---|---|
 | **Prompts/iterations** | 4 failed + 1 working | 1 prompt | 5 prompts |
 | **Delivery** | Jelly UI Page | React UI Page | Workspace |
 | **UI author** | Claude Opus (hand-coded) | Build Agent (generated) | Build Agent (generated) |
 
-If Approach 3 succeeds, Build Agent can match the SDK route's custom UI output from a single prompt — making the multi-hour SDK iteration path even harder to justify.
+If Approach 4 succeeds, Build Agent can match the REST route's custom UI output from a single prompt — making the multi-hour REST iteration path even harder to justify.

@@ -1,4 +1,4 @@
-# Approach 4: Build Agent Workspace (5 Prompts)
+# Approach 5: Build Agent Workspace (5 Prompts)
 
 Everything built inside ServiceNow IDE using Build Agent prompts. No REST API, no SDK, no external code. This is the control group.
 
@@ -17,7 +17,7 @@ Everything built inside ServiceNow IDE using Build Agent prompts. No REST API, n
 1. Go to **ServiceNow IDE** → `/sn_glider_app/ide.do`
 2. Click **Create Workspace**
 3. Fill in:
-   - **Name:** `Travel Request Approach 4`
+   - **Name:** `Travel Request Approach 5`
    - **Description:** `Build Agent workspace — entire app created via 5 AI prompts`
 4. Click **Continue** → **Go to app**
 
