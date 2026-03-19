@@ -1,6 +1,6 @@
 # Approach 4: Build Agent Workspace (5 Prompts)
 
-Everything built inside App Engine Studio using Build Agent prompts. No REST API, no SDK, no external code. This is the control group.
+Everything built inside ServiceNow IDE using Build Agent prompts. No REST API, no SDK, no external code. This is the control group.
 
 ---
 
@@ -25,7 +25,7 @@ Everything built inside App Engine Studio using Build Agent prompts. No REST API
 
 ## Step 2: Prompt Build Agent — Create the Data Model
 
-Open Build Agent (the AI chat in AES) and paste:
+Open Build Agent (the AI chat in ServiceNow IDE) and paste:
 
 ```
 Create a new table called "Travel Request" that extends the Task table. Add these fields:

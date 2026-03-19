@@ -1,6 +1,6 @@
 # Approach 3: Build Agent Custom UI — Single Prompt
 
-Everything built inside App Engine Studio using **one Build Agent prompt**. No REST API, no SDK, no external code. Tests whether Build Agent can deliver a custom UI Page (not Workspace) comparable to Approach 1 from a single natural-language description.
+Everything built inside ServiceNow IDE using **one Build Agent prompt**. No REST API, no SDK, no external code. Tests whether Build Agent can deliver a custom UI Page (not Workspace) comparable to Approach 1 from a single natural-language description.
 
 ---
 
