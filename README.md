@@ -33,12 +33,12 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 | | **Approach 1** | **Approach 2** | **Approach 3** | **Approach 4** | **Approach 5** |
 |---|---|---|---|---|---|
 | **Model** | Claude Opus | Claude Opus | Claude Opus | Build Agent | Build Agent |
-| **Effort** | ~12,000 Cascade tokens | ~15,000+ Cascade tokens | ~20,000 Cascade tokens (1 prompt + 9 fixes) | 27 assists, 70+ tool calls | 5 prompts, 62 tool calls |
+| **Effort** | ~12,000 Cascade tokens | ~15,000+ Cascade tokens | ~20,000 Cascade tokens (1 prompt + 9 fixes) | 27 prompts, 27 assists | 22 prompts, 22 assists |
 | **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~20 minutes | ~20 minutes | < 15 minutes |
 | **Iterations** | 4 failed, then working | 3 pivots, still no workspace | 4 build fixes + 2 deploy fixes + 3 runtime fixes | First run worked | First run worked |
 | **Outcome** | Working Jelly UI Page | Components only | Workspace deployed, custom UI + dashboard still incomplete | Working React UI Page | Full workspace + dashboard |
 
-> **Note on units.** Cascade (Approaches 1-3) is measured in tokens or prompt/fix cycles because it operates through an LLM coding assistant. Build Agent (Approaches 4-5) is measured in prompts and tool calls because it operates through a conversational UI inside ServiceNow. These are not directly comparable, but both reflect total effort to reach a working app.
+> **Note on units.** Cascade (Approaches 1-3) is measured in tokens or prompt/fix cycles because it operates through an LLM coding assistant. Build Agent (Approaches 4-5) is measured in prompts and assists (Build Agent's pricing metric) because it operates through a conversational UI inside ServiceNow. These are not directly comparable, but both reflect total effort to reach a working app.
 
 **Where the time went: the UI.** Data model creation (table, fields, business rules) was fast in every approach; minutes, not hours. The cost difference was always in the UI layer:
 
