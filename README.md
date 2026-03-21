@@ -33,7 +33,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 | | **Approach 1** | **Approach 2** | **Approach 3** | **Approach 4** | **Approach 5** |
 |---|---|---|---|---|---|
 | **Model** | Claude Opus | Claude Opus | Claude Opus | Build Agent | Build Agent |
-| **Effort** | ~12,000 Cascade tokens | ~15,000+ Cascade tokens | ~20,000 Cascade tokens (1 prompt + 9 fixes) | 27 prompts, 27 assists | 22 prompts, 22 assists |
+| **Effort** | ~100,000+ Cascade tokens (4 failed iterations) | ~150,000+ Cascade tokens (3 pivots, incomplete) | ~20,000 Cascade tokens (1 prompt + 9 fixes) | 27 prompts, 27 assists | 22 prompts, 22 assists |
 | **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~20 minutes | ~20 minutes | < 15 minutes |
 | **Iterations** | 4 failed, then working | 3 pivots, still no workspace | 4 build fixes + 2 deploy fixes + 3 runtime fixes | First run worked | First run worked |
 | **Outcome** | Working Jelly UI Page | Components only | Workspace deployed, custom UI + dashboard still incomplete | Working React UI Page | Full workspace + dashboard |
