@@ -1,6 +1,6 @@
-# Project Sybil: Travel Request App — April 2026
+# Project Sybil: Travel Request App - April 2026
 
-> **Pilot / Demo only.** This repo benchmarks AI-assisted approaches for building scoped applications on ServiceNow. The Travel Request app is intentionally feature-complete but domain-simple — it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
+> **Pilot / Demo only.** This repo benchmarks AI-assisted approaches for building scoped applications on ServiceNow. The Travel Request app is intentionally feature-complete but domain-simple - it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
 >
 > This is the **April 2026 run**, using an expanded specification that covers all 32 scoped application component types. The [March 2026 run](archive/README-MAR-2026.md) used a simpler spec and is archived for reference.
 
@@ -8,7 +8,7 @@
 
 ## Specification
 
-**[Travel Request App Specification v1](specs/travel-app-spec-v1.md)** — 32 component types, 508 lines. Covers tables, ACLs, roles, business rules, client scripts, UI policies, flows, notifications, catalog items, variables, script includes, scripted REST APIs, UI actions, UI pages, workspaces, menus, lists, views, properties, relationships, seed data, data sources, cross-scope privileges, security attributes, security data filters, JS modules, external connections, and ATF tests.
+**[Travel Request App Specification v1](specs/travel-app-spec-v1.md)** - 32 component types documented to be supported by Fluent in both SDK-based and Build Agent native deployment approaches, 508 lines. Covers tables, ACLs, roles, business rules, client scripts, UI policies, flows, notifications, catalog items, variables, script includes, scripted REST APIs, UI actions, UI pages, workspaces, menus, lists, views, properties, relationships, seed data, data sources, cross-scope privileges, security attributes, security data filters, JS modules, external connections, and ATF tests.
 
 **Instance:** `demoxyz` (credentials in `.env`, gitignored)
 **Scope:** `x_snc_apr_trv` (vendor prefix `x_snc_` per instance convention)
@@ -17,7 +17,7 @@
 
 ## Approaches
 
-> **REST approaches (Custom UI, Workspace) have been dropped.** The March 2026 run demonstrated that vanilla REST API calls cannot reliably create records inside a scoped `sys_app` — records land in the global scope regardless of `sys_scope` field values or session preferences. This is a structural platform limitation, not a fixable bug. REST approaches are no longer pursued.
+> **REST approaches (Custom UI, Workspace) have been dropped.** The March 2026 run demonstrated that vanilla REST API calls cannot reliably create records inside a scoped `sys_app` - records land in the global scope regardless of `sys_scope` field values or session preferences. This is a structural platform limitation, not a fixable bug. REST approaches are no longer pursued.
 >
 > **Build Agent Custom UI has been collapsed into Build Agent.** The spec includes both UI Pages and Workspaces as component types. Since Build Agent creates all 32 component types from a single prompt regardless of UI target, running separate "Custom UI" and "Workspace" variants would produce identical output. A single Build Agent run covers both.
 
@@ -25,16 +25,16 @@
 |---|---|---|---|
 | **AI model** | Claude (via Cascade) | Claude (via Cascade) | Now Assist Build Agent |
 | **Method** | ServiceNow SDK v4.5 (`@servicenow/sdk`) | ServiceNow SDK v4.5 (`@servicenow/sdk`) | Platform-native skills |
-| **Prior context** | Full experiment design, March results, SDK docs pre-read | Spec file only — fresh session, no prior knowledge | Spec prompt only |
+| **Prior context** | Full experiment design, March results, SDK docs pre-read | Spec file only - fresh session, no prior knowledge | Spec prompt only |
 | **Scope creation** | From Windsurf (SDK) | From Windsurf (SDK) | Inside SN IDE |
 | **Target** | SDK-bundled UI + Workspace | SDK-bundled UI + Workspace | Full app + Workspace with dashboard |
-| **Status** | **Complete — 32/32** | **Complete — 32/32** | **Complete — 32/32** |
+| **Status** | **Complete - 32/32** | **Complete - 32/32** | **Complete - 32/32** |
 | **Assets** | [apr-2026-approach-3-sdk/](apr-2026-approach-3-sdk/) | [apr-2026-approach-3b-sdk/](apr-2026-approach-3b-sdk/) | [apr-2026-approach-5-buildagent-workspace/](apr-2026-approach-5-buildagent-workspace/) |
 
 > **Context-primed vs cold spec (SDK only):**
 >
-> - **SDK Primed:** The AI had accumulated significant prior context before writing any code — it designed the experiment, analysed the March 2026 failures, pre-read every SDK Fluent API `.d.ts` file (~20 files), and already knew the scope mapping and project plan. This simulates a developer who has studied the framework documentation and codebase before starting.
-> - **SDK Cold:** A fresh Cascade session with **no prior context**. The AI received only the spec file and SDK access — no experiment history, no pre-read documentation, no knowledge of gotchas or workarounds (except being told to copy `node_modules` from the March archive, since the private npm registry is an infrastructure blocker, not a knowledge one). This simulates a cold handoff to a new developer.
+> - **SDK Primed:** The AI had accumulated significant prior context before writing any code - it designed the experiment, analysed the March 2026 failures, pre-read every SDK Fluent API `.d.ts` file (~20 files), and already knew the scope mapping and project plan. This simulates a developer who has studied the framework documentation and codebase before starting.
+> - **SDK Cold:** A fresh Cascade session with **no prior context**. The AI received only the spec file and SDK access - no experiment history, no pre-read documentation, no knowledge of gotchas or workarounds (except being told to copy `node_modules` from the March archive, since the private npm registry is an infrastructure blocker, not a knowledge one). This simulates a cold handoff to a new developer.
 >
 > Comparing SDK Primed vs SDK Cold isolates the effect of contextual priming on code-generation quality, time, and token cost.
 
@@ -70,9 +70,9 @@
 
 | Session | Time | Assists | Work |
 |---------|-----:|--------:|------|
-| 1. Full build | ~50 min | 550 | All 32 component types + configurable workspace with dashboard — single prompt; includes Jelly→React refinement for UI Page |
+| 1. Full build | ~50 min | 550 | All 32 component types + configurable workspace with dashboard - single prompt; includes Jelly→React refinement for UI Page |
 
-> Token estimates are approximate — Cascade does not expose exact counts. Estimates are based on conversation complexity, tool call volume, and output size per session. See development logs for per-session details, error catalogs, and key findings: [SDK Primed](docs/approach-3a-development-log.md) | [SDK Cold](docs/approach-3b-development-log.md).
+> Token estimates are approximate - Cascade does not expose exact counts. Estimates are based on conversation complexity, tool call volume, and output size per session. See development logs for per-session details, error catalogs, and key findings: [SDK Primed](docs/approach-3a-development-log.md) | [SDK Cold](docs/approach-3b-development-log.md).
 
 ### SDK Primed vs SDK Cold: Did Context Priming Help?
 
@@ -84,13 +84,13 @@
 | First deploy score | 25/32 | 31/32 | Cold **6 more** on first try |
 | Deploys to 32/32 | 3 | 3 | Tied |
 
-**Context priming added cost without proportionally reducing downstream work.** SDK Primed spent ~100k tokens on overhead that SDK Cold skipped entirely: experiment design (~40k) and bulk pre-reading 20+ SDK `.d.ts` files (~60k). The cold-start approach discovered APIs on-demand — reading type definitions only when needed for the component it was writing — which turned out to be more token-efficient than reading everything upfront.
+**Context priming added cost without proportionally reducing downstream work.** SDK Primed spent ~100k tokens on overhead that SDK Cold skipped entirely: experiment design (~40k) and bulk pre-reading 20+ SDK `.d.ts` files (~60k). The cold-start approach discovered APIs on-demand - reading type definitions only when needed for the component it was writing - which turned out to be more token-efficient than reading everything upfront.
 
-**SDK Cold scored higher on first deploy** (31/32 vs 25/32), suggesting that on-demand API discovery produced fewer table-mismatch errors than bulk pre-reading. However, SDK Primed pioneered the workarounds (private npm registry, Fluent compiler type conflicts, seed data install flags) that informed SDK Cold’s prompt — SDK Cold was told to copy `node_modules` from the March archive, which saved it from discovering the CLI blocker independently.
+**SDK Cold scored higher on first deploy** (31/32 vs 25/32), suggesting that on-demand API discovery produced fewer table-mismatch errors than bulk pre-reading. However, SDK Primed pioneered the workarounds (private npm registry, Fluent compiler type conflicts, seed data install flags) that informed SDK Cold’s prompt - SDK Cold was told to copy `node_modules` from the March archive, which saved it from discovering the CLI blocker independently.
 
 **Important caveat:** Both SDK approaches deployed to the same scope (`x_snc_apr_trv`). SDK Cold’s verification counts are exactly 2× those of SDK Primed (e.g., 26 ACLs vs 13, 44 seed records vs 22), confirming that SDK Cold’s records stacked on top of SDK Primed’s. This means SDK Cold’s seed data pass may have been aided by SDK Primed’s existing records on the instance. A clean-scope test would be needed to fully control for this.
 
-**API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files — either upfront (Primed) or on-demand (Cold). By contrast, ServiceNow’s Build Agent has a curated internal **knowledge source** that documents every object schema (Table, Column, Flow, etc.) with property names, types, and constraints. The Build Agent activates a skill, pulls the relevant schema, and knows the exact shape of what it can create — zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
+**API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files - either upfront (Primed) or on-demand (Cold). By contrast, ServiceNow’s Build Agent has a curated internal **knowledge source** that documents every object schema (Table, Column, Flow, etc.) with property names, types, and constraints. The Build Agent activates a skill, pulls the relevant schema, and knows the exact shape of what it can create - zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
 
 **Takeaway:** For this task size (~30 files, 32 component types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing.
 
@@ -104,21 +104,21 @@
 | Deploys to 32/32 | 3 | 3 | 1 | **No iteration** |
 | Workspace dashboard | ❌ | ❌ | ✅ | Build Agent only |
 
-**Build Agent delivered in one prompt what SDK took 3–5 sessions to achieve.** The SDK approaches required: reading the spec, discovering the Fluent API surface, writing ~30 TypeScript files, fixing compiler errors, resolving npm registry blockers, and iterating across multiple deploys. Build Agent consumed the same spec and executed directly against the platform — no intermediate code, no compilation step, no deployment pipeline.
+**Build Agent delivered in one prompt what SDK took 3–5 sessions to achieve.** The SDK approaches required: reading the spec, discovering the Fluent API surface, writing ~30 TypeScript files, fixing compiler errors, resolving npm registry blockers, and iterating across multiple deploys. Build Agent consumed the same spec and executed directly against the platform - no intermediate code, no compilation step, no deployment pipeline.
 
-**UI Pages remain the hardest component to land.** The spec asks for React UI Pages (Section 16). In the March run, the SDK produced UI Pages that rendered but showed no data — a partial success. In April, the SDK generated UI Page `.now.ts` files in `dist/`, but `npx now-sdk install` did not persist them to the instance — they may have existed transiently and were lost on a subsequent deploy. The verify script still shows ✅ for UI Pages based on `sys_ui_page` record existence, but the pages are not functional on the live instance. Build Agent initially generated Jelly-based pages (the traditional format) and was refined with an additional prompt to convert to React (+10 min, ~50 assists). Further SDK UI troubleshooting was skipped — the March experiment already proved it's solvable with iterative effort, and the time was better spent on components with higher signal for the SDK-vs-Build-Agent comparison.
+**UI Pages remain the hardest component to land.** The spec asks for React UI Pages (Section 16). In the March run, the SDK produced UI Pages that rendered but showed no data - a partial success. In April, the SDK generated UI Page `.now.ts` files in `dist/`, but `npx now-sdk install` did not persist them to the instance - they may have existed transiently and were lost on a subsequent deploy. The verify script still shows ✅ for UI Pages based on `sys_ui_page` record existence, but the pages are not functional on the live instance. Build Agent initially generated Jelly-based pages (the traditional format) and was refined with an additional prompt to convert to React (+10 min, ~50 assists). Further SDK UI troubleshooting was skipped - the March experiment already proved it's solvable with iterative effort, and the time was better spent on components with higher signal for the SDK-vs-Build-Agent comparison.
 
-**The workspace dashboard is the clearest qualitative gap.** SDK Fluent API cannot configure workspace dashboards — those are UI-assembled artifacts with no code representation. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. The SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
+**The workspace dashboard is the clearest qualitative gap.** SDK Fluent API cannot configure workspace dashboards - those are UI-assembled artifacts with no code representation. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. The SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
 
-**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Now Assist can create an entire table with all columns — an operation that costs thousands of tokens in the SDK path. The 550 assists for Build Agent represent ~550 discrete platform mutations (including a Jelly→React refinement pass for UI Pages), whereas ~450k–500k tokens represent the full LLM reasoning chain including API discovery, code generation, error diagnosis, and retry logic.
+**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Now Assist can create an entire table with all columns - an operation that costs thousands of tokens in the SDK path. The 550 assists for Build Agent represent ~550 discrete platform mutations (including a Jelly→React refinement pass for UI Pages), whereas ~450k–500k tokens represent the full LLM reasoning chain including API discovery, code generation, error diagnosis, and retry logic.
 
-**Why Build Agent is faster — structural advantages:**
-1. **Zero API discovery cost** — built-in knowledge sources document every object schema
-2. **No compilation step** — objects are created directly on the platform, no TypeScript → deploy pipeline
-3. **No error-retry loop** — Build Agent validates against its own schema before creating; SDK approaches hit runtime TS errors and needed iterative fixes
-4. **Native workspace support** — dashboards, screen types, and routes are first-class operations, not unsupported edge cases
+**Why Build Agent is faster - structural advantages:**
+1. **Zero API discovery cost** - built-in knowledge sources document every object schema
+2. **No compilation step** - objects are created directly on the platform, no TypeScript → deploy pipeline
+3. **No error-retry loop** - Build Agent validates against its own schema before creating; SDK approaches hit runtime TS errors and needed iterative fixes
+4. **Native workspace support** - dashboards, screen types, and routes are first-class operations, not unsupported edge cases
 
-**Caveat:** Build Agent operates inside a controlled platform environment with purpose-built skills. SDK approaches use a general-purpose LLM writing against a third-party TypeScript API — a fundamentally harder task. The comparison measures end-to-end delivery efficiency, not raw AI capability.
+**Caveat:** Build Agent operates inside a controlled platform environment with purpose-built skills. SDK approaches use a general-purpose LLM writing against a third-party TypeScript API - a fundamentally harder task. The comparison measures end-to-end delivery efficiency, not raw AI capability.
 
 ---
 
@@ -156,7 +156,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 | **Build Agent** | Run 1 | **32/32** | 550 | 50m 0s | 32/32 |
 
 <details>
-<summary><strong>SDK Primed</strong> — 32/32 | Run 4 | 500,000 tokens | 2h 15m</summary>
+<summary><strong>SDK Primed</strong> - 32/32 | Run 4 | 500,000 tokens | 2h 15m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -196,7 +196,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 </details>
 
 <details>
-<summary><strong>SDK Cold</strong> — 32/32 | Run 4 | 450,000 tokens | 2h 5m</summary>
+<summary><strong>SDK Cold</strong> - 32/32 | Run 4 | 450,000 tokens | 2h 5m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -236,7 +236,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 </details>
 
 <details>
-<summary><strong>Build Agent</strong> — 32/32 | Run 1 | 550 assists | 50m 0s</summary>
+<summary><strong>Build Agent</strong> - 32/32 | Run 1 | 550 assists | 50m 0s</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -299,4 +299,4 @@ The March 2026 run (simple spec, 5 approaches) is preserved in [archive/](archiv
 
 **Why they failed:** The ServiceNow REST API cannot reliably create records inside a `sys_app` scope. Records created via REST land in the global scope regardless of `sys_scope` field values, session scope preferences, or `X-UserToken` headers. This was discovered empirically during the March run.
 
-**Why they are excluded from April results:** Since REST approaches are fundamentally unsuitable for building scoped apps — a structural platform limitation, not a fixable bug — they were dropped from the April experiment. No new implementation work was done for REST approaches in April.
+**Why they are excluded from April results:** Since REST approaches are fundamentally unsuitable for building scoped apps - a structural platform limitation, not a fixable bug - they were dropped from the April experiment. No new implementation work was done for REST approaches in April.
