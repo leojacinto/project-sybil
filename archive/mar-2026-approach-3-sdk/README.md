@@ -39,16 +39,16 @@ approach-3-sdk/
 ## Two Delivery Modes
 
 ### Custom UI Page (`src/fluent/ui/`)
-Uses `UiPage` Fluent API to deploy a bundled HTML/JS page at `x_snc_travel_request_ui.do`. The client app uses the Table API (`/api/now/table/`) with `window.g_ck` for CSRF — the same pattern as ServiceNow's official SDK React example.
+Uses `UiPage` Fluent API to deploy a bundled HTML/JS page at `x_snc_travel_request_ui.do`. The client app uses the Table API (`/api/now/table/`) with `window.g_ck` for CSRF - the same pattern as ServiceNow's official SDK React example.
 
 ### Native Workspace (`src/fluent/workspace/`)
-Uses `Workspace` + `UxListMenuConfig` Fluent APIs to deploy a full workspace at `/now/travel-requests/home`. The SDK orchestrates all ~20 `sys_ux_*` records (app config, page registry, screen types, routes, screens) — workspace assembly is purpose-built for platform-native tooling like the SDK and Build Agent.
+Uses `Workspace` + `UxListMenuConfig` Fluent APIs to deploy a full workspace at `/now/travel-requests/home`. The SDK orchestrates all ~20 `sys_ux_*` records (app config, page registry, screen types, routes, screens) - workspace assembly is purpose-built for platform-native tooling like the SDK and Build Agent.
 
 Workspace includes 4 pre-configured list views:
-- **All Travel Requests** — full table view
-- **Draft Requests** — filtered to `state=draft`
-- **Submitted for Approval** — filtered to `state=submitted`
-- **Approved Requests** — filtered to `state=approved`
+- **All Travel Requests** - full table view
+- **Draft Requests** - filtered to `state=draft`
+- **Submitted for Approval** - filtered to `state=submitted`
+- **Approved Requests** - filtered to `state=approved`
 
 ---
 
@@ -116,7 +116,7 @@ Workspace includes 4 pre-configured list views:
 
 ## What This Proves
 
-SDK v4.4.0's Fluent APIs can deliver **both** a custom UI Page and a native Workspace from the same codebase. The `Workspace` Fluent API abstracts away the ~20 interdependent `sys_ux_*` records that blocked Approach 2 (REST Workspace). Claude Opus authors the Fluent TypeScript; the SDK compiles and deploys everything — tables, business rules, ACLs, UI Page, Workspace, list configurations — in a single `now-sdk install`.
+SDK v4.4.0's Fluent APIs can deliver **both** a custom UI Page and a native Workspace from the same codebase. The `Workspace` Fluent API abstracts away the ~20 interdependent `sys_ux_*` records that blocked Approach 2 (REST Workspace). Claude Opus authors the Fluent TypeScript; the SDK compiles and deploys everything - tables, business rules, ACLs, UI Page, Workspace, list configurations - in a single `now-sdk install`.
 
 | | Approach 2 (REST Workspace) | Approach 3 (SDK Workspace) |
 |---|---|---|

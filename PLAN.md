@@ -1,10 +1,10 @@
-# Project Sybil — April 2026 Implementation Plan
+# Project Sybil - April 2026 Implementation Plan
 
 ## Context
 
 - **Instance:** `demoxyz` (login verified, credentials in `.env`)
 - **Scope:** `x_snc_apr_trv` (instance uses `x_snc_` vendor prefix)
-- **Spec:** [specs/travel-app-spec-v1.md](specs/travel-app-spec-v1.md) — 32 component types
+- **Spec:** [specs/travel-app-spec-v1.md](specs/travel-app-spec-v1.md) - 32 component types
 - **Existing travel apps on instance:** `x_snc_travel`, `x_snc_travel_a2b`, `x_snc_travel_rl4by`, `x_snc_travel_romlk`
 
 ### Scope-to-Spec Mapping
@@ -43,7 +43,7 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 **Method:** REST API calls from Windsurf (Cascade) to instance
 **Target deliverable:** Jelly XML UI Page with full CRUD
 
-### Phase 1 — Data Foundation
+### Phase 1 - Data Foundation
 1. Create `sys_app` (shared step 0, or reuse if already created)
 2. Create 4 tables (request extends task, expense extends task, policy standalone, delegation standalone)
 3. Create all columns per spec §1
@@ -58,11 +58,11 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 12. Create 4 views + view rules per spec §22
 13. Create seed data per spec §25 (5 policies, 5 requests, 10 expenses, 2 delegations)
 
-### Phase 2 — Scripted REST API
+### Phase 2 - Scripted REST API
 14. Create scripted REST API resource per spec §14 (6 endpoints)
 15. Create 3 script includes per spec §13
 
-### Phase 3 — UI Page
+### Phase 3 - UI Page
 16. Create Jelly XML UI Page (`direct=false`) with:
     - Travel request summary dashboard (stats cards)
     - List view with filtering
@@ -72,24 +72,24 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 17. Use `<g:evaluate>` for server-side data, form POST for writes
 18. Include `sysparm_ck` for CSRF protection
 
-### Phase 4 — Flows & Notifications
+### Phase 4 - Flows & Notifications
 19. Create 3 flows per spec §7 (approval, finance escalation, reimbursement)
 20. Create 5 email notifications per spec §8
 
-### Phase 5 — Catalog
+### Phase 5 - Catalog
 21. Create catalog item per spec §9
 22. Create 2 variable sets per spec §10
 23. Create 3 catalog client scripts per spec §11
 24. Create 2 catalog UI policies per spec §12
 
-### Phase 6 — Advanced
+### Phase 6 - Advanced
 25. Create UI actions per spec §15 (5 actions)
 26. Create relationships per spec §24
 27. Create cross-scope privileges per spec §27
 28. Create security data filters per spec §29
 29. Create data source + import map per spec §26
 
-### Phase 7 — Testing
+### Phase 7 - Testing
 30. Create ATF test suite with 11 tests per spec §32
 
 ### Deliverables
@@ -105,10 +105,10 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 **Method:** REST API calls from Windsurf (Cascade) to instance
 **Target deliverable:** Native configurable workspace
 
-### Phases 1–6 — Same as REST Custom UI
+### Phases 1–6 - Same as REST Custom UI
 (Data foundation, REST API, flows, catalog, etc. are identical)
 
-### Phase 3 — Workspace (replaces UI Page)
+### Phase 3 - Workspace (replaces UI Page)
 16. Create `sys_ux_app_config` with landing_path="home"
 17. Create `sys_ux_page_registry` with path, root_macroponent (workspace shell)
 18. Create 4x `sys_ux_screen_type` (dashboard, simple list, list, record)
@@ -131,12 +131,12 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 **Method:** ServiceNow SDK (`now-sdk`) Fluent TypeScript
 **Target deliverable:** SDK-bundled UI Page + Workspace
 
-### Phase 1 — SDK Project Setup
+### Phase 1 - SDK Project Setup
 1. Initialize SDK project targeting instance
 2. Create `sys_app` on instance (SDK requires this)
 3. Run `now-sdk install` to link
 
-### Phase 2 — Fluent TypeScript (single app.ts)
+### Phase 2 - Fluent TypeScript (single app.ts)
 4. Define all 4 tables with columns using Fluent API
 5. Define roles, ACLs, business rules, client scripts, UI policies
 6. Define script includes, properties
@@ -144,18 +144,18 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 8. Define seed data
 9. Build and deploy data foundation
 
-### Phase 3 — UI Page
+### Phase 3 - UI Page
 10. Create SDK-bundled UI Page with client app
 11. Use Scripted REST API (Fluent `RestApi`) to avoid CSRF issues
 12. Build and deploy
 
-### Phase 4 — Workspace
+### Phase 4 - Workspace
 13. Use `Workspace` Fluent API for native workspace
 14. Use `UxListMenuConfig` for list configuration
 15. Use `Dashboard` Fluent API for dashboard widgets
 16. Build and deploy
 
-### Phase 5 — Remaining Components
+### Phase 5 - Remaining Components
 17. Define flows (if SDK supports, otherwise REST fallback)
 18. Define email notifications
 19. Define catalog item + variables
@@ -224,10 +224,10 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 
 Recommended execution order to maximize learning and minimize rework:
 
-1. **REST Custom UI** — Establishes the data foundation and scope. Learn what the REST API can/can’t do with the expanded spec.
-2. **REST Workspace** — Reuse data foundation learnings, focus on workspace assembly.
-3. **SDK** — Apply learnings from REST approaches to the SDK path.
-4. **Build Agent** — Quick win, workspace is Build Agent’s strength. Custom UI variant collapsed into this single run since the spec covers both UI Pages and Workspaces.
+1. **REST Custom UI** - Establishes the data foundation and scope. Learn what the REST API can/can’t do with the expanded spec.
+2. **REST Workspace** - Reuse data foundation learnings, focus on workspace assembly.
+3. **SDK** - Apply learnings from REST approaches to the SDK path.
+4. **Build Agent** - Quick win, workspace is Build Agent’s strength. Custom UI variant collapsed into this single run since the spec covers both UI Pages and Workspaces.
 
 > Build Agent can be run in parallel with REST/SDK since it's independent (different tool, manual prompts).
 

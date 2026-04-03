@@ -1,4 +1,4 @@
-# SDK Primed (Context-Primed) — Development Log
+# SDK Primed (Context-Primed) - Development Log
 
 > Detailed session-by-session breakdown of Cascade token usage, wall-clock time, and findings for the SDK approach to building the Travel Request Management scoped app.
 
@@ -20,7 +20,7 @@
 
 ## Session Log
 
-### Session 1 — Experiment Setup (~20 min, ~40k tokens)
+### Session 1 - Experiment Setup (~20 min, ~40k tokens)
 
 **Date:** 2026-04-02
 **Objective:** Read spec, validate March results, set up README and plan.
@@ -31,7 +31,7 @@
 - Created scope `x_snc_apr_trv` on instance via REST API
 - Established scope-to-spec naming map
 
-### Session 2 — SDK Documentation Pre-Read (~25 min, ~60k tokens)
+### Session 2 - SDK Documentation Pre-Read (~25 min, ~60k tokens)
 
 **Date:** 2026-04-02
 **Objective:** Read all ServiceNow SDK Fluent API documentation before writing code.
@@ -49,7 +49,7 @@
 - Documented key API patterns and gotchas for each component type
 - Identified that `@servicenow/sdk/automation` re-exports from `@servicenow/sdk-core/flow`
 
-### Session 3 — Code Generation (~30 min, ~150k tokens)
+### Session 3 - Code Generation (~30 min, ~150k tokens)
 
 **Date:** 2026-04-03
 **Objective:** Write all 32 component types as Fluent TypeScript files.
@@ -88,9 +88,9 @@ Created 30 `.now.ts` files covering all 32 component types:
 
 Also created `index.now.ts` barrel file and `now.config.json`.
 
-**Build attempt failed:** `npx now-sdk build` could not find `@servicenow/sdk-cli` — the package requires a private npm registry that is not publicly accessible.
+**Build attempt failed:** `npx now-sdk build` could not find `@servicenow/sdk-cli` - the package requires a private npm registry that is not publicly accessible.
 
-### Session 4 — Unblock CLI + Fix TypeScript Errors (~40 min, ~150k tokens)
+### Session 4 - Unblock CLI + Fix TypeScript Errors (~40 min, ~150k tokens)
 
 **Date:** 2026-04-03
 **Objective:** Resolve SDK CLI dependency issue and fix all TypeScript compilation errors.
@@ -99,7 +99,7 @@ Also created `index.now.ts` barrel file and `now.config.json`.
 - Discovered that the March 2026 archive (`archive/mar-2026-approach-3-sdk/`) had a complete `node_modules/` with all private packages pre-resolved
 - Copied entire `node_modules/` from March archive to April project
 - Downgraded SDK from v4.5.0 to v4.4.0 to match the archive's resolved dependencies
-- First successful `npx now-sdk build` — but with ~20 TypeScript errors
+- First successful `npx now-sdk build` - but with ~20 TypeScript errors
 
 **TypeScript Fixes (10 files modified):**
 
@@ -109,7 +109,7 @@ Also created `index.now.ts` barrel file and `now.config.json`.
 | `catalog.now.ts` | String not assignable to boolean | Changed `'true'`/`'false'` → `true`/`false` for `readOnly`, `visible`, `mandatory` |
 | `catalog.now.ts` | `conditions` not in `CatalogUiPolicy` | Changed `conditions` → `catalogCondition` |
 | `flows.now.ts` | TS212: dataPill requires dot notation | Rewrote to use `action.core.*` typed actions with dot notation |
-| `flows.now.ts` | TS4111: index signature needs bracket notation | Fundamental conflict with TS212 — resolved in Session 5 |
+| `flows.now.ts` | TS4111: index signature needs bracket notation | Fundamental conflict with TS212 - resolved in Session 5 |
 | `menus.now.ts` | String not assignable to `(string\|Role)[]` | Wrapped `ApplicationMenu.roles` in arrays, kept `sys_app_module` roles as strings |
 | `notifications.now.ts` | `roles` not in `RecipientDetails` | Changed `roles` → `recipientFields` |
 | `rest-api.now.ts` | Unused imports | Removed `travelUser`, `travelApprover` |
@@ -119,18 +119,18 @@ Also created `index.now.ts` barrel file and `now.config.json`.
 | `atf-tests.now.ts` | `setValues` not in type | Changed `setValues` → `fieldValues`, added mandatory `traveler` |
 | `tsconfig.json` | `noPropertyAccessFromIndexSignature` | Set to `false` to allow dot notation for dataPill |
 
-### Session 5 — Deploy & Fix to 32/32 (~20 min, ~100k tokens)
+### Session 5 - Deploy & Fix to 32/32 (~20 min, ~100k tokens)
 
 **Date:** 2026-04-03
 **Objective:** Build, deploy, verify, and fix remaining gaps.
 
-#### Run 1 — 25/32
+#### Run 1 - 25/32
 
 First successful deploy. 7 component types failed:
 
 | Failed Component | Root Cause |
 |-----------------|------------|
-| Flows (0/3) | Excluded — SDK v4.4.0 TS4111 vs Fluent TS212 type conflict |
+| Flows (0/3) | Excluded - SDK v4.4.0 TS4111 vs Fluent TS212 type conflict |
 | Records/seed data (0/22) | `$meta: { installMethod: 'demo' }` prevented install |
 | List controls (0/3) | Never implemented |
 | Data sources (0/2) | `ImportSet` API writes to wrong table; verify checks `sys_data_source` |
@@ -138,7 +138,7 @@ First successful deploy. 7 component types failed:
 | Security data filters (0/2) | Wrote to `sys_data_policy2`; verify checks `sys_security_acl` (operation=record) |
 | JS modules (0/2) | Wrote to `sys_ui_script`; verify checks `sys_ux_lib_source_script` |
 
-#### Run 2 — 30/32
+#### Run 2 - 30/32
 
 Fixed 5 component types by correcting table names and adding missing records:
 
@@ -152,7 +152,7 @@ Fixed 5 component types by correcting table names and adding missing records:
 
 Remaining failures: Flows (0/3) and Records (0/22).
 
-#### Run 3 — 32/32
+#### Run 3 - 32/32
 
 | Fix | Detail |
 |-----|--------|
@@ -164,16 +164,16 @@ Remaining failures: Flows (0/3) and Records (0/22).
 ## Key Findings
 
 ### What Worked Well
-1. **Context priming pays off** — Pre-reading all SDK `.d.ts` files before writing code meant the initial code generation was ~80% correct on first pass.
-2. **SDK Fluent API is powerful** — 30 `.now.ts` files declaratively define an entire scoped app with 32 component types. Build + deploy is a single `npx now-sdk build && npx now-sdk install` command.
-3. **Iterative deploy+verify loop** — The `verify.py` script made it trivial to identify exactly which components were missing and why.
+1. **Context priming pays off** - Pre-reading all SDK `.d.ts` files before writing code meant the initial code generation was ~80% correct on first pass.
+2. **SDK Fluent API is powerful** - 30 `.now.ts` files declaratively define an entire scoped app with 32 component types. Build + deploy is a single `npx now-sdk build && npx now-sdk install` command.
+3. **Iterative deploy+verify loop** - The `verify.py` script made it trivial to identify exactly which components were missing and why.
 
 ### What Didn't Work
-1. **SDK CLI is gated behind private npm registry** — `@servicenow/sdk-cli` is not on public npm. Without the March archive's pre-resolved `node_modules`, the build would have been completely blocked.
-2. **SDK v4.4.0 has a fundamental type conflict in Flows** — The Fluent compiler requires dot-notation property access for `wfa.dataPill()`, but TypeScript's `noPropertyAccessFromIndexSignature` (enabled by `strict: true`) requires bracket notation for index signatures. These are contradictory. Workaround: use `Record` API to write `sys_hub_flow` records directly.
-3. **Table mismatches between SDK API and platform tables** — Several SDK APIs (`ImportSet`, security attributes) write to different tables than what the platform UI and verification scripts expect. Required manual table name correction.
-4. **Seed data `installMethod: 'demo'`** — SDK's `Record` API defaults to demo install method, which means records don't install unless the `--demo` flag is passed. Must explicitly remove `$meta` or set `installMethod: 'always'`.
-5. **Custom table REST API access** — Scoped app tables need `allowWebServiceAccess: true` on the table definition for external REST API access. Without it, even admin users get "Failed API level ACL Validation".
+1. **SDK CLI is gated behind private npm registry** - `@servicenow/sdk-cli` is not on public npm. Without the March archive's pre-resolved `node_modules`, the build would have been completely blocked.
+2. **SDK v4.4.0 has a fundamental type conflict in Flows** - The Fluent compiler requires dot-notation property access for `wfa.dataPill()`, but TypeScript's `noPropertyAccessFromIndexSignature` (enabled by `strict: true`) requires bracket notation for index signatures. These are contradictory. Workaround: use `Record` API to write `sys_hub_flow` records directly.
+3. **Table mismatches between SDK API and platform tables** - Several SDK APIs (`ImportSet`, security attributes) write to different tables than what the platform UI and verification scripts expect. Required manual table name correction.
+4. **Seed data `installMethod: 'demo'`** - SDK's `Record` API defaults to demo install method, which means records don't install unless the `--demo` flag is passed. Must explicitly remove `$meta` or set `installMethod: 'always'`.
+5. **Custom table REST API access** - Scoped app tables need `allowWebServiceAccess: true` on the table definition for external REST API access. Without it, even admin users get "Failed API level ACL Validation".
 
 ### Token Cost Breakdown (Estimated)
 

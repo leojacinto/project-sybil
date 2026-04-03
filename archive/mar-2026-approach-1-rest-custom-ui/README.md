@@ -1,4 +1,4 @@
-# Approach 1 — REST Custom UI
+# Approach 1 - REST Custom UI
 
 **Method:** REST API (via Cascade / Claude Opus)
 **Delivery:** Jelly XML UI Page on ServiceNow
@@ -28,7 +28,7 @@ The `src/` directory and `now-ui.json` contain an initial SDK component scaffold
 1. The UI Page is created via REST API (`POST /api/now/table/sys_ui_page`)
 2. The HTML field contains Jelly XML with `<g:evaluate>` blocks that query data server-side
 3. Form POST with `sysparm_ck` handles write operations (create, update, delete)
-4. No external JavaScript frameworks — all rendering is inline Jelly + vanilla JS
+4. No external JavaScript frameworks - all rendering is inline Jelly + vanilla JS
 
 ## Standalone Preview
 

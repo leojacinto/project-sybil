@@ -1,6 +1,6 @@
-# Verify Script Validation — Test Run Against March Data
+# Verify Script Validation - Test Run Against March Data
 
-> **⚠️ THIS IS NOT A MARCH 2026 SCORECARD.** This file was generated to test whether `scripts/verify.py` correctly detects scoped components. The March 2026 travel apps happened to still be on the instance, so they were used as test data. The scores below say nothing about the March approaches — the March spec only covered ~8 component types, while the validator checks for 32 (the April spec). A March approach scoring 3/32 here does not mean it failed; it means the validator is checking for things that were never in scope for March. Do not cite these numbers as March results.
+> **⚠️ THIS IS NOT A MARCH 2026 SCORECARD.** This file was generated to test whether `scripts/verify.py` correctly detects scoped components. The March 2026 travel apps happened to still be on the instance, so they were used as test data. The scores below say nothing about the March approaches - the March spec only covered ~8 component types, while the validator checks for 32 (the April spec). A March approach scoring 3/32 here does not mean it failed; it means the validator is checking for things that were never in scope for March. Do not cite these numbers as March results.
 
 ---
 
@@ -25,11 +25,11 @@
 | **Approach 1** | Run 1 | **0/32** | 100,000 | 2h 0m | 0/32 |
 | **Approach 2** | Run 1 | **1/32** | 150,000 | 3h 0m | 1/32 |
 | **Approach 3** | Run 1 | **3/32** | 20,000 | 20m 0s | 3/32 |
-| **Approach 4** | Run 1 | **2/32** | — | 20m 0s | 2/32 |
-| **Approach 5** | Run 1 | **0/32** | — | 15m 0s | 0/32 |
+| **Approach 4** | Run 1 | **2/32** | - | 20m 0s | 2/32 |
+| **Approach 5** | Run 1 | **0/32** | - | 15m 0s | 0/32 |
 
 <details>
-<summary><strong>Approach 1</strong> — 0/32 | Run 1 | 100,000 tokens | 2h 0m</summary>
+<summary><strong>Approach 1</strong> - 0/32 | Run 1 | 100,000 tokens | 2h 0m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -69,7 +69,7 @@
 </details>
 
 <details>
-<summary><strong>Approach 2</strong> — 1/32 | Run 1 | 150,000 tokens | 3h 0m</summary>
+<summary><strong>Approach 2</strong> - 1/32 | Run 1 | 150,000 tokens | 3h 0m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -109,7 +109,7 @@
 </details>
 
 <details>
-<summary><strong>Approach 3</strong> — 3/32 | Run 1 | 20,000 tokens | 20m 0s</summary>
+<summary><strong>Approach 3</strong> - 3/32 | Run 1 | 20,000 tokens | 20m 0s</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -149,7 +149,7 @@
 </details>
 
 <details>
-<summary><strong>Approach 4</strong> — 2/32 | Run 1 | 20m 0s</summary>
+<summary><strong>Approach 4</strong> - 2/32 | Run 1 | 20m 0s</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -189,7 +189,7 @@
 </details>
 
 <details>
-<summary><strong>Approach 5</strong> — 0/32 | Run 1 | 15m 0s</summary>
+<summary><strong>Approach 5</strong> - 0/32 | Run 1 | 15m 0s</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -236,7 +236,7 @@
 
 The purpose of this test is to confirm the validator correctly detects real components. Here is the cross-reference between the **March README** (human-written) and the **validator output** (automated):
 
-### Approach 3 (SDK) — best validation target
+### Approach 3 (SDK) - best validation target
 
 | March README states | Validator found | Match? |
 |---|---|---|
@@ -251,13 +251,13 @@ The purpose of this test is to confirm the validator correctly detects real comp
 
 **8/8 claims verified.** Score is 3/32 because the April spec expects higher counts (4 tables, 11 ACLs, etc.), but all found counts match the March spec exactly.
 
-### Approach 4 (BA Custom UI) — richest Build Agent result
+### Approach 4 (BA Custom UI) - richest Build Agent result
 
-Found: 1 table, 1 role, 5 business rules, 4 UI actions, 1 workspace, 1 app menu, 1 list. This aligns with the March README's "Working" status — Build Agent created a richer component set than the external approaches.
+Found: 1 table, 1 role, 5 business rules, 4 UI actions, 1 workspace, 1 app menu, 1 list. This aligns with the March README's "Working" status - Build Agent created a richer component set than the external approaches.
 
-### Approach 1 (REST Custom UI) — 0/32 explained
+### Approach 1 (REST Custom UI) - 0/32 explained
 
-`x_snc_travel_a1` does not exist as a `sys_app` on the instance. March Approach 1 used REST API calls which [do not respect the sys_scope field](readme-mar-2026-validator-test.md) — records land in the session's default scope, not a named scope. This is itself a finding: **REST-created records without a `sys_app` are invisible to scope-based queries.**
+`x_snc_travel_a1` does not exist as a `sys_app` on the instance. March Approach 1 used REST API calls which [do not respect the sys_scope field](readme-mar-2026-validator-test.md) - records land in the session's default scope, not a named scope. This is itself a finding: **REST-created records without a `sys_app` are invisible to scope-based queries.**
 
 ### Conclusion
 

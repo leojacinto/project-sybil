@@ -1,4 +1,4 @@
-# Build Agent — Workspace
+# Build Agent - Workspace
 
 **Method:** ServiceNow Build Agent prompts inside the platform IDE
 **Target:** Configurable Workspace with all 32 scoped app component types
@@ -14,7 +14,7 @@ Record these for every Build Agent interaction:
 
 | # | Prompt Summary | Start Time | End Time | Wall Clock | Now Assists | Outcome |
 |---|---------------|-----------|---------|-----------|------------|---------|
-| 1 | Full spec — all 32 component types + Jelly→React UI Page refinement | | | ~50 min | 550 | All 32 components created including workspace with dashboard; UI Page refined from Jelly to React |
+| 1 | Full spec - all 32 component types + Jelly→React UI Page refinement | | | ~50 min | 550 | All 32 components created including workspace with dashboard; UI Page refined from Jelly to React |
 
 **Definitions:**
 - **Wall Clock:** Time from pressing Enter to Build Agent finishing (seconds or minutes)
@@ -48,7 +48,7 @@ Create 4 tables:
    - actual_cost: Currency
    - purpose: Choice (Conference, Client Meeting, Training, Internal, Other)
    - department: Reference (cmn_department)
-   - approval_status: Choice (Pending, Approved, Rejected, Finance Review) — Default: Pending
+   - approval_status: Choice (Pending, Approved, Rejected, Finance Review) - Default: Pending
    - travel_type: Choice (Domestic, International)
    - requires_visa: Boolean
    - notes: Journal
@@ -61,14 +61,14 @@ Create 4 tables:
    - receipt: File attachment
    - expense_date: Date
    - vendor: String (200)
-   - reimbursement_status: Choice (Submitted, Approved, Paid, Rejected) — Default: Submitted
+   - reimbursement_status: Choice (Submitted, Approved, Paid, Rejected) - Default: Submitted
 
 3. x_snc_apr_tv5_policy (standalone):
    - policy_name: String (200)
    - max_daily_hotel: Currency
    - max_daily_meals: Currency
    - max_flight_class: Choice (Economy, Premium Economy, Business)
-   - applies_to_country: String (100) — Wildcard "*" for global default
+   - applies_to_country: String (100) - Wildcard "*" for global default
    - requires_finance_approval_above: Currency
    - active: Boolean
 
@@ -86,10 +86,10 @@ Enable web service access on all 4 tables.
 
 ```
 In scope x_snc_apr_tv5, create these roles:
-- x_snc_apr_tv5.user (base role — submit requests, log expenses)
-- x_snc_apr_tv5.approver (contains user — approve/reject requests)
-- x_snc_apr_tv5.finance (contains user — review high-cost requests, approve reimbursements)
-- x_snc_apr_tv5.admin (contains finance and approver — full config access)
+- x_snc_apr_tv5.user (base role - submit requests, log expenses)
+- x_snc_apr_tv5.approver (contains user - approve/reject requests)
+- x_snc_apr_tv5.finance (contains user - review high-cost requests, approve reimbursements)
+- x_snc_apr_tv5.admin (contains finance and approver - full config access)
 
 Create these ACLs:
 - x_snc_apr_tv5_request: Read for user role (traveler sees own, manager sees direct reports)
@@ -110,25 +110,25 @@ Create these ACLs:
 ```
 In scope x_snc_apr_tv5, create these business rules:
 
-1. "Set Department from Traveler" on x_snc_apr_tv5_request — Before Insert, order 100. Auto-populate department from traveler's department.
-2. "Derive Travel Type" on x_snc_apr_tv5_request — Before Insert/Update, order 200. Compare destination_country to traveler's country; set Domestic or International.
-3. "Escalate to Finance" on x_snc_apr_tv5_request — After Update, order 100. If estimated_cost exceeds policy threshold and approval_status changes to Approved, set to Finance Review.
-4. "Calculate Actual Cost" on x_snc_apr_tv5_request — Before Update, order 300. Sum all child expense records into actual_cost.
-5. "Prevent Edit After Approval" on x_snc_apr_tv5_request — Before Update, order 50. Abort if non-admin edits core fields when approval_status is Approved or Finance Review.
-6. "Close Expenses on Request Close" on x_snc_apr_tv5_request — After Update, order 200. When state = Closed Complete, mark all Submitted expenses as Approved.
-7. "Validate Expense Date Range" on x_snc_apr_tv5_expense — Before Insert/Update, order 100. Expense date must fall between parent request departure and return dates.
+1. "Set Department from Traveler" on x_snc_apr_tv5_request - Before Insert, order 100. Auto-populate department from traveler's department.
+2. "Derive Travel Type" on x_snc_apr_tv5_request - Before Insert/Update, order 200. Compare destination_country to traveler's country; set Domestic or International.
+3. "Escalate to Finance" on x_snc_apr_tv5_request - After Update, order 100. If estimated_cost exceeds policy threshold and approval_status changes to Approved, set to Finance Review.
+4. "Calculate Actual Cost" on x_snc_apr_tv5_request - Before Update, order 300. Sum all child expense records into actual_cost.
+5. "Prevent Edit After Approval" on x_snc_apr_tv5_request - Before Update, order 50. Abort if non-admin edits core fields when approval_status is Approved or Finance Review.
+6. "Close Expenses on Request Close" on x_snc_apr_tv5_request - After Update, order 200. When state = Closed Complete, mark all Submitted expenses as Approved.
+7. "Validate Expense Date Range" on x_snc_apr_tv5_expense - Before Insert/Update, order 100. Expense date must fall between parent request departure and return dates.
 
 Create these client scripts:
 
-1. "Show Visa Field" on x_snc_apr_tv5_request — onChange (travel_type). Show requires_visa only when travel_type = International.
-2. "Warn High Cost" on x_snc_apr_tv5_request — onChange (estimated_cost). If > policy threshold, show info message: "This request will require finance approval".
-3. "Confirm Submission" on x_snc_apr_tv5_request — onSubmit. Confirm dialog if estimated_cost is blank.
+1. "Show Visa Field" on x_snc_apr_tv5_request - onChange (travel_type). Show requires_visa only when travel_type = International.
+2. "Warn High Cost" on x_snc_apr_tv5_request - onChange (estimated_cost). If > policy threshold, show info message: "This request will require finance approval".
+3. "Confirm Submission" on x_snc_apr_tv5_request - onSubmit. Confirm dialog if estimated_cost is blank.
 
 Create these UI policies:
 
-1. "Read Only After Approval" on x_snc_apr_tv5_request — When approval_status = Approved OR Finance Review: make destination_city, destination_country, departure_date, return_date, estimated_cost, purpose read-only.
-2. "Hide Actual Cost Before Trip" on x_snc_apr_tv5_request — When departure_date > today: hide actual_cost.
-3. "Mandatory Purpose for International" on x_snc_apr_tv5_request — When travel_type = International: make purpose mandatory.
+1. "Read Only After Approval" on x_snc_apr_tv5_request - When approval_status = Approved OR Finance Review: make destination_city, destination_country, departure_date, return_date, estimated_cost, purpose read-only.
+2. "Hide Actual Cost Before Trip" on x_snc_apr_tv5_request - When departure_date > today: hide actual_cost.
+3. "Mandatory Purpose for International" on x_snc_apr_tv5_request - When travel_type = International: make purpose mandatory.
 ```
 
 ### Prompt 4: Workspace, Menus, Lists, Views
@@ -136,12 +136,12 @@ Create these UI policies:
 ```
 In scope x_snc_apr_tv5, create a configurable workspace called "Travel Management" with path "travel-management-ba".
 
-Landing page: Dashboard with cards — My Pending Requests, Awaiting My Approval, Department Budget Summary.
+Landing page: Dashboard with cards - My Pending Requests, Awaiting My Approval, Department Budget Summary.
 
 Pages:
 - List page: All travel requests with filters (status, department, date range, traveler)
 - Record page: Travel request detail with related expenses, approval timeline, policy compliance
-- Dashboard page: Charts — requests by status (donut), spend by department (bar), monthly volume (line), top destinations (horizontal bar)
+- Dashboard page: Charts - requests by status (donut), spend by department (bar), monthly volume (line), top destinations (horizontal bar)
 
 Navigation modules: My Requests | Approvals | Expenses | Policies | Dashboard
 
@@ -157,14 +157,14 @@ Create application menu "Travel Management" with these modules:
 - Dashboard → workspace dashboard (role: user)
 
 Create these list layouts:
-- "My Travel Requests" on x_snc_apr_tv5_request: Number, Destination City, Departure Date, Return Date, Estimated Cost, Approval Status — sort by Departure Date DESC
-- "Approval Queue" on x_snc_apr_tv5_request: Number, Traveler, Destination City, Estimated Cost, Purpose, Created — sort by Created ASC
-- "Expense List" on x_snc_apr_tv5_expense: Number, Expense Type, Amount, Vendor, Expense Date, Reimbursement Status — sort by Expense Date DESC
-- "Policy List" on x_snc_apr_tv5_policy: Policy Name, Applies to Country, Max Daily Hotel, Requires Finance Approval Above, Active — sort by Policy Name ASC
+- "My Travel Requests" on x_snc_apr_tv5_request: Number, Destination City, Departure Date, Return Date, Estimated Cost, Approval Status - sort by Departure Date DESC
+- "Approval Queue" on x_snc_apr_tv5_request: Number, Traveler, Destination City, Estimated Cost, Purpose, Created - sort by Created ASC
+- "Expense List" on x_snc_apr_tv5_expense: Number, Expense Type, Amount, Vendor, Expense Date, Reimbursement Status - sort by Expense Date DESC
+- "Policy List" on x_snc_apr_tv5_policy: Policy Name, Applies to Country, Max Daily Hotel, Requires Finance Approval Above, Active - sort by Policy Name ASC
 
 Create list controls:
 - x_snc_apr_tv5_request: Omit sys_created_by, sys_mod_count from default list
-- x_snc_apr_tv5_request: Color-code rows — green=Approved, red=Rejected, yellow=Pending, blue=Finance Review
+- x_snc_apr_tv5_request: Color-code rows - green=Approved, red=Rejected, yellow=Pending, blue=Finance Review
 - x_snc_apr_tv5_expense: Group by travel_request
 
 Create views:
@@ -179,19 +179,19 @@ Create views:
 ```
 In scope x_snc_apr_tv5, create these flows:
 
-1. "Travel Request Approval" — Trigger: record updated on x_snc_apr_tv5_request where approval_status changes to Pending.
+1. "Travel Request Approval" - Trigger: record updated on x_snc_apr_tv5_request where approval_status changes to Pending.
    Steps: Lookup active delegation for traveler's manager. If delegation active, approver = delegate, else approver = manager. Ask for Approval. If approved → set Approved. If rejected → set Rejected + journal. If estimated_cost > threshold → set Finance Review + trigger Finance Escalation subflow.
 
-2. "Finance Escalation" subflow — Input: request sys_id. Ask for Approval from finance role. If approved → Approved. If rejected → Rejected.
+2. "Finance Escalation" subflow - Input: request sys_id. Ask for Approval from finance role. If approved → Approved. If rejected → Rejected.
 
-3. "Expense Reimbursement" — Trigger: record created on x_snc_apr_tv5_expense. If amount > policy max → flag for finance review. Else → auto-approve, set reimbursement_status = Approved.
+3. "Expense Reimbursement" - Trigger: record created on x_snc_apr_tv5_expense. If amount > policy max → flag for finance review. Else → auto-approve, set reimbursement_status = Approved.
 
 Create these email notifications:
-- "Request Submitted" on x_snc_apr_tv5_request — Insert where approval_status=Pending → send to traveler's manager
-- "Request Approved" on x_snc_apr_tv5_request — Update where approval_status changes to Approved → send to traveler
-- "Request Rejected" on x_snc_apr_tv5_request — Update where approval_status changes to Rejected → send to traveler
-- "Finance Review Required" on x_snc_apr_tv5_request — Update where approval_status changes to Finance Review → send to finance role
-- "Expense Flagged" on x_snc_apr_tv5_expense — Insert where amount exceeds policy → send to finance role
+- "Request Submitted" on x_snc_apr_tv5_request - Insert where approval_status=Pending → send to traveler's manager
+- "Request Approved" on x_snc_apr_tv5_request - Update where approval_status changes to Approved → send to traveler
+- "Request Rejected" on x_snc_apr_tv5_request - Update where approval_status changes to Rejected → send to traveler
+- "Finance Review Required" on x_snc_apr_tv5_request - Update where approval_status changes to Finance Review → send to finance role
+- "Expense Flagged" on x_snc_apr_tv5_expense - Insert where amount exceeds policy → send to finance role
 
 Create catalog item "Submit Travel Request" in Service Catalog > Employee Services > Travel.
 Variable Set "Travel Details": destination_city (text, mandatory), destination_country (reference core_country, mandatory), departure_date (date, mandatory), return_date (date, mandatory), purpose (select box, mandatory), estimated_cost (currency, mandatory), requires_visa (checkbox), additional_notes (multi-line text).
@@ -217,12 +217,12 @@ In scope x_snc_apr_tv5, create these script includes:
 3. "TravelCostCalculator" (client-callable via GlideAjax): getEstimatedDailyRate(country, expense_type), getPolicyLimit(country)
 
 Create a Scripted REST API "Travel Request API" with base path /api/x_snc_apr_tv5/travel:
-- GET /requests — list requests for authenticated user (role: user)
-- GET /requests/{sys_id} — single request with expenses (role: user)
-- POST /requests — create request (role: user)
-- PUT /requests/{sys_id}/approve — approve (role: approver)
-- PUT /requests/{sys_id}/reject — reject with reason (role: approver)
-- GET /policy/{country} — get policy (role: user)
+- GET /requests - list requests for authenticated user (role: user)
+- GET /requests/{sys_id} - single request with expenses (role: user)
+- POST /requests - create request (role: user)
+- PUT /requests/{sys_id}/approve - approve (role: approver)
+- PUT /requests/{sys_id}/reject - reject with reason (role: approver)
+- GET /policy/{country} - get policy (role: user)
 
 Create these system properties:
 - x_snc_apr_tv5.finance_threshold: Currency, default 5000
@@ -272,29 +272,29 @@ Create security data filters:
 - "Finance Full View" on x_snc_apr_tv5_request for finance role: no filter (sees all)
 
 Create 2 UI formatters on x_snc_apr_tv5_request:
-- "Expense Summary" — embedded formatter showing total expenses by type
-- "Approval Timeline" — activity formatter showing approval chain with timestamps
+- "Expense Summary" - embedded formatter showing total expenses by type
+- "Approval Timeline" - activity formatter showing approval chain with timestamps
 
 Create JS modules:
-- "travelUtils" — date validation helpers, currency formatting, policy limit lookups via GlideAjax
-- "travelCharts" — chart rendering helpers for workspace dashboard: donut, bar, and line chart configs
+- "travelUtils" - date validation helpers, currency formatting, policy limit lookups via GlideAjax
+- "travelCharts" - chart rendering helpers for workspace dashboard: donut, bar, and line chart configs
 
 Create connection records:
 - "Corporate Directory Sync" LDAP connection (simulated) for syncing traveler cost center/department data
 - Connection alias "x_snc_apr_tv5_currency_api" (REST) for currency exchange rate API
 
 Create 11 ATF tests:
-- Server: Policy Lookup — TravelPolicyUtil.getPolicyForCountry returns correct policy for "Japan"
-- Server: Finance Escalation — Request with cost > threshold gets Finance Review status
-- Server: Department Auto-populate — New request fills department from traveler
-- Server: Expense Date Validation — Expense outside travel dates is rejected
-- Client: Visa Field Visibility — requires_visa appears when travel_type = International
-- Client: High Cost Warning — Info message when estimated_cost > threshold
-- Security: ACL Traveler Own Records — User reads own requests but not others'
-- Security: ACL Approver Access — Approver can write approval_status for direct reports
-- Security: ACL Finance Access — Finance role reads all requests
-- Flow: Approval Flow Happy Path — Request moves Pending → Approved
-- Flow: Delegation Reroute — Approval routes to delegate when active
+- Server: Policy Lookup - TravelPolicyUtil.getPolicyForCountry returns correct policy for "Japan"
+- Server: Finance Escalation - Request with cost > threshold gets Finance Review status
+- Server: Department Auto-populate - New request fills department from traveler
+- Server: Expense Date Validation - Expense outside travel dates is rejected
+- Client: Visa Field Visibility - requires_visa appears when travel_type = International
+- Client: High Cost Warning - Info message when estimated_cost > threshold
+- Security: ACL Traveler Own Records - User reads own requests but not others'
+- Security: ACL Approver Access - Approver can write approval_status for direct reports
+- Security: ACL Finance Access - Finance role reads all requests
+- Flow: Approval Flow Happy Path - Request moves Pending → Approved
+- Flow: Delegation Reroute - Approval routes to delegate when active
 ```
 
 ---
@@ -305,7 +305,7 @@ Run this in **Scripts - Background** (System Definition > Scripts - Background) 
 
 ```javascript
 // ============================================================
-// Project Sybil — Build Agent Self-Check (32 Component Types)
+// Project Sybil - Build Agent Self-Check (32 Component Types)
 // Run in: Scripts - Background
 // Scope: x_snc_apr_tv5
 // ============================================================
@@ -347,7 +347,7 @@ var checks = [
     ['ATF tests',                    'sys_atf_test',             'sys_scope.scope=' + SCOPE, 11]
 ];
 
-// Seed data check (separate — counts records in custom tables)
+// Seed data check (separate - counts records in custom tables)
 var seedTables = {
     policy: 5,
     request: 5,
@@ -359,7 +359,7 @@ var passed = 0;
 var total = checks.length + 1; // +1 for seed data
 var report = [];
 
-report.push('=== PROJECT SYBIL — BUILD AGENT SELF-CHECK ===');
+report.push('=== PROJECT SYBIL - BUILD AGENT SELF-CHECK ===');
 report.push('Scope: ' + SCOPE);
 report.push('Time:  ' + new GlideDateTime().getDisplayValue());
 report.push('─'.repeat(65));
@@ -432,8 +432,8 @@ python3 scripts/verify.py --approach 5 --scope x_snc_apr_tv5 \
 
 ## Rules
 
-1. **Do not look at** SDK approach folders — this approach must be independent
+1. **Do not look at** SDK approach folders - this approach must be independent
 2. **Record every prompt** exactly as entered and every Build Agent response summary
 3. **Screenshot** after each prompt completes (optional but recommended)
 4. **Run self-check** after each major prompt to track incremental progress
-5. **Use scope `x_snc_apr_tv5`** — not `x_snc_apr_trv` (that's the SDK approaches)
+5. **Use scope `x_snc_apr_tv5`** - not `x_snc_apr_trv` (that's the SDK approaches)

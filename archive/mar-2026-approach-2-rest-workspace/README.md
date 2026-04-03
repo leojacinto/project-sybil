@@ -1,4 +1,4 @@
-# Approach 2 — REST Workspace
+# Approach 2 - REST Workspace
 
 **Method:** REST API (via Cascade / Claude Opus)
 **Delivery:** React components + workspace assembly attempt (incomplete)
@@ -11,10 +11,10 @@ The workspace framework coordinates ~20 records across multiple tables (`sys_ux_
 
 ## What's Included
 
-- **React UI components** — schema-driven form, table, action buttons, state machine, validation
-- **Vite dev server** — local preview with ServiceNow API proxy
-- **Schema config** — `build-agent/schema.json` defines fields, columns, states, and validation rules
-- **UI Page** — `ui-page.html` contains the rendered output
+- **React UI components** - schema-driven form, table, action buttons, state machine, validation
+- **Vite dev server** - local preview with ServiceNow API proxy
+- **Schema config** - `build-agent/schema.json` defines fields, columns, states, and validation rules
+- **UI Page** - `ui-page.html` contains the rendered output
 
 ## Run (local preview)
 

@@ -1,4 +1,4 @@
-# Travel Request App — Shared Design Specification
+# Travel Request App - Shared Design Specification
 
 ## Data Model (Consistent Across All 3 Approaches)
 
@@ -39,10 +39,10 @@ draft → submitted → approved → completed
 
 ## API Endpoints (all use ServiceNow Table API)
 
-- `GET /api/now/table/x_snc_travel_req_request` — List requests
-- `POST /api/now/table/x_snc_travel_req_request` — Create request
-- `PATCH /api/now/table/x_snc_travel_req_request/{sys_id}` — Update/approve/reject
-- `DELETE /api/now/table/x_snc_travel_req_request/{sys_id}` — Delete draft
+- `GET /api/now/table/x_snc_travel_req_request` - List requests
+- `POST /api/now/table/x_snc_travel_req_request` - Create request
+- `PATCH /api/now/table/x_snc_travel_req_request/{sys_id}` - Update/approve/reject
+- `DELETE /api/now/table/x_snc_travel_req_request/{sys_id}` - Delete draft
 
 ## Approach Summary
 

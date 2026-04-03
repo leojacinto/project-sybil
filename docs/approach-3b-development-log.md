@@ -1,6 +1,6 @@
-# SDK Cold (Cold Spec) — Development Log
+# SDK Cold (Cold Spec) - Development Log
 
-> Detailed session-by-session breakdown of Cascade token usage, wall-clock time, and findings for the cold-start SDK approach to building the Travel Request Management scoped app. Unlike SDK Primed, this run started with **no prior context** — the AI received only the spec file and SDK access, simulating a cold handoff.
+> Detailed session-by-session breakdown of Cascade token usage, wall-clock time, and findings for the cold-start SDK approach to building the Travel Request Management scoped app. Unlike SDK Primed, this run started with **no prior context** - the AI received only the spec file and SDK access, simulating a cold handoff.
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## Session Log
 
-### Session 1 — Setup + Core Components (~60 min, ~200k tokens)
+### Session 1 - Setup + Core Components (~60 min, ~200k tokens)
 
 **Date:** 2026-04-03
 **Objective:** Read spec, set up project, discover SDK APIs by reading type definitions, write core `.now.ts` files.
@@ -33,14 +33,14 @@
 
 **SDK API Discovery (on-demand, not pre-read):**
 Unlike SDK Primed which pre-read all SDK docs in a dedicated session, SDK Cold discovered APIs as needed by reading `.d.ts` type definitions from the `node_modules/@servicenow/sdk-core/dist/` directory. Key type files consulted:
-- `Role.d.ts` — discovered `containsRoles` (not `assignableRoles`)
-- `BusinessRule.d.ts` — discovered `action: ['insert']` array (not boolean `insert: true`)
-- `Acl.d.ts` — discovered operation types, `adminOverrides` property
+- `Role.d.ts` - discovered `containsRoles` (not `assignableRoles`)
+- `BusinessRule.d.ts` - discovered `action: ['insert']` array (not boolean `insert: true`)
+- `Acl.d.ts` - discovered operation types, `adminOverrides` property
 - `CrossScopePrivilege.d.ts`, `ImportSet.d.ts`, `Property.d.ts`
-- `ApplicationMenu.d.ts` — discovered modules are **not** a property of `ApplicationMenu`
-- `flow/index.d.ts`, `TriggerDefinition.d.ts` — discovered `wfa.trigger` is a function, not an object with nested methods
-- `flow/built-ins/triggers/` — discovered trigger definitions like `trigger.record.created`
-- `Test.d.ts` — discovered ATF step APIs (`navigateToModule`, `setFieldValue`, `moduleVisibility`)
+- `ApplicationMenu.d.ts` - discovered modules are **not** a property of `ApplicationMenu`
+- `flow/index.d.ts`, `TriggerDefinition.d.ts` - discovered `wfa.trigger` is a function, not an object with nested methods
+- `flow/built-ins/triggers/` - discovered trigger definitions like `trigger.record.created`
+- `Test.d.ts` - discovered ATF step APIs (`navigateToModule`, `setFieldValue`, `moduleVisibility`)
 
 **Files Created (16):**
 
@@ -76,13 +76,13 @@ Unlike SDK Primed which pre-read all SDK docs in a dedicated session, SDK Cold d
 | `flows.now.ts` | `wfa.trigger.record.created()` wrong API | Deferred to Session 2 |
 | `navigation.now.ts` | `Module` import doesn't exist | Deferred to Session 2 |
 
-### Session 2 — Remaining Components + Build Fix (~40 min, ~150k tokens)
+### Session 2 - Remaining Components + Build Fix (~40 min, ~150k tokens)
 
 **Date:** 2026-04-03
 **Objective:** Fix navigation, create all remaining files, resolve all build errors.
 
 **Navigation Fix:**
-- Rewrote `navigation.now.ts` — removed invalid `Module` import and nested modules from `ApplicationMenu`
+- Rewrote `navigation.now.ts` - removed invalid `Module` import and nested modules from `ApplicationMenu`
 - Created modules as `Record()` entries targeting `sys_app_module` table in `misc-records.now.ts`
 
 **Files Created (7):**
@@ -95,7 +95,7 @@ Unlike SDK Primed which pre-read all SDK docs in a dedicated session, SDK Cold d
 | `data-sources.now.ts` | 2 data sources + 2 import set transform maps |
 | `misc-records.now.ts` | 2 formatters, 3 list controls, 3 views, 4 relationships, 1 security attribute, 2 JS modules, 1 external connection, 9 app modules |
 | `security-data-filters.now.ts` | 2 security data filter ACLs |
-| `navigation.now.ts` | Rewritten — ApplicationMenu only (modules in misc-records) |
+| `navigation.now.ts` | Rewritten - ApplicationMenu only (modules in misc-records) |
 
 **Build Errors Fixed:**
 
@@ -112,14 +112,14 @@ Unlike SDK Primed which pre-read all SDK docs in a dedicated session, SDK Cold d
 
 **First successful build:** `npx now-sdk build` → completed with 2 non-fatal VariableSetPlugin warnings.
 
-### Session 3 — Deploy + Iterative Fixes to 32/32 (~25 min, ~100k tokens)
+### Session 3 - Deploy + Iterative Fixes to 32/32 (~25 min, ~100k tokens)
 
 **Date:** 2026-04-04
 **Objective:** Deploy, verify, and fix remaining gaps.
 
-#### Run 1 — 31/32
+#### Run 1 - 31/32
 
-First successful deploy via `npx now-sdk install`. Verification showed 31/32 — only seed data failed:
+First successful deploy via `npx now-sdk install`. Verification showed 31/32 - only seed data failed:
 
 | Failed Component | Found | Expected | Root Cause |
 |-----------------|------:|--------:|------------|
@@ -127,13 +127,13 @@ First successful deploy via `npx now-sdk install`. Verification showed 31/32 —
 
 **Root cause analysis:** Scoped app custom tables default to blocking web service access. The verification script queries tables via REST API, but scoped tables require explicit `allowWebServiceAccess: true` on the table definition.
 
-#### Run 2 — 31/32
+#### Run 2 - 31/32
 
 Added `adminOverrides: true` to all 10 record-level ACLs. Redeployed. Still 31/32.
 
 **Root cause:** The 403 was at the **API level**, not the record-ACL level. `adminOverrides` on record ACLs doesn't help because the block happens before record ACLs are evaluated. The actual fix needed to be on the table definition itself.
 
-#### Run 3 — 32/32
+#### Run 3 - 32/32
 
 Added `allowWebServiceAccess: true` to all 4 table definitions in `tables.now.ts`. Rebuilt and redeployed.
 
@@ -149,16 +149,16 @@ All 32 component types verified. Seed data showed 44 found (vs 22 expected) beca
 ## Key Findings
 
 ### What Worked Well
-1. **Cold start is viable** — Without any prior SDK knowledge, the AI reached 32/32 in ~125 min by reading `.d.ts` type definitions on-demand. The type system is self-documenting enough to guide correct usage.
-2. **Flat file structure is simpler** — 23 files in a single `src/fluent/` directory (vs SDK Primed's 30 files across 15+ directories) is easier to reason about and produces the same result.
-3. **`Record()` API is the universal fallback** — Components without dedicated SDK functions (formatters, list controls, views, relationships, security attributes, JS modules, connections, app modules) were all created via `Record()` targeting the correct ServiceNow table. This worked first try.
-4. **Verify script as feedback loop** — The `verify.py` script's explicit table names and expected counts made it trivial to target exactly what was needed.
+1. **Cold start is viable** - Without any prior SDK knowledge, the AI reached 32/32 in ~125 min by reading `.d.ts` type definitions on-demand. The type system is self-documenting enough to guide correct usage.
+2. **Flat file structure is simpler** - 23 files in a single `src/fluent/` directory (vs SDK Primed's 30 files across 15+ directories) is easier to reason about and produces the same result.
+3. **`Record()` API is the universal fallback** - Components without dedicated SDK functions (formatters, list controls, views, relationships, security attributes, JS modules, connections, app modules) were all created via `Record()` targeting the correct ServiceNow table. This worked first try.
+4. **Verify script as feedback loop** - The `verify.py` script's explicit table names and expected counts made it trivial to target exactly what was needed.
 
 ### What Didn't Work
-1. **Flow trigger API is non-obvious** — The correct pattern `wfa.trigger(trigger.record.created, config, inputs)` is a 3-argument function call, not the method-chain `wfa.trigger.record.created({...})` that the namespace structure suggests. Required reading 3 separate type files to understand.
-2. **ApplicationMenu has no modules** — The `ApplicationMenu` type explicitly excludes a `modules` property. Modules must be created as separate `Record()` entries on `sys_app_module`. This isn't documented in the type's JSDoc.
-3. **Custom table REST access is opt-in** — `allowWebServiceAccess: true` is required but not the default. Without it, even admin users get "Failed API level ACL Validation" via REST. This was the only issue that required iterative deploys.
-4. **Shared scope causes inflated counts** — Both SDK Primed and SDK Cold deployed to the same `x_snc_apr_trv` scope. The verification script counts all records in scope, so SDK Cold's "found" counts include SDK Primed's records (e.g., 26 ACLs found when SDK Cold only created ~13). This doesn't affect pass/fail but makes raw counts misleading for comparison.
+1. **Flow trigger API is non-obvious** - The correct pattern `wfa.trigger(trigger.record.created, config, inputs)` is a 3-argument function call, not the method-chain `wfa.trigger.record.created({...})` that the namespace structure suggests. Required reading 3 separate type files to understand.
+2. **ApplicationMenu has no modules** - The `ApplicationMenu` type explicitly excludes a `modules` property. Modules must be created as separate `Record()` entries on `sys_app_module`. This isn't documented in the type's JSDoc.
+3. **Custom table REST access is opt-in** - `allowWebServiceAccess: true` is required but not the default. Without it, even admin users get "Failed API level ACL Validation" via REST. This was the only issue that required iterative deploys.
+4. **Shared scope causes inflated counts** - Both SDK Primed and SDK Cold deployed to the same `x_snc_apr_trv` scope. The verification script counts all records in scope, so SDK Cold's "found" counts include SDK Primed's records (e.g., 26 ACLs found when SDK Cold only created ~13). This doesn't affect pass/fail but makes raw counts misleading for comparison.
 
 ### SDK Primed vs SDK Cold Comparison
 
