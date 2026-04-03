@@ -17,7 +17,7 @@
 
 ## Approaches
 
-> **REST approaches (Custom UI, Workspace) have been dropped.** The March 2026 run demonstrated that vanilla REST API calls cannot reliably create records inside a scoped `sys_app` - records land in the global scope regardless of `sys_scope` field values or session preferences. This is a structural platform limitation, not a fixable bug. REST approaches are no longer pursued.
+> **REST approaches (Custom UI, Workspace) have been dropped.** The March 2026 run demonstrated that vanilla REST API calls cannot reliably create records inside a scoped `sys_app` - records land in the global scope regardless of `sys_scope` field values or session preferences. This reflects platform design rather than a bug - scoped app assembly is intended for platform-native tools. REST approaches are no longer pursued.
 >
 > **Build Agent Custom UI has been collapsed into Build Agent.** The spec includes both UI Pages and Workspaces as component types. Since Build Agent creates all 32 component types from a single prompt regardless of UI target, running separate "Custom UI" and "Workspace" variants would produce identical output. A single Build Agent run covers both.
 
@@ -108,7 +108,7 @@
 
 **UI Pages remain the hardest component to land.** The spec asks for React UI Pages (Section 16). In the March run, the SDK produced UI Pages that rendered but showed no data - a partial success. In April, the SDK generated UI Page `.now.ts` files in `dist/`, but `npx now-sdk install` did not persist them to the instance - they may have existed transiently and were lost on a subsequent deploy. The verify script still shows ✅ for UI Pages based on `sys_ui_page` record existence, but the pages are not functional on the live instance. Build Agent initially generated Jelly-based pages (the traditional format) and was refined with an additional prompt to convert to React (+10 min, ~50 assists). Further SDK UI troubleshooting was skipped - the March experiment already proved it's solvable with iterative effort, and the time was better spent on components with higher signal for the SDK-vs-Build-Agent comparison.
 
-**The workspace dashboard is the clearest qualitative gap.** SDK Fluent API cannot configure workspace dashboards - those are UI-assembled artifacts with no code representation. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. The SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
+**The workspace dashboard is the clearest qualitative gap.** Workspace dashboards are UI-assembled artifacts that Build Agent configures natively, outside the current SDK Fluent surface. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. The SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
 
 **Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Now Assist can create an entire table with all columns - an operation that costs thousands of tokens in the SDK path. The 550 assists for Build Agent represent ~550 discrete platform mutations (including a Jelly→React refinement pass for UI Pages), whereas ~450k–500k tokens represent the full LLM reasoning chain including API discovery, code generation, error diagnosis, and retry logic.
 
@@ -299,4 +299,4 @@ The March 2026 run (simple spec, 5 approaches) is preserved in [archive/](archiv
 
 **Why they failed:** The ServiceNow REST API cannot reliably create records inside a `sys_app` scope. Records created via REST land in the global scope regardless of `sys_scope` field values, session scope preferences, or `X-UserToken` headers. This was discovered empirically during the March run.
 
-**Why they are excluded from April results:** Since REST approaches are fundamentally unsuitable for building scoped apps - a structural platform limitation, not a fixable bug - they were dropped from the April experiment. No new implementation work was done for REST approaches in April.
+**Why they are excluded from April results:** Scoped app assembly is intended for platform-native tools, not external REST calls. REST approaches were dropped from the April experiment accordingly. No new implementation work was done for REST approaches in April.
