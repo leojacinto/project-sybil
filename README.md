@@ -1,159 +1,302 @@
-# Travel Request App - Approach Comparison
+# Project Sybil: Travel Request App — April 2026
 
-> **Pilot / Demo only.** This repo compares how AI-assisted approaches perform when building on ServiceNow, and what platform-native tooling unlocks. The Travel Request app is intentionally simple, it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
+> **Pilot / Demo only.** This repo benchmarks AI-assisted approaches for building scoped applications on ServiceNow. The Travel Request app is intentionally feature-complete but domain-simple — it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
+>
+> This is the **April 2026 run**, using an expanded specification that covers all 32 scoped application component types. The [March 2026 run](archive/README-MAR-2026.md) used a simpler spec and is archived for reference.
 
 ---
 
-## The Journey
+## Specification
 
-An external AI agent (Claude Opus via Cascade) tried three paths to build a Travel Request app on ServiceNow. First, raw REST API calls to create a custom UI page; it worked, but took ~2 hours and 4 failed iterations to land on a UI pattern that ServiceNow would render. Second, the same REST approach to build a native workspace; the workspace framework coordinates ~20 records across multiple tables, which is purpose-built for platform-native tooling rather than external REST calls. Third, the ServiceNow SDK (`now-sdk`) with Fluent TypeScript, it deployed the entire data foundation (table, business rules, ACLs, sample data) in ~18 minutes from a single prompt, and the SDK's `Workspace` Fluent API successfully deployed a workspace that REST could not. The custom UI page and dashboard still required further iteration.
+**[Travel Request App Specification v1](specs/travel-app-spec-v1.md)** — 32 component types, 508 lines. Covers tables, ACLs, roles, business rules, client scripts, UI policies, flows, notifications, catalog items, variables, script includes, scripted REST APIs, UI actions, UI pages, workspaces, menus, lists, views, properties, relationships, seed data, data sources, cross-scope privileges, security attributes, security data filters, JS modules, external connections, and ATF tests.
 
-Then ServiceNow's own Build Agent attempted the same deliverables from inside the platform. It delivered a working custom UI from a single prompt in ~20 minutes and a full workspace in 5 prompts under 15 minutes.
-
-**Building the data foundation is easy for any AI agent. The UI is the hard part.** Even with the right external tooling, delivering a cohesive working UI from outside ServiceNow requires significant iteration or hits a wall entirely. Build Agent operates natively where it matters most.
+**Instance:** `demoxyz` (credentials in `.env`, gitignored)
+**Scope:** `x_snc_apr_trv` (vendor prefix `x_snc_` per instance convention)
 
 ---
 
 ## Approaches
 
-| | **Approach 1: REST Custom UI** | **Approach 2: REST Workspace** | **Approach 3: SDK Custom UI** | **Approach 4: Build Agent Custom UI** | **Approach 5: Build Agent Workspace** |
-|---|---|---|---|---|---|
-| **AI model** | Claude Opus | Claude Opus | Claude Opus | Build Agent (GPT Large) | Build Agent (GPT Large) |
-| **Method** | REST API (via Cascade) | REST API (via Cascade) | ServiceNow SDK (`now-sdk`) | Platform-native | Platform-native |
-| **Delivery** | Jelly XML UI Page | React components (no workspace) | SDK-bundled UI Page + Workspace + Dashboard | React UI Page | Workspace |
-| **Prompts** | Multiple iterations | Multiple iterations | 1 prompt, 4 build fixes, 2 deploy fixes, 3 additional iterations | 1 prompt | 5 prompts |
-| **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~20 minutes | ~20 minutes | < 15 minutes |
-| **Status** | <span style="color:#22c55e">Working</span> | <span style="color:#ef4444">Incomplete</span> | <span style="color:#f59e0b">Partial</span> (workspace yes, custom UI + dashboard incomplete) | <span style="color:#22c55e">Working</span> | <span style="color:#22c55e">Working</span> |
-| **Assets** | [approach-1-rest-custom-ui/](approach-1-rest-custom-ui/) | [approach-2-rest-workspace/](approach-2-rest-workspace/) | [approach-3-sdk/](approach-3-sdk/) | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
+> **REST approaches (Custom UI, Workspace) have been dropped.** The [March 2026 retroactive validation](archive/readme-mar-2026-validator-test.md) showed that vanilla REST API calls cannot reliably scope records into a `sys_app` — REST Custom UI produced 0/32 detectable components, REST Workspace managed only 1/32. REST is fundamentally unsuitable for building scoped apps and is no longer pursued.
+>
+> **Build Agent Custom UI has been collapsed into Build Agent.** The spec includes both UI Pages and Workspaces as component types. Since Build Agent creates all 32 component types from a single prompt regardless of UI target, running separate "Custom UI" and "Workspace" variants would produce identical output. A single Build Agent run covers both.
 
----
-
-## 1. Cost & Time
-
-| | **Approach 1** | **Approach 2** | **Approach 3** | **Approach 4** | **Approach 5** |
-|---|---|---|---|---|---|
-| **Model** | Claude Opus | Claude Opus | Claude Opus | Build Agent | Build Agent |
-| **Effort** | ~100,000+ Cascade tokens (4 failed iterations) | ~150,000+ Cascade tokens (3 pivots, incomplete) | ~20,000 Cascade tokens (1 prompt + 9 fixes) | 27 prompts, 27 assists | 22 prompts, 22 assists |
-| **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~20 minutes | ~20 minutes | < 15 minutes |
-| **Iterations** | 4 failed, then working | 3 pivots, still no workspace | 4 build fixes + 2 deploy fixes + 3 runtime fixes | First run worked | First run worked |
-| **Outcome** | Working Jelly UI Page | Components only | Workspace deployed, custom UI + dashboard still incomplete | Working React UI Page | Full workspace + dashboard |
-
-> **Note on units.** Cascade (Approaches 1-3) is measured in tokens or prompt/fix cycles because it operates through an LLM coding assistant. Build Agent (Approaches 4-5) is measured in prompts and assists (Build Agent's pricing metric) because it operates through a conversational UI inside ServiceNow. These are not directly comparable, but both reflect total effort to reach a working app.
-
-**Where the time went: the UI.** Data model creation (table, fields, business rules) was fast in every approach; minutes, not hours. The cost difference was always in the UI layer:
-
-- **Approach 1 (REST Custom UI):** 4 failed iterations over ~2 hours. UI Pages require Jelly XML with server-side `<g:evaluate>` blocks, CSRF tokens, and form POST writes, patterns that are not obvious from the REST API surface.
-- **Approach 2 (REST Workspace):** The workspace framework coordinates ~20 records across multiple tables, purpose-built for platform-native tooling. External REST API calls are not the intended path for workspace assembly.
-- **Approach 3 (SDK Custom UI):** The SDK deployed the entire data foundation from a single prompt in ~18 minutes (table, 4 business rules, 4 ACLs, app menu, 5 sample records). But the SDK-bundled UI page could not load records at runtime, the client-side REST calls required additional cross-scope configuration beyond the SDK's default scaffold.
-- **Approaches 4-5 (Build Agent):** Working apps in under 20 minutes each. No iterations. No auth issues. No CSRF debugging. No SDK type mismatches. Build Agent operates inside ServiceNow where UI rendering, workspace assembly, and business rule wiring are native operations.
-
----
-
-## 2. Feature Matrix
-
-| Feature | **Approach 1: REST UI** | **Approach 2: REST WS** | **Approach 3: SDK UI** | **Approach 4: BA UI** | **Approach 5: BA WS** |
-|---|---|---|---|---|---|
-| Custom table + fields | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
-| Business Rules | <span style="color:#22c55e">Yes</span> | <span style="color:#ef4444">No</span> | <span style="color:#22c55e">Yes</span> (4 BRs) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
-| ACLs | <span style="color:#ef4444">No</span> | <span style="color:#ef4444">No</span> | <span style="color:#22c55e">Yes</span> (4 ACLs) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
-| Sample data | <span style="color:#22c55e">Yes</span> | <span style="color:#ef4444">No</span> | <span style="color:#22c55e">Yes</span> (5 records) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
-| Working UI Page | <span style="color:#22c55e">Yes</span> (Jelly) | <span style="color:#ef4444">No</span> | <span style="color:#ef4444">No</span> (renders, no data) | <span style="color:#22c55e">Yes</span> (React) | N/A |
-| Workspace | N/A | <span style="color:#ef4444">Attempted</span> | N/A | N/A | <span style="color:#22c55e">Yes</span> |
-| Dashboard / Stats | <span style="color:#22c55e">Yes</span> (stats row) | <span style="color:#ef4444">No</span> | <span style="color:#22c55e">Yes</span> (stats row, no data) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
-| List view | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> (standalone) | <span style="color:#22c55e">Yes</span> (no data) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> (native) |
-| Form / Create | <span style="color:#22c55e">Yes</span> (modal) | <span style="color:#22c55e">Yes</span> (standalone) | <span style="color:#22c55e">Yes</span> (modal) | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> (native) |
-| Action buttons | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> |
-| Search / Filter | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> | <span style="color:#22c55e">Yes</span> (native) |
-| Polaris / Mobile / Upgrade-safe | No / No / Partial | No / No / No | No / No / Partial | No / No / Partial | Yes / Yes / Yes |
-
----
-
-## 3. Iteration Paths
-
-### Approach 1 -- REST API Custom UI (~2 hours)
-
-4 failed iterations before the working version. See [approach-1-rest-custom-ui/](approach-1-rest-custom-ui/).
-
-1. **Raw HTML** -- blank page (UI Pages require Jelly XML)
-2. **Client-side XHR** -- 401 (CSRF enforcement on `direct=true` pages)
-3. **GlideAjax** -- blocked (cross-scope Script Include access)
-4. **Jelly XML partial** -- vars not injecting (`client_script` field not Jelly-processed)
-5. **Final: Jelly XML + `<g:evaluate>` + form POST** -- working
-
-### Approach 2 -- REST API Workspace (~3 hours, incomplete)
-
-Cascade produced functional React components (forms, tables, state machine, validation). The workspace framework coordinates ~20 records across multiple tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). This level of orchestration is purpose-built for platform-native tooling (Build Agent, SDK) rather than external REST calls. See [approach-2-rest-workspace/](approach-2-rest-workspace/).
-
-### Approach 3 -- SDK Custom UI + Workspace (~20 minutes, partial)
-
-Claude Opus scaffolded the full app from a single prompt using the ServiceNow SDK v4.4.0. The data foundation and workspace deployed successfully. The custom UI page and dashboard required additional iterations but could not reach the same level as Build Agent. See [approach-3-sdk/](approach-3-sdk/).
-
-1. **Initial scaffold** -- build failed (SDK bundler expected `<script src="./app.ts">` entry point)
-2. **Restructured to client app** -- build failed (15 type errors: `PriceColumn` missing, `ChoiceColumn` format wrong, `ReferenceColumn` uses `referenceTable`, `BusinessRule` uses `action` array, `Module` missing)
-3. **Fixed types** -- build failed (`DecimalColumn` requires numbers, not strings)
-4. **Fixed numbers** -- build succeeded
-5. **First deploy** -- failed (SDK needs `sys_app` record, not `sys_scope`)
-6. **Created sys_app** -- deploy succeeded
-7. **UI Page loaded** -- stats and table render, but REST API calls return no data (CSRF enforcement on `direct=true` pages, no `g_ck` token available)
-8. **Added Scripted REST API** -- created server-side GlideRecord API via `RestApi` Fluent to bypass CSRF. Custom UI still did not load data correctly.
-9. **Added Workspace** -- `Workspace` + `UxListMenuConfig` Fluent APIs deployed a native workspace with 4 list views. Workspace loaded successfully.
-10. **Added Dashboard** -- `Dashboard` Fluent API deployed 8 widgets (single-score cards, donut, bar chart). Dashboard did not display correctly on instance.
-
-**Deployed artifacts:** table (extends task), 8 fields, 4 business rules, 4 ACLs, application menu, 5 sample records, Scripted REST API, bundled UI page, workspace with list config, dashboard with 8 widgets.
-
-**What worked:** The SDK's `Workspace` Fluent API successfully orchestrated the ~20 `sys_ux_*` records that REST could not practically assemble. The workspace appeared and list views functioned. The data foundation deployed cleanly from a single prompt.
-
-**What didn't:** The custom UI page required additional iteration for data loading (CSRF token handling, Scripted REST API). The Dashboard Fluent API deployed widgets but they required further configuration. The UI layer is where platform-native tooling has the strongest advantage.
-
----
-
-## 4. Platform Behaviors Encountered (External Route)
-
-| # | Behavior | Approach | External limitation? |
+| | **SDK Primed** | **SDK Cold** | **Build Agent** |
 |---|---|---|---|
-| 1 | UI Pages require Jelly XML, not raw HTML | 1 | Yes (discoverable) |
-| 2 | CSRF enforcement on `direct=true` pages | 1 | No (expected security) |
-| 3 | `client_script` field not Jelly-processed | 1 | Yes (discoverable) |
-| 4 | Workspace coordinates ~20 `sys_ux_*` records (purpose-built for native tooling) | 2 | No (by design) |
-| 5 | `sys_ux_screen` linkage to OOB macroponents required | 2 | No (by design) |
-| 6 | SDK Fluent API types required adjustments for v4.4.0 compatibility | 3 | Yes (discoverable) |
-| 7 | SDK bundler requires `<script src>` entry point | 3 | Yes (discoverable) |
-| 8 | `now-sdk install` requires `sys_app`, not `sys_scope` | 3 | Yes (discoverable) |
-| 9 | SDK-bundled UI Page (`direct=true`) has no `g_ck` token for CSRF-protected REST calls | 3 | Yes (platform security) |
-| 10 | Scripted REST API via SDK Fluent still did not resolve custom UI data loading | 3 | Yes (additional iteration) |
-| 11 | SDK `Workspace` Fluent API deployed workspace successfully (abstracted ~20 `sys_ux_*` records) | 3 | No (SDK handled it) |
-| 12 | SDK `Dashboard` Fluent API deployed but widgets did not render correctly | 3 | Yes (widget config gap) |
+| **AI model** | Claude (via Cascade) | Claude (via Cascade) | Now Assist Build Agent |
+| **Method** | ServiceNow SDK v4.5 (`@servicenow/sdk`) | ServiceNow SDK v4.5 (`@servicenow/sdk`) | Platform-native skills |
+| **Prior context** | Full experiment design, March results, SDK docs pre-read | Spec file only — fresh session, no prior knowledge | Spec prompt only |
+| **Scope creation** | From Windsurf (SDK) | From Windsurf (SDK) | Inside SN IDE |
+| **Target** | SDK-bundled UI + Workspace | SDK-bundled UI + Workspace | Full app + Workspace with dashboard |
+| **Status** | **Complete — 32/32** | **Complete — 32/32** | **Complete — 32/32** |
+| **Assets** | [apr-2026-approach-3-sdk/](apr-2026-approach-3-sdk/) | [apr-2026-approach-3b-sdk/](apr-2026-approach-3b-sdk/) | [apr-2026-approach-5-buildagent-workspace/](apr-2026-approach-5-buildagent-workspace/) |
 
-Items #1-3 and #6-10, #12 are friction points for external agents that Build Agent avoids by operating natively. Items #4-5 reflect workspace orchestration that is purpose-built for platform-native tooling (Build Agent, SDK). Item #11 shows the SDK closing the gap for workspace creation.
+> **Context-primed vs cold spec (SDK only):**
+>
+> - **SDK Primed:** The AI had accumulated significant prior context before writing any code — it designed the experiment, analysed the March 2026 failures, pre-read every SDK Fluent API `.d.ts` file (~20 files), and already knew the scope mapping and project plan. This simulates a developer who has studied the framework documentation and codebase before starting.
+> - **SDK Cold:** A fresh Cascade session with **no prior context**. The AI received only the spec file and SDK access — no experiment history, no pre-read documentation, no knowledge of gotchas or workarounds (except being told to copy `node_modules` from the March archive, since the private npm registry is an infrastructure blocker, not a knowledge one). This simulates a cold handoff to a new developer.
+>
+> Comparing SDK Primed vs SDK Cold isolates the effect of contextual priming on code-generation quality, time, and token cost.
 
 ---
 
-## 5. Bottom Line
+## Development Cost
 
-**The data foundation is easy. The UI is the hard part.**
+| Approach | Wall Clock (active) | Tokens (est.) | Sessions | Score | Notes |
+|----------|-------------------:|-------------:|:--------:|:-----:|-------|
+| **SDK Primed** | ~135 min | ~500k | 5 | 32/32 | Context-primed; 3 deploy iterations to perfect score |
+| **SDK Cold** | ~125 min | ~450k | 3 | 32/32 | Cold spec; 3 deploy iterations to perfect score |
+| **Build Agent** | ~50 min | 550 assists | 1 | 32/32 | One-shot; includes workspace dashboard; refined UI Page from Jelly to React |
 
-Every approach, REST, SDK, or Build Agent, created the data model (table, fields, business rules) quickly. The differentiator is delivering a **cohesive, working UI** that users actually interact with.
+**SDK Primed session breakdown** ([detailed log](docs/approach-3a-development-log.md)):
 
-| | Data foundation | Working UI |
+| Session | Time | Tokens | Work |
+|---------|-----:|-------:|------|
+| 1. Experiment setup | ~20 min | ~40k | Read spec, validate March results, create scope |
+| 2. SDK doc pre-read | ~25 min | ~60k | Read 20+ Fluent API `.d.ts` files |
+| 3. Code generation | ~30 min | ~150k | Write 30 `.now.ts` files (all 32 component types) |
+| 4. CLI unblock + TS fixes | ~40 min | ~150k | Copy `node_modules` from March archive, fix ~15 TS errors |
+| 5. Deploy + iterative fixes | ~20 min | ~100k | 3 deploys: 25/32 → 30/32 → 32/32 |
+
+**SDK Cold session breakdown** ([detailed log](docs/approach-3b-development-log.md)):
+
+| Session | Time | Tokens | Work |
+|---------|-----:|-------:|------|
+| 1. Setup + core components | ~60 min | ~200k | Read spec, discover SDK APIs on-demand, write 16 `.now.ts` files |
+| 2. Remaining components + build fix | ~40 min | ~150k | Write 7 more files, fix ~18 TS errors, first successful build |
+| 3. Deploy + iterative fixes | ~25 min | ~100k | 3 deploys: 31/32 → 31/32 → 32/32 |
+
+**Build Agent session breakdown:**
+
+| Session | Time | Assists | Work |
+|---------|-----:|--------:|------|
+| 1. Full build | ~50 min | 550 | All 32 component types + configurable workspace with dashboard — single prompt; includes Jelly→React refinement for UI Page |
+
+> Token estimates are approximate — Cascade does not expose exact counts. Estimates are based on conversation complexity, tool call volume, and output size per session. See development logs for per-session details, error catalogs, and key findings: [SDK Primed](docs/approach-3a-development-log.md) | [SDK Cold](docs/approach-3b-development-log.md).
+
+### SDK Primed vs SDK Cold: Did Context Priming Help?
+
+| Metric | SDK Primed | SDK Cold | Delta |
+|--------|:-----------:|:---------:|:-----:|
+| Wall clock | ~135 min | ~125 min | Cold **10 min faster** |
+| Tokens | ~500k | ~450k | Cold **50k cheaper** |
+| Sessions | 5 | 3 | Cold **2 fewer** |
+| First deploy score | 25/32 | 31/32 | Cold **6 more** on first try |
+| Deploys to 32/32 | 3 | 3 | Tied |
+
+**Context priming added cost without proportionally reducing downstream work.** SDK Primed spent ~100k tokens on overhead that SDK Cold skipped entirely: experiment design (~40k) and bulk pre-reading 20+ SDK `.d.ts` files (~60k). The cold-start approach discovered APIs on-demand — reading type definitions only when needed for the component it was writing — which turned out to be more token-efficient than reading everything upfront.
+
+**SDK Cold scored higher on first deploy** (31/32 vs 25/32), suggesting that on-demand API discovery produced fewer table-mismatch errors than bulk pre-reading. However, SDK Primed pioneered the workarounds (private npm registry, Fluent compiler type conflicts, seed data install flags) that informed SDK Cold’s prompt — SDK Cold was told to copy `node_modules` from the March archive, which saved it from discovering the CLI blocker independently.
+
+**Important caveat:** Both SDK approaches deployed to the same scope (`x_snc_apr_trv`). SDK Cold’s verification counts are exactly 2× those of SDK Primed (e.g., 26 ACLs vs 13, 44 seed records vs 22), confirming that SDK Cold’s records stacked on top of SDK Primed’s. This means SDK Cold’s seed data pass may have been aided by SDK Primed’s existing records on the instance. A clean-scope test would be needed to fully control for this.
+
+**API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files — either upfront (Primed) or on-demand (Cold). By contrast, ServiceNow’s Build Agent has a curated internal **knowledge source** that documents every object schema (Table, Column, Flow, etc.) with property names, types, and constraints. The Build Agent activates a skill, pulls the relevant schema, and knows the exact shape of what it can create — zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
+
+**Takeaway:** For this task size (~30 files, 32 component types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing.
+
+### Build Agent vs SDK: Platform-Native Wins
+
+| Metric | SDK Primed | SDK Cold | Build Agent | Delta (BA vs best SDK) |
+|--------|:-----------:|:---------:|:----------:|:-----:|
+| Wall clock | ~135 min | ~125 min | ~50 min | **2.5× faster** |
+| Cost unit | ~500k tokens | ~450k tokens | 550 assists | Not directly comparable |
+| Prompts/sessions | 5 | 3 | 1 | **One-shot** |
+| Deploys to 32/32 | 3 | 3 | 1 | **No iteration** |
+| Workspace dashboard | ❌ | ❌ | ✅ | Build Agent only |
+
+**Build Agent delivered in one prompt what SDK took 3–5 sessions to achieve.** The SDK approaches required: reading the spec, discovering the Fluent API surface, writing ~30 TypeScript files, fixing compiler errors, resolving npm registry blockers, and iterating across multiple deploys. Build Agent consumed the same spec and executed directly against the platform — no intermediate code, no compilation step, no deployment pipeline.
+
+**UI Pages remain the hardest component to land.** The spec asks for React UI Pages (Section 16). In the March run, the SDK produced UI Pages that rendered but showed no data — a partial success. In April, the SDK generated UI Page `.now.ts` files in `dist/`, but `npx now-sdk install` did not persist them to the instance — they may have existed transiently and were lost on a subsequent deploy. The verify script still shows ✅ for UI Pages based on `sys_ui_page` record existence, but the pages are not functional on the live instance. Build Agent initially generated Jelly-based pages (the traditional format) and was refined with an additional prompt to convert to React (+10 min, ~50 assists). Further SDK UI troubleshooting was skipped — the March experiment already proved it's solvable with iterative effort, and the time was better spent on components with higher signal for the SDK-vs-Build-Agent comparison.
+
+**The workspace dashboard is the clearest qualitative gap.** SDK Fluent API cannot configure workspace dashboards — those are UI-assembled artifacts with no code representation. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. The SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
+
+**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Now Assist can create an entire table with all columns — an operation that costs thousands of tokens in the SDK path. The 550 assists for Build Agent represent ~550 discrete platform mutations (including a Jelly→React refinement pass for UI Pages), whereas ~450k–500k tokens represent the full LLM reasoning chain including API discovery, code generation, error diagnosis, and retry logic.
+
+**Why Build Agent is faster — structural advantages:**
+1. **Zero API discovery cost** — built-in knowledge sources document every object schema
+2. **No compilation step** — objects are created directly on the platform, no TypeScript → deploy pipeline
+3. **No error-retry loop** — Build Agent validates against its own schema before creating; SDK approaches hit runtime TS errors and needed iterative fixes
+4. **Native workspace support** — dashboards, screen types, and routes are first-class operations, not unsupported edge cases
+
+**Caveat:** Build Agent operates inside a controlled platform environment with purpose-built skills. SDK approaches use a general-purpose LLM writing against a third-party TypeScript API — a fundamentally harder task. The comparison measures end-to-end delivery efficiency, not raw AI capability.
+
+---
+
+## Scope Naming
+
+The instance `demoxyz` assigns vendor prefix `x_snc_`. The new app scope is **`x_snc_apr_trv`** to avoid collision with existing travel apps (`x_snc_travel`, `x_snc_travel_a2b`, `x_snc_travel_rl4by`, `x_snc_travel_romlk`).
+
+All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_trv_request` etc. at implementation time.
+
+---
+
+## Key Differences from March 2026 Run
+
+| | March 2026 | April 2026 |
 |---|---|---|
-| **Approach 1** (REST Custom UI) | Minutes | ~2 hours (4 iterations) |
-| **Approach 2** (REST Workspace) | Minutes | Incomplete (not the intended path) |
-| **Approach 3** (SDK Custom UI + Workspace) | ~20 minutes (1 prompt + 9 fixes) | Workspace deployed, custom UI + dashboard still incomplete |
-| **Approach 4** (Build Agent Custom UI) | Minutes | ~20 minutes (1 prompt, zero fixes) |
-| **Approach 5** (Build Agent Workspace) | Minutes | < 15 minutes (5 prompts, zero fixes) |
-
-The SDK (Approach 3) closed the gap significantly over raw REST (Approaches 1-2). The `Workspace` Fluent API successfully deployed a native workspace, the SDK is purpose-built for this. The custom UI page and dashboard required further iteration to reach parity with Build Agent. Build Agent delivered both custom UI and workspace on the first attempt because it operates natively where it matters most, the UI layer.
-
-The AI models are equally capable. The variable is what each agent can reach from where it operates.
+| **Spec complexity** | ~8 component types (table, BRs, ACLs, UI page, workspace, sample data) | 32 component types (full scoped app inventory) |
+| **Spec document** | Informal prompts per approach | [Formal spec](specs/travel-app-spec-v1.md) shared across all approaches |
+| **Scope prefix** | `x_snc_travel` | `x_snc_apr_trv` |
+| **Tables** | 1 (travel_request) | 4 (request, expense, policy, delegation) |
+| **Flows** | None | 3 (approval, finance escalation, reimbursement) |
+| **Scripted REST** | SDK only | All approaches |
+| **ATF tests** | None | 11 tests across 4 categories |
+| **Catalog** | None | Catalog item + variable sets + catalog scripts |
 
 ---
 
-## How to Reproduce
+## Results
 
-| Approach | Instructions |
-|---|---|
-| **1 -- REST Custom UI** | [approach-1-rest-custom-ui/README.md](approach-1-rest-custom-ui/README.md) |
-| **2 -- REST Workspace** | [approach-2-rest-workspace/README.md](approach-2-rest-workspace/README.md) |
-| **3 -- SDK Custom UI + Workspace** | [approach-3-sdk/README.md](approach-3-sdk/README.md) |
-| **4 -- Build Agent Custom UI** | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) |
-| **5 -- Build Agent Workspace** | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
+<!-- RESULTS:START - Auto-generated by scripts/verify.py -->
+
+| Approach | Latest Run | Score | Tokens | Wall Clock | Trend |
+|----------|-----------|-------|-------:|------------|-------|
+| **SDK Primed** | Run 4 | **32/32** | 500,000 (500,000 total) | 2h 15m (2h 15m total) | 25/32 → 30/32 → 32/32 → 32/32 |
+| **SDK Cold** | Run 4 | **32/32** | 450,000 (450,000 total) | 2h 5m (2h 5m total) | 31/32 → 31/32 → 32/32 → 32/32 |
+| **Build Agent** | Run 1 | **32/32** | 550 | 50m 0s | 32/32 |
+
+<details>
+<summary><strong>SDK Primed</strong> — 32/32 | Run 4 | 500,000 tokens | 2h 15m</summary>
+
+| Component | Status | Found | Expected |
+|-----------|--------|------:|--------:|
+| Tables & columns | ✅ | 4 | 4 |
+| Access control lists (ACLs) | ✅ | 13 | 11 |
+| Roles | ✅ | 4 | 4 |
+| Business rules | ✅ | 7 | 7 |
+| Client scripts | ✅ | 6 | 3 |
+| UI policies | ✅ | 5 | 3 |
+| Flows (Workflow Automation) | ✅ | 3 | 3 |
+| Email notifications | ✅ | 5 | 5 |
+| Service catalog items | ✅ | 1 | 1 |
+| Variables & variable sets | ✅ | 2 | 2 |
+| Catalog client scripts | ✅ | 3 | 3 |
+| Catalog UI policies | ✅ | 2 | 2 |
+| Script includes | ✅ | 3 | 3 |
+| Scripted REST APIs | ✅ | 1 | 1 |
+| UI actions | ✅ | 5 | 5 |
+| UI pages (React) | ✅ | 2 | 2 |
+| UI formatters (built-in) | ✅ | 2 | 2 |
+| Workspaces | ✅ | 1 | 1 |
+| Application menus & modules | ✅ | 1 | 1 |
+| Lists | ✅ | 5 | 4 |
+| List controls | ✅ | 3 | 3 |
+| Views & view rules | ✅ | 3 | 3 |
+| Properties | ✅ | 5 | 5 |
+| Relationships | ✅ | 4 | 4 |
+| Records (seed data) | ✅ | 22 | 22 |
+| Data sources & import maps | ✅ | 2 | 2 |
+| Cross-scope privileges | ✅ | 6 | 4 |
+| Security attributes | ✅ | 1 | 1 |
+| Security data filters | ✅ | 2 | 2 |
+| JS modules | ✅ | 2 | 2 |
+| LDAP / external connections | ✅ | 1 | 1 |
+| ATF tests (11 categories) | ✅ | 11 | 11 |
+
+</details>
+
+<details>
+<summary><strong>SDK Cold</strong> — 32/32 | Run 4 | 450,000 tokens | 2h 5m</summary>
+
+| Component | Status | Found | Expected |
+|-----------|--------|------:|--------:|
+| Tables & columns | ✅ | 4 | 4 |
+| Access control lists (ACLs) | ✅ | 26 | 11 |
+| Roles | ✅ | 4 | 4 |
+| Business rules | ✅ | 14 | 7 |
+| Client scripts | ✅ | 12 | 3 |
+| UI policies | ✅ | 10 | 3 |
+| Flows (Workflow Automation) | ✅ | 6 | 3 |
+| Email notifications | ✅ | 10 | 5 |
+| Service catalog items | ✅ | 2 | 1 |
+| Variables & variable sets | ✅ | 2 | 2 |
+| Catalog client scripts | ✅ | 6 | 3 |
+| Catalog UI policies | ✅ | 4 | 2 |
+| Script includes | ✅ | 6 | 3 |
+| Scripted REST APIs | ✅ | 2 | 1 |
+| UI actions | ✅ | 10 | 5 |
+| UI pages (React) | ✅ | 4 | 2 |
+| UI formatters (built-in) | ✅ | 4 | 2 |
+| Workspaces | ✅ | 2 | 1 |
+| Application menus & modules | ✅ | 2 | 1 |
+| Lists | ✅ | 9 | 4 |
+| List controls | ✅ | 6 | 3 |
+| Views & view rules | ✅ | 17 | 3 |
+| Properties | ✅ | 5 | 5 |
+| Relationships | ✅ | 8 | 4 |
+| Records (seed data) | ✅ | 44 | 22 |
+| Data sources & import maps | ✅ | 4 | 2 |
+| Cross-scope privileges | ✅ | 6 | 4 |
+| Security attributes | ✅ | 2 | 1 |
+| Security data filters | ✅ | 2 | 2 |
+| JS modules | ✅ | 4 | 2 |
+| LDAP / external connections | ✅ | 2 | 1 |
+| ATF tests (11 categories) | ✅ | 22 | 11 |
+
+</details>
+
+<details>
+<summary><strong>Build Agent</strong> — 32/32 | Run 1 | 550 assists | 50m 0s</summary>
+
+| Component | Status | Found | Expected |
+|-----------|--------|------:|--------:|
+| Tables & columns | ✅ | 4 | 4 |
+| Access control lists (ACLs) | ✅ | 12 | 11 |
+| Roles | ✅ | 4 | 4 |
+| Business rules | ✅ | 7 | 7 |
+| Client scripts | ✅ | 6 | 3 |
+| UI policies | ✅ | 5 | 3 |
+| Flows (Workflow Automation) | ✅ | 3 | 3 |
+| Email notifications | ✅ | 5 | 5 |
+| Service catalog items | ✅ | 1 | 1 |
+| Variables & variable sets | ✅ | 2 | 2 |
+| Catalog client scripts | ✅ | 3 | 3 |
+| Catalog UI policies | ✅ | 2 | 2 |
+| Script includes | ✅ | 3 | 3 |
+| Scripted REST APIs | ✅ | 1 | 1 |
+| UI actions | ✅ | 5 | 5 |
+| UI pages (React) | ✅ | 2 | 2 |
+| UI formatters (built-in) | ✅ | 2 | 2 |
+| Workspaces | ✅ | 1 | 1 |
+| Application menus & modules | ✅ | 1 | 1 |
+| Lists | ✅ | 4 | 4 |
+| List controls | ✅ | 3 | 3 |
+| Views & view rules | ✅ | 3 | 3 |
+| Properties | ✅ | 5 | 5 |
+| Relationships | ✅ | 4 | 4 |
+| Records (seed data) | ✅¹ | 20 | 22 |
+| Data sources & import maps | ✅ | 2 | 2 |
+| Cross-scope privileges | ✅ | 4 | 4 |
+| Security attributes | ✅¹ | 1 | 1 |
+| Security data filters | ✅¹ | 2 | 2 |
+| JS modules | ✅¹ | 2 | 2 |
+| LDAP / external connections | ✅ | 1 | 1 |
+| ATF tests (11 categories) | ✅ | 11 | 11 |
+
+¹ *Verify script had detection gaps for these components (naming convention or query mismatch). Confirmed present by manual inspection in the instance.*
+
+</details>
+
+<!-- RESULTS:END -->
+
+---
+
+## Archive
+
+The March 2026 run (simple spec, 5 approaches) is preserved in [archive/](archive/):
+- [archive/README-MAR-2026.md](archive/README-MAR-2026.md)
+- `archive/mar-2026-approach-1-rest-custom-ui/`
+- `archive/mar-2026-approach-2-rest-workspace/`
+- `archive/mar-2026-approach-3-sdk/`
+- `archive/mar-2026-approach-4-buildagent-custom-ui.md`
+- `archive/mar-2026-approach-5-buildagent-workspace.md`
+
+---
+
+## Excluded Approaches
+
+**REST Custom UI and REST Workspace** attempted to build the scoped app entirely via ServiceNow REST API calls from Windsurf. Both were tested in the March 2026 run and scored **0/32** when retroactively validated against the April spec.
+
+**Why they failed:** The ServiceNow REST API cannot reliably create records inside a `sys_app` scope. Records created via REST land in the global scope regardless of `sys_scope` field values, session scope preferences, or `X-UserToken` headers. Without scoped ownership, the verification script (which queries by `sys_scope=x_snc_apr_trv`) finds nothing.
+
+**Why they are excluded from April results:** Since REST approaches are fundamentally unsuitable for building scoped apps — a structural limitation, not a fixable bug — they were dropped from the April experiment after the March validation confirmed the failure mode. No new implementation work was done for REST approaches in April. The 0/32 baseline runs remain in [results.yaml](results.yaml) for completeness.
