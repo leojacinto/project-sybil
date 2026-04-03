@@ -1,6 +1,6 @@
-# March 2026 — Validator Test (Retroactive)
+# Verify Script Validation — Test Run Against March Data
 
-> **⚠️ TEST ONLY.** This is a retroactive test of the `scripts/verify.py` validator run against the March 2026 travel apps still present on the instance. It is **not** a point-in-time accurate snapshot of the March run — components may have been added, modified, or deleted since March. The purpose is to validate that the verification script correctly detects existing components and to demonstrate the output format for the April 2026 run.
+> **⚠️ THIS IS NOT A MARCH 2026 SCORECARD.** This file was generated to test whether `scripts/verify.py` correctly detects scoped components. The March 2026 travel apps happened to still be on the instance, so they were used as test data. The scores below say nothing about the March approaches — the March spec only covered ~8 component types, while the validator checks for 32 (the April spec). A March approach scoring 3/32 here does not mean it failed; it means the validator is checking for things that were never in scope for March. Do not cite these numbers as March results.
 
 ---
 

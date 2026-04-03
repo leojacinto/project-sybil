@@ -17,7 +17,7 @@
 
 ## Approaches
 
-> **REST approaches (Custom UI, Workspace) have been dropped.** The [March 2026 retroactive validation](archive/readme-mar-2026-validator-test.md) showed that vanilla REST API calls cannot reliably scope records into a `sys_app` — REST Custom UI produced 0/32 detectable components, REST Workspace managed only 1/32. REST is fundamentally unsuitable for building scoped apps and is no longer pursued.
+> **REST approaches (Custom UI, Workspace) have been dropped.** The March 2026 run demonstrated that vanilla REST API calls cannot reliably create records inside a scoped `sys_app` — records land in the global scope regardless of `sys_scope` field values or session preferences. This is a structural platform limitation, not a fixable bug. REST approaches are no longer pursued.
 >
 > **Build Agent Custom UI has been collapsed into Build Agent.** The spec includes both UI Pages and Workspaces as component types. Since Build Agent creates all 32 component types from a single prompt regardless of UI target, running separate "Custom UI" and "Workspace" variants would produce identical output. A single Build Agent run covers both.
 
@@ -295,8 +295,8 @@ The March 2026 run (simple spec, 5 approaches) is preserved in [archive/](archiv
 
 ## Excluded Approaches
 
-**REST Custom UI and REST Workspace** attempted to build the scoped app entirely via ServiceNow REST API calls from Windsurf. Both were tested in the March 2026 run and scored **0/32** when retroactively validated against the April spec.
+**REST Custom UI and REST Workspace** attempted to build the scoped app entirely via ServiceNow REST API calls from Windsurf. Both were tested in the March 2026 run.
 
-**Why they failed:** The ServiceNow REST API cannot reliably create records inside a `sys_app` scope. Records created via REST land in the global scope regardless of `sys_scope` field values, session scope preferences, or `X-UserToken` headers. Without scoped ownership, the verification script (which queries by `sys_scope=x_snc_apr_trv`) finds nothing.
+**Why they failed:** The ServiceNow REST API cannot reliably create records inside a `sys_app` scope. Records created via REST land in the global scope regardless of `sys_scope` field values, session scope preferences, or `X-UserToken` headers. This was discovered empirically during the March run.
 
-**Why they are excluded from April results:** Since REST approaches are fundamentally unsuitable for building scoped apps — a structural limitation, not a fixable bug — they were dropped from the April experiment after the March validation confirmed the failure mode. No new implementation work was done for REST approaches in April. The 0/32 baseline runs remain in [results.yaml](results.yaml) for completeness.
+**Why they are excluded from April results:** Since REST approaches are fundamentally unsuitable for building scoped apps — a structural platform limitation, not a fixable bug — they were dropped from the April experiment. No new implementation work was done for REST approaches in April.
