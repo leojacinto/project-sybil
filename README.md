@@ -151,8 +151,8 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 
 | Approach | Latest Run | Score | Tokens | Wall Clock | Trend |
 |----------|-----------|-------|-------:|------------|-------|
-| **SDK Primed** | Run 4 | **32/32** | 500,000 (500,000 total) | 2h 15m (2h 15m total) | 25/32 → 30/32 → 32/32 → 32/32 |
-| **SDK Cold** | Run 6 | **32/32** | — (450,000 total) | — (2h 5m total) | 31/32 → 31/32 → 32/32 → 32/32 → 30/32 → 32/32 |
+| **SDK Primed** | Run 4 | **32/32** | ~500,000 | ~2h 15m | 25/32 → 30/32 → 32/32 → 32/32 |
+| **SDK Cold** | Run 6 | **32/32** | ~450,000 | ~2h 5m | 31/32 → 31/32 → 32/32 → 32/32 → 30/32 → 32/32 |
 | **Build Agent** | Run 1 | **32/32** | 550 | ~50m | 32/32 |
 
 <details>
