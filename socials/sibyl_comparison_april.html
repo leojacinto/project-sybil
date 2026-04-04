@@ -136,7 +136,7 @@
   }
 
   .tl-label-method {
-    font-size: clamp(0.5rem, 0.85vw, 0.7rem);
+    font-size: clamp(0.64rem, 1.08vw, 0.89rem);
     color: var(--text-light);
   }
 
@@ -159,7 +159,7 @@
   }
 
   .tl-bar-text {
-    font-size: clamp(0.55rem, 0.9vw, 0.75rem);
+    font-size: clamp(0.7rem, 1.15vw, 0.96rem);
     color: white;
     font-weight: 500;
     white-space: normal;
@@ -214,7 +214,7 @@
   .tl-summary {
     margin-top: 30px;
     margin-bottom: calc(7% + 20px);
-    font-size: clamp(0.7rem, 1.1vw, 0.95rem);
+    font-size: clamp(0.84rem, 1.32vw, 1.14rem);
     color: var(--text-mid);
     line-height: 1.5;
     opacity: 0;
@@ -603,8 +603,8 @@
           <div class="tl-label-title">SDK Primed</div>
           <div class="tl-label-method">Claude / SDK v4.5</div>
           <div class="tl-label-icons">
-            <img class="tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
             <img class="tool-icon" src="Claude_AI_symbol.svg" alt="Claude">
+            <img class="tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
           </div>
         </div>
         <div class="tl-track">
@@ -623,8 +623,8 @@
           <div class="tl-label-title">SDK Cold</div>
           <div class="tl-label-method">Claude / SDK v4.5</div>
           <div class="tl-label-icons">
-            <img class="tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
             <img class="tool-icon" src="Claude_AI_symbol.svg" alt="Claude">
+            <img class="tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
           </div>
         </div>
         <div class="tl-track">
@@ -665,76 +665,33 @@
     <div class="cards-phase active" id="cardsPhase">
       <div class="card-viewport" id="cardViewport">
 
-        <!-- Slide 1: SDK Primed -->
+        <!-- Slide 1: SDK (Combined) -->
         <div class="card-slide" data-slide="0" style="grid-template-columns: 1fr; justify-items: center; animation: 0.6s ease-out 0s 1 normal forwards running slideIn; opacity: 0; transform: translateX(30px); pointer-events: auto;">
           <div class="card" style="max-width: 68%;">
             <div class="card-header-row">
-              <img class="card-tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
               <img class="card-tool-icon" src="Claude_AI_symbol.svg" alt="Claude">
+              <img class="card-tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
             </div>
-            <div class="card-approach">SDK Primed</div>
-            <div class="card-title">Context-Primed SDK</div>
+            <div class="card-approach">SDK Approach</div>
+            <div class="card-title">Claude + ServiceNow SDK</div>
             <div class="card-method">Claude via Cascade &middot; ServiceNow SDK v4.5 (Fluent API)</div>
             <div class="card-stats-grid">
               <div class="card-stat"><div class="card-stat-value">32/32</div><div class="card-stat-label">Score</div></div>
-              <div class="card-stat"><div class="card-stat-value">~2h 15m</div><div class="card-stat-label">Time</div></div>
+              <div class="card-stat"><div class="card-stat-value">~2h</div><div class="card-stat-label">Time</div></div>
               <div class="card-stat"><div class="card-stat-value">~500K</div><div class="card-stat-label">Tokens</div></div>
             </div>
-            <div class="card-outcome o-working">&#10003; All 32 component types</div>
+            <div class="card-outcome o-working" style="margin-top:20px">&#10003; All 32 component types</div>
             <div class="card-outcome o-partial" style="margin-top:6px;">&#9888; Workspace and Custom UI did not render correctly</div>
-            <div class="card-details">
-              <div class="card-detail-row"><span class="card-detail-label">Deploy<br>iterations</span><span>4 runs: 25 &rarr; 30 &rarr; 32 &rarr; 32</span></div>
-              <div class="card-detail-row"><span class="card-detail-label">Sessions</span><span>5</span></div>
-              <div class="card-detail-row"><span class="card-detail-label">Prior context</span><span>Full experiment + SDK pre-read</span></div>
-            </div>
-            <div class="card-features">
-              <span class="feat">Data Model (5)</span>
-              <span class="feat">Security (4)</span>
-              <span class="feat">Server Logic (5)</span>
-              <span class="feat">Client Logic (2)</span>
-              <span class="feat">Automation &amp; Catalog (6)</span>
-              <span class="feat">UI &amp; Workspace (7)</span>
-              <span class="feat">Integration &amp; Test (3)</span>
+            <div class="card-details" style="margin-top:20px">
+              <div class="card-detail-row"><span class="card-detail-label">Deploy<br>iterations</span><span>Up to 4 runs: 25 &rarr; 30 &rarr; 32 &rarr; 32</span></div>
+              <div class="card-detail-row"><span class="card-detail-label">Sessions</span><span>Up to 5</span></div>
+              <div class="card-detail-row"><span class="card-detail-label">Insight</span><span style="margin-left:30px">Manual API discovery was the primary time cost</span></div>
             </div>
           </div>
         </div>
 
-        <!-- Slide 2: SDK Cold -->
+        <!-- Slide 2: Build Agent -->
         <div class="card-slide" data-slide="1" style="grid-template-columns: 1fr; justify-items: center; animation: auto ease 0s 1 normal none running none; opacity: 0; transform: translateX(30px); pointer-events: none;">
-          <div class="card" style="max-width: 68%;">
-            <div class="card-header-row">
-              <img class="card-tool-icon" src="windsurf-black-symbol.svg" alt="Windsurf">
-              <img class="card-tool-icon" src="Claude_AI_symbol.svg" alt="Claude">
-            </div>
-            <div class="card-approach">SDK Cold</div>
-            <div class="card-title">Cold-Start SDK</div>
-            <div class="card-method">Claude via Cascade &middot; ServiceNow SDK v4.5 (Fluent API)</div>
-            <div class="card-stats-grid">
-              <div class="card-stat"><div class="card-stat-value">32/32</div><div class="card-stat-label">Score</div></div>
-              <div class="card-stat"><div class="card-stat-value">~2h 5m</div><div class="card-stat-label">Time</div></div>
-              <div class="card-stat"><div class="card-stat-value">~450K</div><div class="card-stat-label">Tokens</div></div>
-            </div>
-            <div class="card-outcome o-working">&#10003; All 32 component types</div>
-            <div class="card-outcome o-partial" style="margin-top:6px;">&#9888; Workspace and Custom UI did not render correctly</div>
-            <div class="card-details">
-              <div class="card-detail-row"><span class="card-detail-label">Deploy<br>iterations</span><span>2 runs: 30/32 &rarr; 32/32</span></div>
-              <div class="card-detail-row"><span class="card-detail-label">Sessions</span><span>3</span></div>
-              <div class="card-detail-row"><span class="card-detail-label">Prior context</span><span>Spec file only - fresh session</span></div>
-            </div>
-            <div class="card-features">
-              <span class="feat">Data Model (5)</span>
-              <span class="feat">Security (4)</span>
-              <span class="feat">Server Logic (5)</span>
-              <span class="feat">Client Logic (2)</span>
-              <span class="feat">Automation &amp; Catalog (6)</span>
-              <span class="feat">UI &amp; Workspace (7)</span>
-              <span class="feat">Integration &amp; Test (3)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 3: Build Agent -->
-        <div class="card-slide" data-slide="2" style="grid-template-columns: 1fr; justify-items: center; animation: auto ease 0s 1 normal none running none; opacity: 0; transform: translateX(30px); pointer-events: none;">
           <div class="card highlight" style="max-width: 68%;">
             <div class="card-header-row">
               <img class="card-tool-icon" src="Servicenow_icon.png" alt="ServiceNow">
@@ -747,21 +704,12 @@
               <div class="card-stat"><div class="card-stat-value">~50m</div><div class="card-stat-label">Time</div></div>
               <div class="card-stat"><div class="card-stat-value">550</div><div class="card-stat-label">Assists</div></div>
             </div>
-            <div class="card-outcome o-working">&#10003; All 32 component types with rendered Workspace and Custom UI</div>
-            <div class="card-details">
+            <div class="card-outcome o-working" style="margin-top:20px">&#10003; All 32 component types with rendered Workspace and Custom UI</div>
+            <div class="card-details" style="margin-top:20px">
               <div class="card-detail-row"><span class="card-detail-label">Deploy<br>iterations</span><span>1 run: one-shot prompt</span></div>
               <div class="card-detail-row"><span class="card-detail-label">Sessions</span><span>1</span></div>
-              <div class="card-detail-row"><span class="card-detail-label">Advantage</span><span>Built-in schema knowledge, zero API discovery</span></div>
+              <div class="card-detail-row"><span class="card-detail-label">Advantage</span><span style="margin-left:65px">Built-in schema knowledge, zero API discovery</span></div>
               <div class="card-detail-row"><span class="card-detail-label">Unique</span><span>Functional workspace dashboard</span></div>
-            </div>
-            <div class="card-features">
-              <span class="feat">Data Model (5)</span>
-              <span class="feat">Security (4)</span>
-              <span class="feat">Server Logic (5)</span>
-              <span class="feat">Client Logic (2)</span>
-              <span class="feat">Automation &amp; Catalog (6)</span>
-              <span class="feat">UI &amp; Workspace (7)</span>
-              <span class="feat">Integration &amp; Test (3)</span>
             </div>
           </div>
         </div>
@@ -770,7 +718,6 @@
       <div class="slide-dots" id="slideDots">
         <div class="slide-dot active" data-dot="0"></div>
         <div class="slide-dot" data-dot="1"></div>
-        <div class="slide-dot" data-dot="2"></div>
       </div>
     </div>
   </div>
@@ -879,9 +826,9 @@ const tlSummary = document.querySelector('.tl-summary');
 const slides = document.querySelectorAll('.card-slide');
 const dots = document.querySelectorAll('.slide-dot');
 
-const TIMELINE_HOLD = 5800;
-const ROW_STAGGER = 300;
-const CARD_HOLD = 4000;
+const TIMELINE_HOLD = 3500;
+const ROW_STAGGER = 200;
+const CARD_HOLDS = [4000, 4000];
 let currentSlide = 0;
 let prevSlide = -1;
 let cardTimer = null;
@@ -932,12 +879,13 @@ function showSlide(idx) {
 }
 
 function runCardCycle(resolve) {
+  const hold = CARD_HOLDS[currentSlide] || CARD_HOLDS[CARD_HOLDS.length - 1];
   showSlide(currentSlide);
   currentSlide++;
   if (currentSlide < slides.length) {
-    cardTimer = setTimeout(() => runCardCycle(resolve), CARD_HOLD);
+    cardTimer = setTimeout(() => runCardCycle(resolve), hold);
   } else {
-    cardTimer = setTimeout(resolve, CARD_HOLD);
+    cardTimer = setTimeout(resolve, hold);
   }
 }
 
@@ -1062,7 +1010,7 @@ function generateLeafSvg(outlineIdx, palIdx, nodeRingSeed) {
 // Pre-compute leaf schedule for one 30s cycle
 const leafRng = mulberry32(2025);
 const LEAF_COUNT = 20;
-const LEAF_CYCLE_MS = 20000;
+const LEAF_CYCLE_MS = 13000;
 const leafSchedule = [];
 
 for (let i = 0; i < LEAF_COUNT; i++) {

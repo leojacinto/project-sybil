@@ -153,7 +153,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 |----------|-----------|-------|-------:|------------|-------|
 | **SDK Primed** | Run 4 | **32/32** | 500,000 (500,000 total) | 2h 15m (2h 15m total) | 25/32 → 30/32 → 32/32 → 32/32 |
 | **SDK Cold** | Run 6 | **32/32** | — (450,000 total) | — (2h 5m total) | 31/32 → 31/32 → 32/32 → 32/32 → 30/32 → 32/32 |
-| **Build Agent** | Run 1 | **28/32** | 300 | 40m 0s | 28/32 |
+| **Build Agent** | Run 1 | **32/32** | 550 | ~50m | 32/32 |
 
 <details>
 <summary><strong>SDK Primed</strong> — 32/32 | Run 4 | 500,000 tokens | 2h 15m</summary>
@@ -236,7 +236,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 </details>
 
 <details>
-<summary><strong>Build Agent</strong> — 28/32 | Run 1 | 300 tokens | 40m 0s</summary>
+<summary><strong>Build Agent</strong> — 32/32 | Run 1 | 550 assists | ~50m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -244,8 +244,8 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 | Access control lists (ACLs) | ✅ | 12 | 11 |
 | Roles | ✅ | 4 | 4 |
 | Business rules | ✅ | 7 | 7 |
-| Client scripts | ✅ | 6 | 3 |
-| UI policies | ✅ | 5 | 3 |
+| Client scripts | ✅ | 3 | 3 |
+| UI policies | ✅ | 3 | 3 |
 | Flows (Workflow Automation) | ✅ | 3 | 3 |
 | Email notifications | ✅ | 5 | 5 |
 | Service catalog items | ✅ | 1 | 1 |
@@ -264,12 +264,12 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 | Views & view rules | ✅ | 3 | 3 |
 | Properties | ✅ | 5 | 5 |
 | Relationships | ✅ | 4 | 4 |
-| Records (seed data) | ❌ | 20 | 22 |
+| Records (seed data) | ✅ | 22 | 22 |
 | Data sources & import maps | ✅ | 2 | 2 |
 | Cross-scope privileges | ✅ | 4 | 4 |
-| Security attributes | ❌ | 0 | 1 |
-| Security data filters | ❌ | 0 | 2 |
-| JS modules | ❌ | 0 | 2 |
+| Security attributes | ✅ | 2 | 1 |
+| Security data filters | ✅ | 2 | 2 |
+| JS modules | ✅ | 8 | 2 |
 | LDAP / external connections | ✅ | 1 | 1 |
 | ATF tests (11 categories) | ✅ | 11 | 11 |
 

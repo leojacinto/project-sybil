@@ -7,10 +7,10 @@ import subprocess, os, sys, shutil
 # ── CONFIG ──
 WIDTH = 1400
 HEIGHT = 800
-FPS = 25              # lower fps = smaller GIF (target <10MB)
-LOOP_DUR = 20.0       # 20s = full animation cycle (timeline + 3 cards + leaf cycle)
-TOTAL_FRAMES = int(FPS * LOOP_DUR)
-FRAME_INTERVAL_MS = int(1000 / FPS)
+LOOP_DUR = 13.0       # 13s animation cycle
+TOTAL_FRAMES = 390
+FRAME_INTERVAL_MS = LOOP_DUR * 1000 / TOTAL_FRAMES  # 33.33ms per frame
+FPS = TOTAL_FRAMES / LOOP_DUR  # ~30fps
 WARMUP_FRAMES = TOTAL_FRAMES  # 1 full cycle warmup for clean loop point
 
 # Crop to content area (skip left/right whitespace)
@@ -125,7 +125,7 @@ palette = "/tmp/sibyl_april_palette.png"
 subprocess.run([
     "ffmpeg", "-y", "-framerate", str(FPS),
     "-i", os.path.join(FRAME_DIR, "frame_%04d.png"),
-    "-vf", "palettegen=max_colors=256:stats_mode=diff",
+    "-vf", "scale=680:680,palettegen=max_colors=128:stats_mode=diff",
     palette
 ], check=True, capture_output=True)
 
@@ -133,12 +133,12 @@ subprocess.run([
     "ffmpeg", "-y", "-framerate", str(FPS),
     "-i", os.path.join(FRAME_DIR, "frame_%04d.png"),
     "-i", palette,
-    "-lavfi", "[0:v][1:v]paletteuse=dither=sierra2_4a:diff_mode=rectangle",
+    "-lavfi", "scale=680:680[x];[x][1:v]paletteuse=dither=sierra2_4a:diff_mode=rectangle",
     OUTPUT_GIF
 ], check=True, capture_output=True)
 
 gif_size = os.path.getsize(OUTPUT_GIF) / (1024 * 1024)
 print(f"\nGIF: {OUTPUT_GIF}")
 print(f"Size: {gif_size:.1f} MB")
-print(f"Dimensions: {CLIP_W}x{CLIP_H} (from {WIDTH}x{HEIGHT})")
+print(f"Dimensions: 680x680 (from {CLIP_W}x{CLIP_H} crop of {WIDTH}x{HEIGHT})")
 print(f"Framerate: {FPS}fps, Loop: {LOOP_DUR}s, Frames: {TOTAL_FRAMES}")
