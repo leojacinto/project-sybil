@@ -31,12 +31,12 @@ import yaml
 # ---------------------------------------------------------------------------
 
 APPROACH_NAMES = {
-    "1": "approach-1-rest-custom-ui",
-    "2": "approach-2-rest-workspace",
-    "3": "approach-3-sdk",
-    "3b": "approach-3b-sdk-cold",
-    "4": "approach-4-buildagent-custom-ui",
-    "5": "approach-5-buildagent-workspace",
+    "1": "rest-custom-ui",
+    "2": "rest-workspace",
+    "3": "sdk-primed",
+    "3b": "sdk-cold",
+    "4": "buildagent-custom-ui",
+    "5": "buildagent",
 }
 
 APPROACH_LABELS = {

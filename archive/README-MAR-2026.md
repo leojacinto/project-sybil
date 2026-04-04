@@ -24,7 +24,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 | **Prompts** | Multiple iterations | Multiple iterations | 1 prompt, 4 build fixes, 2 deploy fixes, 3 additional iterations | 1 prompt | 5 prompts |
 | **Wall-clock** | ~2 hours | ~3 hours (incomplete) | ~20 minutes | ~20 minutes | < 15 minutes |
 | **Status** | <span style="color:#22c55e">Working</span> | <span style="color:#ef4444">Incomplete</span> | <span style="color:#f59e0b">Partial</span> (workspace yes, custom UI + dashboard incomplete) | <span style="color:#22c55e">Working</span> | <span style="color:#22c55e">Working</span> |
-| **Assets** | [approach-1-rest-custom-ui/](approach-1-rest-custom-ui/) | [approach-2-rest-workspace/](approach-2-rest-workspace/) | [approach-3-sdk/](approach-3-sdk/) | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
+| **Assets** | [rest-custom-ui/](rest-custom-ui/) | [rest-workspace/](rest-workspace/) | [sdk/](sdk/) | [buildagent-custom-ui.md](buildagent-custom-ui.md) | [buildagent-workspace.md](buildagent-workspace.md) |
 
 ---
 
@@ -72,7 +72,7 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 ### Approach 1 -- REST API Custom UI (~2 hours)
 
-4 failed iterations before the working version. See [approach-1-rest-custom-ui/](approach-1-rest-custom-ui/).
+4 failed iterations before the working version. See [rest-custom-ui/](rest-custom-ui/).
 
 1. **Raw HTML** -- blank page (UI Pages require Jelly XML)
 2. **Client-side XHR** -- 401 (CSRF enforcement on `direct=true` pages)
@@ -82,11 +82,11 @@ Then ServiceNow's own Build Agent attempted the same deliverables from inside th
 
 ### Approach 2 -- REST API Workspace (~3 hours, incomplete)
 
-Cascade produced functional React components (forms, tables, state machine, validation). The workspace framework coordinates ~20 records across multiple tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). This level of orchestration is purpose-built for platform-native tooling (Build Agent, SDK) rather than external REST calls. See [approach-2-rest-workspace/](approach-2-rest-workspace/).
+Cascade produced functional React components (forms, tables, state machine, validation). The workspace framework coordinates ~20 records across multiple tables (`sys_ux_app_config`, `sys_ux_page_registry`, `sys_ux_screen_type`, `sys_ux_app_route`, `sys_ux_screen`, `sys_ux_page_property`). This level of orchestration is purpose-built for platform-native tooling (Build Agent, SDK) rather than external REST calls. See [rest-workspace/](rest-workspace/).
 
 ### Approach 3 -- SDK Custom UI + Workspace (~20 minutes, partial)
 
-Claude Opus scaffolded the full app from a single prompt using the ServiceNow SDK v4.4.0. The data foundation and workspace deployed successfully. The custom UI page and dashboard required additional iterations but could not reach the same level as Build Agent. See [approach-3-sdk/](approach-3-sdk/).
+Claude Opus scaffolded the full app from a single prompt using the ServiceNow SDK v4.4.0. The data foundation and workspace deployed successfully. The custom UI page and dashboard required additional iterations but could not reach the same level as Build Agent. See [sdk/](sdk/).
 
 1. **Initial scaffold** -- build failed (SDK bundler expected `<script src="./app.ts">` entry point)
 2. **Restructured to client app** -- build failed (15 type errors: `PriceColumn` missing, `ChoiceColumn` format wrong, `ReferenceColumn` uses `referenceTable`, `BusinessRule` uses `action` array, `Module` missing)
@@ -152,8 +152,8 @@ The AI models are equally capable. The variable is what each agent can reach fro
 
 | Approach | Instructions |
 |---|---|
-| **1 -- REST Custom UI** | [approach-1-rest-custom-ui/README.md](approach-1-rest-custom-ui/README.md) |
-| **2 -- REST Workspace** | [approach-2-rest-workspace/README.md](approach-2-rest-workspace/README.md) |
-| **3 -- SDK Custom UI + Workspace** | [approach-3-sdk/README.md](approach-3-sdk/README.md) |
-| **4 -- Build Agent Custom UI** | [approach-4-buildagent-custom-ui.md](approach-4-buildagent-custom-ui.md) |
-| **5 -- Build Agent Workspace** | [approach-5-buildagent-workspace.md](approach-5-buildagent-workspace.md) |
+| **1 -- REST Custom UI** | [rest-custom-ui/README.md](rest-custom-ui/README.md) |
+| **2 -- REST Workspace** | [rest-workspace/README.md](rest-workspace/README.md) |
+| **3 -- SDK Custom UI + Workspace** | [sdk/README.md](sdk/README.md) |
+| **4 -- Build Agent Custom UI** | [buildagent-custom-ui.md](buildagent-custom-ui.md) |
+| **5 -- Build Agent Workspace** | [buildagent-workspace.md](buildagent-workspace.md) |

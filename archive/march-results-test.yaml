@@ -1,5 +1,5 @@
 approaches:
-  approach-1-rest-custom-ui:
+  rest-custom-ui:
     runs:
     - run: 1
       timestamp: '2026-04-03T12:57:27.235897'
@@ -171,7 +171,7 @@ approaches:
           status: fail
           found: 0
           expected: 11
-  approach-3-sdk:
+  sdk:
     runs:
     - run: 1
       timestamp: '2026-04-03T12:59:37.385681'
@@ -343,7 +343,7 @@ approaches:
           status: fail
           found: 0
           expected: 11
-  approach-2-rest-workspace:
+  rest-workspace:
     runs:
     - run: 1
       timestamp: '2026-04-03T13:00:51.833079'
@@ -515,7 +515,7 @@ approaches:
           status: fail
           found: 0
           expected: 11
-  approach-4-buildagent-custom-ui:
+  buildagent-custom-ui:
     runs:
     - run: 1
       timestamp: '2026-04-03T13:01:46.742422'
@@ -687,7 +687,7 @@ approaches:
           status: fail
           found: 0
           expected: 11
-  approach-5-buildagent-workspace:
+  buildagent-workspace:
     runs:
     - run: 1
       timestamp: '2026-04-03T13:03:17.078625'

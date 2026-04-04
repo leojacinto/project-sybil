@@ -1,5 +1,5 @@
 approaches:
-  approach-1-rest-custom-ui:
+  rest-custom-ui:
     runs:
     - run: 1
       timestamp: '2026-04-03T12:13:15.691281'
@@ -335,7 +335,7 @@ approaches:
           status: fail
           found: 0
           expected: 11
-  approach-2-rest-workspace:
+  rest-workspace:
     runs:
     - run: 1
       timestamp: '2026-04-03T12:43:41.946820'
@@ -507,7 +507,7 @@ approaches:
           status: fail
           found: 0
           expected: 11
-  approach-3-sdk:
+  sdk-primed:
     runs:
     - run: 1
       timestamp: '2026-04-03T19:36:21.416690'
@@ -1189,7 +1189,7 @@ approaches:
           status: pass
           found: 11
           expected: 11
-  approach-3b-sdk-cold:
+  sdk-cold:
     runs:
     - run: 1
       timestamp: '2026-04-04T00:15:10.138443'
@@ -1871,7 +1871,347 @@ approaches:
           status: pass
           found: 22
           expected: 11
-  approach-5-buildagent-workspace:
+    - run: 5
+      timestamp: '2026-04-04T17:51:35.097932'
+      scope: x_snc_apr_tv3b
+      score: 30/32
+      passed: 30
+      total: 32
+      token_count: null
+      wall_clock_seconds: null
+      verify_duration_seconds: 51.4
+      components:
+        tables_and_columns:
+          label: Tables & columns
+          status: pass
+          found: 4
+          expected: 4
+        acls:
+          label: Access control lists (ACLs)
+          status: pass
+          found: 13
+          expected: 11
+        roles:
+          label: Roles
+          status: pass
+          found: 4
+          expected: 4
+        business_rules:
+          label: Business rules
+          status: pass
+          found: 7
+          expected: 7
+        client_scripts:
+          label: Client scripts
+          status: pass
+          found: 6
+          expected: 3
+        ui_policies:
+          label: UI policies
+          status: pass
+          found: 5
+          expected: 3
+        flows:
+          label: Flows (Workflow Automation)
+          status: pass
+          found: 3
+          expected: 3
+        email_notifications:
+          label: Email notifications
+          status: pass
+          found: 5
+          expected: 5
+        service_catalog_items:
+          label: Service catalog items
+          status: pass
+          found: 1
+          expected: 1
+        variables_and_variable_sets:
+          label: Variables & variable sets
+          status: fail
+          found: 0
+          expected: 2
+        catalog_client_scripts:
+          label: Catalog client scripts
+          status: pass
+          found: 3
+          expected: 3
+        catalog_ui_policies:
+          label: Catalog UI policies
+          status: pass
+          found: 2
+          expected: 2
+        script_includes:
+          label: Script includes
+          status: pass
+          found: 3
+          expected: 3
+        scripted_rest_apis:
+          label: Scripted REST APIs
+          status: pass
+          found: 1
+          expected: 1
+        ui_actions:
+          label: UI actions
+          status: pass
+          found: 5
+          expected: 5
+        ui_pages:
+          label: UI pages (React)
+          status: pass
+          found: 2
+          expected: 2
+        ui_formatters:
+          label: UI formatters (built-in)
+          status: pass
+          found: 2
+          expected: 2
+        workspaces:
+          label: Workspaces
+          status: pass
+          found: 1
+          expected: 1
+        app_menus_and_modules:
+          label: Application menus & modules
+          status: pass
+          found: 1
+          expected: 1
+        lists:
+          label: Lists
+          status: pass
+          found: 4
+          expected: 4
+        list_controls:
+          label: List controls
+          status: pass
+          found: 3
+          expected: 3
+        views_and_view_rules:
+          label: Views & view rules
+          status: pass
+          found: 7
+          expected: 3
+        properties:
+          label: Properties
+          status: pass
+          found: 5
+          expected: 5
+        relationships:
+          label: Relationships
+          status: pass
+          found: 4
+          expected: 4
+        records_seed_data:
+          label: Records (seed data)
+          status: pass
+          found: 22
+          expected: 22
+        data_sources_and_import_maps:
+          label: Data sources & import maps
+          status: pass
+          found: 2
+          expected: 2
+        cross_scope_privileges:
+          label: Cross-scope privileges
+          status: pass
+          found: 4
+          expected: 4
+        security_attributes:
+          label: Security attributes
+          status: pass
+          found: 1
+          expected: 1
+        security_data_filters:
+          label: Security data filters
+          status: fail
+          found: 0
+          expected: 2
+        js_modules:
+          label: JS modules
+          status: pass
+          found: 2
+          expected: 2
+        external_connections:
+          label: LDAP / external connections
+          status: pass
+          found: 1
+          expected: 1
+        atf_tests:
+          label: ATF tests (11 categories)
+          status: pass
+          found: 11
+          expected: 11
+    - run: 6
+      timestamp: '2026-04-04T17:57:46.003125'
+      scope: x_snc_apr_tv3b
+      score: 32/32
+      passed: 32
+      total: 32
+      token_count: null
+      wall_clock_seconds: null
+      verify_duration_seconds: 50.7
+      components:
+        tables_and_columns:
+          label: Tables & columns
+          status: pass
+          found: 4
+          expected: 4
+        acls:
+          label: Access control lists (ACLs)
+          status: pass
+          found: 13
+          expected: 11
+        roles:
+          label: Roles
+          status: pass
+          found: 4
+          expected: 4
+        business_rules:
+          label: Business rules
+          status: pass
+          found: 7
+          expected: 7
+        client_scripts:
+          label: Client scripts
+          status: pass
+          found: 6
+          expected: 3
+        ui_policies:
+          label: UI policies
+          status: pass
+          found: 5
+          expected: 3
+        flows:
+          label: Flows (Workflow Automation)
+          status: pass
+          found: 3
+          expected: 3
+        email_notifications:
+          label: Email notifications
+          status: pass
+          found: 5
+          expected: 5
+        service_catalog_items:
+          label: Service catalog items
+          status: pass
+          found: 1
+          expected: 1
+        variables_and_variable_sets:
+          label: Variables & variable sets
+          status: pass
+          found: 2
+          expected: 2
+        catalog_client_scripts:
+          label: Catalog client scripts
+          status: pass
+          found: 3
+          expected: 3
+        catalog_ui_policies:
+          label: Catalog UI policies
+          status: pass
+          found: 2
+          expected: 2
+        script_includes:
+          label: Script includes
+          status: pass
+          found: 3
+          expected: 3
+        scripted_rest_apis:
+          label: Scripted REST APIs
+          status: pass
+          found: 1
+          expected: 1
+        ui_actions:
+          label: UI actions
+          status: pass
+          found: 5
+          expected: 5
+        ui_pages:
+          label: UI pages (React)
+          status: pass
+          found: 2
+          expected: 2
+        ui_formatters:
+          label: UI formatters (built-in)
+          status: pass
+          found: 2
+          expected: 2
+        workspaces:
+          label: Workspaces
+          status: pass
+          found: 1
+          expected: 1
+        app_menus_and_modules:
+          label: Application menus & modules
+          status: pass
+          found: 1
+          expected: 1
+        lists:
+          label: Lists
+          status: pass
+          found: 4
+          expected: 4
+        list_controls:
+          label: List controls
+          status: pass
+          found: 3
+          expected: 3
+        views_and_view_rules:
+          label: Views & view rules
+          status: pass
+          found: 11
+          expected: 3
+        properties:
+          label: Properties
+          status: pass
+          found: 5
+          expected: 5
+        relationships:
+          label: Relationships
+          status: pass
+          found: 4
+          expected: 4
+        records_seed_data:
+          label: Records (seed data)
+          status: pass
+          found: 22
+          expected: 22
+        data_sources_and_import_maps:
+          label: Data sources & import maps
+          status: pass
+          found: 2
+          expected: 2
+        cross_scope_privileges:
+          label: Cross-scope privileges
+          status: pass
+          found: 4
+          expected: 4
+        security_attributes:
+          label: Security attributes
+          status: pass
+          found: 1
+          expected: 1
+        security_data_filters:
+          label: Security data filters
+          status: pass
+          found: 2
+          expected: 2
+        js_modules:
+          label: JS modules
+          status: pass
+          found: 2
+          expected: 2
+        external_connections:
+          label: LDAP / external connections
+          status: pass
+          found: 1
+          expected: 1
+        atf_tests:
+          label: ATF tests (11 categories)
+          status: pass
+          found: 11
+          expected: 11
+  buildagent:
     runs:
     - run: 1
       timestamp: '2026-04-04T03:00:28.064086'

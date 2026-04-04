@@ -39,7 +39,7 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 
 ## REST Custom UI
 
-**Folder:** `apr-2026-approach-1-rest-custom-ui/`
+**Folder:** `apr-2026-rest-custom-ui/`
 **Method:** REST API calls from Windsurf (Cascade) to instance
 **Target deliverable:** Jelly XML UI Page with full CRUD
 
@@ -101,7 +101,7 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 
 ## REST Workspace
 
-**Folder:** `apr-2026-approach-2-rest-workspace/`
+**Folder:** `apr-2026-rest-workspace/`
 **Method:** REST API calls from Windsurf (Cascade) to instance
 **Target deliverable:** Native configurable workspace
 
@@ -127,7 +127,7 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 
 ## SDK
 
-**Folder:** `apr-2026-approach-3-sdk/`
+**Folder:** `apr-2026-sdk-primed/`
 **Method:** ServiceNow SDK (`now-sdk`) Fluent TypeScript
 **Target deliverable:** SDK-bundled UI Page + Workspace
 
@@ -170,7 +170,7 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 
 ## Build Agent Custom UI (collapsed into Build Agent)
 
-**Folder:** `apr-2026-approach-4-buildagent-custom-ui/`
+**Folder:** `apr-2026-buildagent-custom-ui/`
 **Method:** Build Agent prompts inside ServiceNow IDE
 **Target deliverable:** React UI Page
 
@@ -196,7 +196,7 @@ Approaches 1–3 are driven from Windsurf (external). They share the same first 
 
 ## Build Agent Workspace
 
-**Folder:** `apr-2026-approach-5-buildagent-workspace/`
+**Folder:** `apr-2026-buildagent/`
 **Method:** Build Agent prompts inside ServiceNow IDE
 **Target deliverable:** Native configurable workspace
 

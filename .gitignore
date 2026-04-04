@@ -7,6 +7,7 @@ build/
 _archived-jarvis/
 Market_research_app/
 socials/*.gif
+socials/test_*.png
 sdk/
 
 # JARVIS internal documentation (not for public repo)
