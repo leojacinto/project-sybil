@@ -156,7 +156,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 | **Build Agent** | Run 1 | **32/32** | 550 | ~50m | 32/32 |
 
 <details>
-<summary><strong>SDK Primed</strong> — 32/32 | Run 4 | 500,000 tokens | 2h 15m</summary>
+<summary><strong>SDK Primed</strong> - 32/32 | Run 4 | 500,000 tokens | 2h 15m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -196,7 +196,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 </details>
 
 <details>
-<summary><strong>SDK Cold</strong> — 32/32 | Run 6</summary>
+<summary><strong>SDK Cold</strong> - 32/32 | Run 6</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
@@ -236,7 +236,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 </details>
 
 <details>
-<summary><strong>Build Agent</strong> — 32/32 | Run 1 | 550 assists | ~50m</summary>
+<summary><strong>Build Agent</strong> - 32/32 | Run 1 | 550 assists | ~50m</summary>
 
 | Component | Status | Found | Expected |
 |-----------|--------|------:|--------:|
