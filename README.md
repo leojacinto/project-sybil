@@ -124,7 +124,7 @@
 
 ## Scope Naming
 
-The instance `demoxyz` assigns vendor prefix `x_snc_`. The primary app scope is **`x_snc_apr_trv`** (SDK Primed + Build Agent). SDK Cold uses its own isolated scope **`x_snc_apr_tv3b`**.
+The instance `demoxyz` assigns custom app prefix `x_snc_`. The primary app scope is **`x_snc_apr_trv`** (SDK Primed + Build Agent). SDK Cold uses its own isolated scope **`x_snc_apr_tv3b`**.
 
 All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_trv_request` (or `x_snc_apr_tv3b_request` for SDK Cold) at implementation time.
 
