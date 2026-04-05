@@ -92,7 +92,7 @@
 
 **API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files - either upfront (Primed) or on-demand (Cold). By contrast, ServiceNow’s Build Agent has a curated internal **knowledge source** that documents every object schema (Table, Column, Flow, etc.) with property names, types, and constraints. The Build Agent activates a skill, pulls the relevant schema, and knows the exact shape of what it can create - zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
 
-**Takeaway:** For this task size (~30 files, 32 component types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing.
+**Takeaway:** For this task size (~30 files, 32 component types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing. This finding applies to generative tasks (building from a spec); for advisory use cases that require reading and synthesizing existing materials to support or guide users, upfront context loading is likely more valuable - a consideration for further study.
 
 ### Build Agent vs SDK: Platform-Native Wins
 

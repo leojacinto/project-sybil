@@ -11,7 +11,7 @@ LOOP_DUR = 13.0       # 13s animation cycle
 TOTAL_FRAMES = 390
 FRAME_INTERVAL_MS = LOOP_DUR * 1000 / TOTAL_FRAMES  # 33.33ms per frame
 FPS = TOTAL_FRAMES / LOOP_DUR  # ~30fps
-WARMUP_FRAMES = TOTAL_FRAMES  # 1 full cycle warmup for clean loop point
+WARMUP_FRAMES = TOTAL_FRAMES + 20  # 1 full cycle + transition into timeline phase
 
 # Crop to content area (skip left/right whitespace)
 CLIP_X = 300

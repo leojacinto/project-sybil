@@ -594,11 +594,11 @@
     </div>
 
     <!-- Phase 1: Timeline -->
-    <div class="timeline-phase" id="timelinePhase">
+    <div class="timeline-phase active" id="timelinePhase">
 
-      <div class="tl-summary visible">All approaches tested to create 32 objects supported by Fluent.<br>Build Agent delivered in one prompt what SDK took 3-5 sessions to achieve, also delivering complete Workspace and Custom UI.</div>
+      <div class="tl-summary">All approaches tested to create 32 objects supported by Fluent.<br>Build Agent delivered in one prompt what SDK took 3-5 sessions to achieve, also delivering complete Workspace and Custom UI.</div>
 
-      <div class="tl-row visible">
+      <div class="tl-row">
         <div class="tl-label">
           <div class="tl-label-title">SDK Primed</div>
           <div class="tl-label-method">Claude / SDK v4.5</div>
@@ -618,7 +618,7 @@
         </div>
       </div>
 
-      <div class="tl-row visible">
+      <div class="tl-row">
         <div class="tl-label">
           <div class="tl-label-title">SDK Cold</div>
           <div class="tl-label-method">Claude / SDK v4.5</div>
@@ -637,7 +637,7 @@
         </div>
       </div>
 
-      <div class="tl-row visible">
+      <div class="tl-row">
         <div class="tl-label">
           <div class="tl-label-title">Build Agent</div>
           <div class="tl-label-method">Now Assist / Native</div>
@@ -654,7 +654,7 @@
         </div>
       </div>
 
-      <div class="tl-legend visible">
+      <div class="tl-legend">
         <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--amber);"></div> Fix / iteration</div>
         <div class="tl-legend-item"><div class="tl-legend-dot" style="background:var(--green-deep);"></div> Pass</div>
       </div>
@@ -662,11 +662,11 @@
     </div>
 
     <!-- Phase 2: Cards -->
-    <div class="cards-phase active" id="cardsPhase">
+    <div class="cards-phase" id="cardsPhase">
       <div class="card-viewport" id="cardViewport">
 
         <!-- Slide 1: SDK (Combined) -->
-        <div class="card-slide" data-slide="0" style="grid-template-columns: 1fr; justify-items: center; animation: 0.6s ease-out 0s 1 normal forwards running slideIn; opacity: 0; transform: translateX(30px); pointer-events: auto;">
+        <div class="card-slide" data-slide="0" style="grid-template-columns: 1fr; justify-items: center;">
           <div class="card" style="max-width: 68%;">
             <div class="card-header-row">
               <img class="card-tool-icon" src="Claude_AI_symbol.svg" alt="Claude">
@@ -691,7 +691,7 @@
         </div>
 
         <!-- Slide 2: Build Agent -->
-        <div class="card-slide" data-slide="1" style="grid-template-columns: 1fr; justify-items: center; animation: auto ease 0s 1 normal none running none; opacity: 0; transform: translateX(30px); pointer-events: none;">
+        <div class="card-slide" data-slide="1" style="grid-template-columns: 1fr; justify-items: center;">
           <div class="card highlight" style="max-width: 68%;">
             <div class="card-header-row">
               <img class="card-tool-icon" src="Servicenow_icon.png" alt="ServiceNow">
@@ -893,8 +893,8 @@ function runTimelinePhase() {
   return new Promise(resolve => {
     // Frame 1: tear down old state
     resetTimeline();
-    resetCards();
     cardsPhase.classList.remove('active');
+    resetCards();
 
     // Frame 2+3: show timeline on a settled layout
     requestAnimationFrame(() => { requestAnimationFrame(() => {
