@@ -4,7 +4,7 @@
 
 - **Instance:** `demoxyz` (login verified, credentials in `.env`)
 - **Scope:** `x_snc_apr_trv` (instance uses `x_snc_` vendor prefix)
-- **Spec:** [specs/travel-app-spec-v1.md](specs/travel-app-spec-v1.md) - 32 component types
+- **Spec:** [specs/travel-app-spec-v1.md](specs/travel-app-spec-v1.md) - 32 object types
 - **Existing travel apps on instance:** `x_snc_travel`, `x_snc_travel_a2b`, `x_snc_travel_rl4by`, `x_snc_travel_romlk`
 
 ### Scope-to-Spec Mapping
@@ -236,7 +236,7 @@ Recommended execution order to maximize learning and minimize rework:
 ## Success Criteria
 
 For each approach, measure:
-- **Component coverage:** How many of the 32 component types were successfully created?
+- **Component coverage:** How many of the 32 object types were successfully created?
 - **Wall-clock time:** Total time from first action to working app
 - **Iteration count:** How many retries/fixes were needed?
 - **Working UI:** Does the UI actually function (CRUD, navigation, approval flow)?

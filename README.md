@@ -2,13 +2,13 @@
 
 > **Pilot / Demo only.** This repo benchmarks AI-assisted approaches for building scoped applications on ServiceNow. The Travel Request app is intentionally feature-complete but domain-simple - it exists to benchmark tooling, not to ship. None of these approaches nor their outcomes are production-grade.
 >
-> This is the **April 2026 run**, using an expanded specification that covers all 32 scoped application component types. The [March 2026 run](archive/README-MAR-2026.md) used a simpler spec and is archived for reference.
+> This is the **April 2026 run**, using an expanded specification that covers all 32 scoped application object types. The [March 2026 run](archive/README-MAR-2026.md) used a simpler spec and is archived for reference.
 
 ---
 
 ## Specification
 
-**[Travel Request App Specification v1](specs/travel-app-spec-v1.md)** - 32 component types documented to be supported by Fluent in both SDK-based and Build Agent native deployment approaches, 508 lines. Covers tables, ACLs, roles, business rules, client scripts, UI policies, flows, notifications, catalog items, variables, script includes, scripted REST APIs, UI actions, UI pages, workspaces, menus, lists, views, properties, relationships, seed data, data sources, cross-scope privileges, security attributes, security data filters, JS modules, external connections, and ATF tests.
+**[Travel Request App Specification v1](specs/travel-app-spec-v1.md)** - 32 object types documented to be supported by Fluent in both SDK-based and Build Agent native deployment approaches, 508 lines. Covers tables, ACLs, roles, business rules, client scripts, UI policies, flows, notifications, catalog items, variables, script includes, scripted REST APIs, UI actions, UI pages, workspaces, menus, lists, views, properties, relationships, seed data, data sources, cross-scope privileges, security attributes, security data filters, JS modules, external connections, and ATF tests.
 
 **Instance:** `demoxyz` (credentials in `.env`, gitignored)
 **Scopes:** `x_snc_apr_trv` (SDK Primed + Build Agent) · `x_snc_apr_tv3b` (SDK Cold - isolated clean scope)
@@ -19,7 +19,7 @@
 
 > **REST approaches (Custom UI, Workspace) have been dropped.** The March 2026 run demonstrated that vanilla REST API calls cannot reliably create records inside a scoped `sys_app` - records land in the global scope regardless of `sys_scope` field values or session preferences. This reflects platform design rather than a bug - scoped app assembly is intended for platform-native tools. REST approaches are no longer pursued.
 >
-> **Build Agent Custom UI has been collapsed into Build Agent.** The spec includes both UI Pages and Workspaces as component types. Since Build Agent creates all 32 component types from a single prompt regardless of UI target, running separate "Custom UI" and "Workspace" variants would produce identical output. A single Build Agent run covers both.
+> **Build Agent Custom UI has been collapsed into Build Agent.** The spec includes both UI Pages and Workspaces as object types. Since Build Agent creates all 32 object types from a single prompt regardless of UI target, running separate "Custom UI" and "Workspace" variants would produce identical output. A single Build Agent run covers both.
 
 | | **SDK Primed** | **SDK Cold** | **Build Agent** |
 |---|---|---|---|
@@ -54,7 +54,7 @@
 |---------|-----:|-------:|------|
 | 1. Experiment setup | ~20 min | ~40k | Read spec, validate March results, create scope |
 | 2. SDK doc pre-read | ~25 min | ~60k | Read 20+ Fluent API `.d.ts` files |
-| 3. Code generation | ~30 min | ~150k | Write 30 `.now.ts` files (all 32 component types) |
+| 3. Code generation | ~30 min | ~150k | Write 30 `.now.ts` files (all 32 object types) |
 | 4. CLI unblock + TS fixes | ~40 min | ~150k | Copy `node_modules` from March archive, fix ~15 TS errors |
 | 5. Deploy + iterative fixes | ~20 min | ~100k | 3 deploys: 25/32 → 30/32 → 32/32 |
 
@@ -70,7 +70,7 @@
 
 | Session | Time | Assists | Work |
 |---------|-----:|--------:|------|
-| 1. Full build | ~50 min | 550 | All 32 component types + configurable workspace with dashboard - single prompt; includes Jelly→React refinement for UI Page |
+| 1. Full build | ~50 min | 550 | All 32 object types + configurable workspace with dashboard - single prompt; includes Jelly→React refinement for UI Page |
 
 > Token estimates are approximate - Cascade does not expose exact counts. Estimates are based on conversation complexity, tool call volume, and output size per session. See development logs for per-session details, error catalogs, and key findings: [SDK Primed](docs/sdk-primed-development-log.md) | [SDK Cold](docs/sdk-cold-development-log.md).
 
@@ -92,7 +92,7 @@
 
 **API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files - either upfront (Primed) or on-demand (Cold). By contrast, ServiceNow’s Build Agent has a curated internal **knowledge source** that documents every object schema (Table, Column, Flow, etc.) with property names, types, and constraints. The Build Agent activates a skill, pulls the relevant schema, and knows the exact shape of what it can create - zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
 
-**Takeaway:** For this task size (~30 files, 32 component types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing. This finding applies to generative tasks (building from a spec); for advisory use cases that require reading and synthesizing existing materials to support or guide users, upfront context loading is likely more valuable - a consideration for further study.
+**Takeaway:** For this task size (~30 files, 32 object types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing. This finding applies to generative tasks (building from a spec); for advisory use cases that require reading and synthesizing existing materials to support or guide users, upfront context loading is likely more valuable - a consideration for further study.
 
 ### Build Agent vs SDK: Platform-Native Wins
 
@@ -134,7 +134,7 @@ All table names in the spec (e.g., `x_demo_travel_request`) map to `x_snc_apr_tr
 
 | | March 2026 | April 2026 |
 |---|---|---|
-| **Spec complexity** | ~8 component types (table, BRs, ACLs, UI page, workspace, sample data) | 32 component types (full scoped app inventory) |
+| **Spec complexity** | ~8 object types (table, BRs, ACLs, UI page, workspace, sample data) | 32 object types (full scoped app inventory) |
 | **Spec document** | Informal prompts per approach | [Formal spec](specs/travel-app-spec-v1.md) shared across all approaches |
 | **Scope prefix** | `x_snc_travel` | `x_snc_apr_trv` |
 | **Tables** | 1 (travel_request) | 4 (request, expense, policy, delegation) |

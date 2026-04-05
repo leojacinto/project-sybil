@@ -1,6 +1,6 @@
 # Project Sybil: Travel Request App Specification
 
-> The original Sybil benchmark used a deliberately simple Travel Request app to compare vibe coding approaches. This expanded specification covers **every scoped application component type** to serve as the definitive build brief for future Sybil iterations.
+> The original Sybil benchmark used a deliberately simple Travel Request app to compare vibe coding approaches. This expanded specification covers **every scoped application object type** to serve as the definitive build brief for future Sybil iterations.
 
 **Scope name:** `x_demo_travel`
 **App name:** Travel Request Management
@@ -457,9 +457,9 @@ One active, one expired.
 
 ## 33. Component Coverage Matrix
 
-Every component type from the ServiceNow scoped app inventory mapped to this spec:
+Every object type from the ServiceNow scoped app inventory mapped to this spec:
 
-| Component Type | Covered | Section |
+| Object Type | Covered | Section |
 |---------------|---------|---------|
 | Access control lists (ACLs) | Yes | 2 |
 | Application menus & modules | Yes | 19 |
@@ -494,14 +494,14 @@ Every component type from the ServiceNow scoped app inventory mapped to this spe
 | Views & view rules | Yes | 22 |
 | Workspaces | Yes | 18 |
 
-**32 of 32 component types covered.**
+**32 of 32 object types covered.**
 
 ---
 
 ## Notes
 
 - The app is intentionally feature-complete but domain-simple. It exists to benchmark tooling, not to ship as a production travel system.
-- Every component type from the ServiceNow scoped application inventory is exercised at least once.
+- Every object type from the ServiceNow scoped application inventory is exercised at least once.
 - The Scripted REST API enables external consumption testing (relevant for Sybil Approaches 1-3).
 - Seed data ensures the app is immediately demonstrable after deployment.
 - Connection aliases are used for external connections to support promotion across instances without credential exposure.

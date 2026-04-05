@@ -1,7 +1,7 @@
 # Build Agent - Workspace
 
 **Method:** ServiceNow Build Agent prompts inside the platform IDE
-**Target:** Configurable Workspace with all 32 scoped app component types
+**Target:** Configurable Workspace with all 32 scoped app object types
 **Scope:** `x_snc_apr_tv5` (use this exact scope to avoid collision with SDK approaches)
 
 > **Important:** Create the app scope **first** in App Engine Studio or System Applications before issuing Build Agent prompts. Name: "Travel Request Apr WS", Scope: `x_snc_apr_tv5`.
@@ -14,7 +14,7 @@ Record these for every Build Agent interaction:
 
 | # | Prompt Summary | Start Time | End Time | Wall Clock | Now Assists | Outcome |
 |---|---------------|-----------|---------|-----------|------------|---------|
-| 1 | Full spec - all 32 component types + Jelly→React UI Page refinement | | | ~50 min | 550 | All 32 components created including workspace with dashboard; UI Page refined from Jelly to React |
+| 1 | Full spec - all 32 object types + Jelly→React UI Page refinement | | | ~50 min | 550 | All 32 components created including workspace with dashboard; UI Page refined from Jelly to React |
 
 **Definitions:**
 - **Wall Clock:** Time from pressing Enter to Build Agent finishing (seconds or minutes)
@@ -305,7 +305,7 @@ Run this in **Scripts - Background** (System Definition > Scripts - Background) 
 
 ```javascript
 // ============================================================
-// Project Sybil - Build Agent Self-Check (32 Component Types)
+// Project Sybil - Build Agent Self-Check (32 Object Types)
 // Run in: Scripts - Background
 // Scope: x_snc_apr_tv5
 // ============================================================

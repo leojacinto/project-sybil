@@ -44,7 +44,7 @@ Unlike SDK Primed which pre-read all SDK docs in a dedicated session, SDK Cold d
 
 **Files Created (16):**
 
-| File | Component Types |
+| File | Object Types |
 |------|----------------|
 | `tables.now.ts` | 4 tables (request, expense, policy, delegation) |
 | `roles.now.ts` | 4 roles (user, approver, finance, admin) |
@@ -87,7 +87,7 @@ Unlike SDK Primed which pre-read all SDK docs in a dedicated session, SDK Cold d
 
 **Files Created (7):**
 
-| File | Component Types |
+| File | Object Types |
 |------|----------------|
 | `cross-scope.now.ts` | 4 cross-scope privileges |
 | `records.now.ts` | 22 seed data records (5 policies, 5 requests, 10 expenses, 2 delegations) |
@@ -142,7 +142,7 @@ Added `allowWebServiceAccess: true` to all 4 table definitions in `tables.now.ts
 | Tables | Added `allowWebServiceAccess: true` to all 4 tables |
 | ACLs | Added `adminOverrides: true` to all 10 ACLs (kept from Run 2) |
 
-All 32 component types verified. Seed data showed 44 found (vs 22 expected) because the scope already contained SDK Primed's 22 records.
+All 32 object types verified. Seed data showed 44 found (vs 22 expected) because the scope already contained SDK Primed's 22 records.
 
 ---
 

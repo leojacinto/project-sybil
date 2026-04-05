@@ -46,17 +46,17 @@
   - `RestApi`, `Workspace`, `UxListMenuConfig`
   - `Record`, `ImportSet`, `CrossScopePrivilege`
   - `Test` (ATF test framework)
-- Documented key API patterns and gotchas for each component type
+- Documented key API patterns and gotchas for each object type
 - Identified that `@servicenow/sdk/automation` re-exports from `@servicenow/sdk-core/flow`
 
 ### Session 3 - Code Generation (~30 min, ~150k tokens)
 
 **Date:** 2026-04-03
-**Objective:** Write all 32 component types as Fluent TypeScript files.
+**Objective:** Write all 32 object types as Fluent TypeScript files.
 
-Created 30 `.now.ts` files covering all 32 component types:
+Created 30 `.now.ts` files covering all 32 object types:
 
-| Directory | Files | Component Types |
+| Directory | Files | Object Types |
 |-----------|-------|----------------|
 | `tables/` | 4 | Tables & columns (request, expense, policy, delegation) |
 | `roles/` | 1 | 4 roles (user, approver, finance, admin) |
@@ -126,7 +126,7 @@ Also created `index.now.ts` barrel file and `now.config.json`.
 
 #### Run 1 - 25/32
 
-First successful deploy. 7 component types failed:
+First successful deploy. 7 object types failed:
 
 | Failed Component | Root Cause |
 |-----------------|------------|
@@ -140,7 +140,7 @@ First successful deploy. 7 component types failed:
 
 #### Run 2 - 30/32
 
-Fixed 5 component types by correcting table names and adding missing records:
+Fixed 5 object types by correcting table names and adding missing records:
 
 | Fix | Detail |
 |-----|--------|
@@ -165,7 +165,7 @@ Remaining failures: Flows (0/3) and Records (0/22).
 
 ### What Worked Well
 1. **Context priming pays off** - Pre-reading all SDK `.d.ts` files before writing code meant the initial code generation was ~80% correct on first pass.
-2. **SDK Fluent API is powerful** - 30 `.now.ts` files declaratively define an entire scoped app with 32 component types. Build + deploy is a single `npx now-sdk build && npx now-sdk install` command.
+2. **SDK Fluent API is powerful** - 30 `.now.ts` files declaratively define an entire scoped app with 32 object types. Build + deploy is a single `npx now-sdk build && npx now-sdk install` command.
 3. **Iterative deploy+verify loop** - The `verify.py` script made it trivial to identify exactly which components were missing and why.
 
 ### What Didn't Work
