@@ -23,10 +23,10 @@
 
 | | **SDK Primed** | **SDK Cold** | **Build Agent** |
 |---|---|---|---|
-| **AI model** | Claude (via Cascade) | Claude (via Cascade) | Now Assist Build Agent |
-| **Method** | ServiceNow SDK v4.5 (`@servicenow/sdk`) | ServiceNow SDK v4.5 (`@servicenow/sdk`) | Platform-native skills |
+| **AI model** | Claude (via Cascade) | Claude (via Cascade) | Build Agent (Now Assist for Creator) |
+| **Method** | ServiceNow SDK v4.5 (`@servicenow/sdk`) | ServiceNow SDK v4.5 (`@servicenow/sdk`) | Fluent TypeScript / SN IDE |
 | **Prior context** | Full experiment design, March results, SDK docs pre-read | Spec file only - fresh session, no prior knowledge | Spec prompt only |
-| **Scope creation** | From Windsurf (SDK) | From Windsurf (SDK) | Inside SN IDE |
+| **Scope creation** | From Windsurf (SDK) | From Windsurf (SDK) | SN IDE / Studio |
 | **Target** | SDK-bundled UI + Workspace | SDK-bundled UI + Workspace | Full app + Workspace with dashboard |
 | **Status** | **Complete - 32/32** | **Complete - 32/32** | **Complete - 32/32** |
 | **Assets** | [apr-2026-sdk-primed/](apr-2026-sdk-primed/) | [apr-2026-sdk-cold/](apr-2026-sdk-cold/) | [apr-2026-buildagent/](apr-2026-buildagent/) |
@@ -90,7 +90,7 @@
 
 **SDK Cold's two misses on first deploy** were variable sets and security data filters. VariableSet needed typed constructors (`SingleLineTextVariable()` etc.) instead of plain objects, and security data filters needed `Record()` instead of the `Acl()` Fluent API (which doesn't support the `record` operation type). Both were fixed in the second deploy.
 
-**API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files - either upfront (Primed) or on-demand (Cold). By contrast, ServiceNow’s Build Agent has a curated internal **knowledge source** that documents every object schema (Table, Column, Flow, etc.) with property names, types, and constraints. The Build Agent activates a skill, pulls the relevant schema, and knows the exact shape of what it can create - zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
+**API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files - either upfront (Primed) or on-demand (Cold). By contrast, Build Agent’s schema awareness is baked into the model via Fluent’s strongly-typed TypeScript API — it knows the shape of every object it can create without spending prompts on discovery. Zero discovery tokens spent. This is a structural advantage confirmed by the Build Agent results.
 
 **Takeaway:** For this task size (~30 files, 32 object types), a well-written spec plus on-demand API discovery outperformed extensive upfront documentation study. The cold-start approach was messier but faster because it skipped the preamble and learned by doing. This finding applies to generative tasks (building from a spec); for advisory use cases that require reading and synthesizing existing materials to support or guide users, upfront context loading is likely more valuable - a consideration for further study.
 
@@ -104,18 +104,18 @@
 | Final score | 32/32 | 32/32 | 32/32 | All tied |
 | Workspace dashboard | ❌ | ❌ | ✅ | Build Agent only |
 
-**Build Agent delivered in one prompt what SDK took 3–5 sessions to achieve.** The SDK approaches required: reading the spec, discovering the Fluent API surface, writing ~30 TypeScript files, fixing compiler errors, resolving npm registry blockers, and iterating across multiple deploys. Build Agent consumed the same spec and executed directly against the platform - no intermediate code, no compilation step, no deployment pipeline.
+**Build Agent delivered in one prompt what SDK took 3–5 sessions to achieve.** The SDK approaches required: reading the spec, discovering the Fluent API surface, writing ~30 TypeScript files, fixing compiler errors, resolving npm registry blockers, and iterating across multiple deploys. Build Agent consumed the same spec and handled the entire pipeline autonomously — writing Fluent TypeScript, auto-compiling, and deploying to the platform without any manual intervention between steps.
 
-**UI Pages remain the hardest component to land.** The spec asks for React UI Pages (Section 16). In the March run, the SDK produced UI Pages that rendered but showed no data - a partial success. In April, the SDK generated UI Page `.now.ts` files in `dist/`, but `npx now-sdk install` did not persist them to the instance - they may have existed transiently and were lost on a subsequent deploy. The verify script still shows ✅ for UI Pages based on `sys_ui_page` record existence, but the pages are not functional on the live instance. Build Agent initially generated Jelly-based pages (the traditional format) and was refined with an additional prompt to convert to React (+10 min, ~50 assists). Further SDK UI troubleshooting was skipped - the March experiment already proved it's solvable with iterative effort, and the time was better spent on components with higher signal for the SDK-vs-Build-Agent comparison.
+**UI Pages remain the hardest component to land.** The spec asks for React UI Pages (Section 16). In the March run, the SDK produced UI Pages that rendered but showed no data - a partial success. In April, the SDK generated UI Page `.now.ts` files in `dist/`, but `npx now-sdk install` did not persist them to the instance - they may have existed transiently and were lost on a subsequent deploy. The verify script still shows ✅ for UI Pages based on `sys_ui_page` record existence, but the pages are not functional on the live instance. Build Agent initially generated non-React UI pages and was refined with an additional prompt to convert to React (+10 min, ~50 assists). Further SDK UI troubleshooting was skipped - the March experiment already proved it's solvable with iterative effort, and the time was better spent on components with higher signal for the SDK-vs-Build-Agent comparison.
 
 **The workspace dashboard is the clearest qualitative gap.** Workspace dashboards are UI-assembled artifacts that Build Agent configures natively, outside the current SDK Fluent surface. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. Both SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
 
-**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Now Assist can create an entire table with all columns - an operation that costs thousands of tokens in the SDK path.
+**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Assist (ServiceNow's metered action unit) can trigger platform operations that would cost thousands of tokens in the SDK path — but direct cost comparison is not straightforward as the two systems measure fundamentally different things.
 
 **Why Build Agent is faster - structural advantages:**
-1. **Zero API discovery cost** - built-in knowledge sources document every object schema
-2. **No compilation step** - objects are created directly on the platform, no TypeScript → deploy pipeline
-3. **No error-retry loop** - Build Agent validates against its own schema before creating; SDK approaches hit runtime TS errors and needed iterative fixes
+1. **Zero API discovery cost** - schema awareness is built into the model via Fluent's strongly-typed TypeScript API; no runtime discovery needed
+2. **Automated build pipeline** - Build Agent writes, compiles, and deploys Fluent TypeScript autonomously; no manual build/fix/redeploy cycles
+3. **Self-correcting build loop** - Build Agent catches and fixes compile errors autonomously before deploying; SDK approaches required manual TS error diagnosis and redeployment
 4. **Native workspace support** - dashboards, screen types, and routes are first-class operations, not unsupported edge cases
 
 **Caveat:** Build Agent operates inside a controlled platform environment with purpose-built skills. SDK approaches use a general-purpose LLM writing against a third-party TypeScript API - a fundamentally harder task. The comparison measures end-to-end delivery efficiency, not raw AI capability.
