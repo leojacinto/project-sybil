@@ -110,7 +110,7 @@
 
 **The workspace dashboard is the clearest qualitative gap.** Workspace dashboards are UI-assembled artifacts that Build Agent configures natively, outside the current SDK Fluent surface. Build Agent created a fully functional configurable workspace with dashboard cards, list/record/dashboard pages, and navigation in the same prompt that built everything else. Both SDK approaches scored 32/32 only because the verification script checks for `sys_ux_app_config` existence, not dashboard content.
 
-**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Now Assists (platform-metered actions). A single Assist (ServiceNow's metered action unit) can trigger platform operations that would cost thousands of tokens in the SDK path — but direct cost comparison is not straightforward as the two systems measure fundamentally different things.
+**Cost metrics are not directly comparable.** SDK approaches are measured in tokens (LLM inference cost); Build Agent is measured in Assists (platform-metered actions). A single Assist (ServiceNow's metered action unit) can trigger platform operations that would cost thousands of tokens in the SDK path — but direct cost comparison is not straightforward as the two systems measure fundamentally different things.
 
 **Why Build Agent is faster - structural advantages:**
 1. **Zero API discovery cost** - schema awareness is built into the model via Fluent's strongly-typed TypeScript API; no runtime discovery needed
