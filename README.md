@@ -118,7 +118,7 @@
 3. **Self-correcting build loop** - Build Agent catches and fixes compile errors autonomously before deploying; SDK approaches required manual TS error diagnosis and redeployment
 4. **Native workspace support** - dashboards, screen types, and routes are first-class operations, not unsupported edge cases
 
-**Caveat:** Build Agent operates inside a controlled platform environment with purpose-built skills. SDK approaches use a general-purpose LLM writing against a third-party TypeScript API - a fundamentally harder task. The comparison measures end-to-end delivery efficiency, not raw AI capability.
+**Caveat:** Build Agent operates inside a controlled platform environment with purpose-built agentic capabilities. SDK approaches use a general-purpose LLM writing against a third-party TypeScript API - a fundamentally harder task. The comparison measures end-to-end delivery efficiency, not raw AI capability.
 
 ---
 
