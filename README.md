@@ -45,7 +45,7 @@
 | Approach | Wall Clock (active) | Tokens (est.) | Sessions | Score | Notes |
 |----------|-------------------:|-------------:|:--------:|:-----:|-------|
 | **SDK Primed** | ~135 min | ~500k | 5 | 32/32 | Context-primed; 3 deploy iterations to perfect score |
-| **SDK Cold** | ~125 min | ~450k | 3 | 32/32 | Cold spec; clean isolated scope (`x_snc_apr_tv3b`); 2 deploy iterations |
+| **SDK Cold** | ~125 min | ~450k | 3 | 32/32 | Cold spec; clean isolated scope (`x_snc_apr_tv3b`); 3 deploy iterations |
 | **Build Agent** | ~50 min | 550 assists | 1 | 32/32 | One-shot; includes workspace dashboard; refined UI Page from Jelly to React |
 
 **SDK Primed session breakdown** ([detailed log](docs/sdk-primed-development-log.md)):
@@ -64,7 +64,7 @@
 |---------|-----:|-------:|------|
 | 1. Setup + core components | ~60 min | ~200k | Read spec, discover SDK APIs on-demand, write 16 `.now.ts` files |
 | 2. Remaining components + build fix | ~40 min | ~150k | Write 7 more files, fix ~18 TS errors, first successful build |
-| 3. Deploy + iterative fixes | ~25 min | ~100k | 2 deploys: 30/32 → 32/32 |
+| 3. Deploy + iterative fixes | ~25 min | ~100k | 3 deploys: 31/32 → 31/32 → 32/32 |
 
 **Build Agent session breakdown:**
 
@@ -81,14 +81,14 @@
 | Wall clock | ~135 min | ~125 min | Cold **10 min faster** |
 | Tokens | ~500k | ~450k | Cold **50k cheaper** |
 | Sessions | 5 | 3 | Cold **2 fewer** |
-| First deploy score | 25/32 | 30/32 | Cold **5 more** on first try |
+| First deploy score | 25/32 | 31/32 | Cold **6 more** on first try |
 | Final score | 32/32 | 32/32 | Tied |
 
 **Context priming added cost without proportionally reducing downstream work.** SDK Primed spent ~100k tokens on overhead that SDK Cold skipped entirely: experiment design (~40k) and bulk pre-reading 20+ SDK `.d.ts` files (~60k). The cold-start approach discovered APIs on-demand - reading type definitions only when needed for the component it was writing - which turned out to be more token-efficient than reading everything upfront.
 
 **SDK Cold scored higher on first deploy** (30/32 vs 25/32), suggesting that on-demand API discovery produced fewer initial errors than bulk pre-reading. However, SDK Primed pioneered the workarounds (private npm registry, Fluent compiler type conflicts, seed data install flags) that informed SDK Cold's prompt - SDK Cold was told to copy `node_modules` from the March archive, which saved it from discovering the CLI blocker independently.
 
-**SDK Cold's two misses on first deploy** were variable sets and security data filters. VariableSet needed typed constructors (`SingleLineTextVariable()` etc.) instead of plain objects, and security data filters needed `Record()` instead of the `Acl()` Fluent API (which doesn't support the `record` operation type). Both were fixed in the second deploy.
+**SDK Cold's one miss across three deploys** was seed data: custom tables block web service access by default, and `allowWebServiceAccess: true` was missing from the table definitions. Run 2 attempted the fix at the wrong layer (`adminOverrides: true` on ACLs), which did not resolve the HTTP 403. Run 3 applied the correct fix directly on all 4 table definitions and reached 32/32.
 
 **API discovery vs built-in knowledge:** Cascade (both SDK approaches) had to discover the SDK’s Fluent API surface by reading raw TypeScript `.d.ts` files - either upfront (Primed) or on-demand (Cold). By contrast, Build Agent’s underlying model has the Fluent API surface internalized - it does not read type definitions at runtime, it already knows the shape of every object it can create. Zero discovery prompts spent. This is a structural advantage confirmed by the Build Agent results.
 
